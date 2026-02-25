@@ -1,0 +1,746 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>24. Výpis dat, vestavěné funkce</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="27c2a8a7-b204-80b5-be8c-ddfd201e06b1" class="page sans"><header><h1 class="page-title" dir="auto">24. Výpis dat, vestavěné funkce</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80f7-a398-e0280f98d7a9" class="">Tabulka studenti pro příklady</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-80d2-a95d-e35af09c3061" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8016-b285-d8beb59215ad"><th id="nHIz" class="simple-table-header-color simple-table-header" style="width:176.75px">ID</th><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:176.75px">jmeno</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:176.75px">vek</th><th id=":}Hw" class="simple-table-header-color simple-table-header" style="width:176.75px">mesto_ID</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-808d-9f68-d94e1389dcf5"><td id="nHIz" class="" style="width:176.75px">6</td><td id="ECTA" class="" style="width:176.75px">Roman Červenka</td><td id="msT&gt;" class="" style="width:176.75px">19</td><td id=":}Hw" class="" style="width:176.75px">8</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8089-bef8-f74835c588b9"><td id="nHIz" class="" style="width:176.75px">13</td><td id="ECTA" class="" style="width:176.75px">Adam Heydrich</td><td id="msT&gt;" class="" style="width:176.75px">18</td><td id=":}Hw" class="" style="width:176.75px">3</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8086-8830-f6e6614a5ab5"><td id="nHIz" class="" style="width:176.75px">15</td><td id="ECTA" class="" style="width:176.75px">Mr. Cecka</td><td id="msT&gt;" class="" style="width:176.75px">18</td><td id=":}Hw" class="" style="width:176.75px">9</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80fc-bdcb-c01d8b6a30e3"><td id="nHIz" class="" style="width:176.75px">18</td><td id="ECTA" class="" style="width:176.75px">Dominik Valentinu</td><td id="msT&gt;" class="" style="width:176.75px">18</td><td id=":}Hw" class="" style="width:176.75px">6</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8039-8fc6-f9f8003711e4"><td id="nHIz" class="" style="width:176.75px">32</td><td id="ECTA" class="" style="width:176.75px">Feťák Breťťák</td><td id="msT&gt;" class="" style="width:176.75px">14</td><td id=":}Hw" class="" style="width:176.75px">4</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80d0-899f-d46a69c3d02e"><td id="nHIz" class="" style="width:176.75px">34</td><td id="ECTA" class="" style="width:176.75px">Velký Fanda</td><td id="msT&gt;" class="" style="width:176.75px">18</td><td id=":}Hw" class="" style="width:176.75px">4</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-808d-ae2e-d8fc5962fcd4"><td id="nHIz" class="" style="width:176.75px">38</td><td id="ECTA" class="" style="width:176.75px">Nigy Kaiser</td><td id="msT&gt;" class="" style="width:176.75px">18</td><td id=":}Hw" class="" style="width:176.75px">32</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-8004-bfd0-ce8bfa32f6d2" class="">Tabulka mesta pro příklady</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-80aa-9e9c-e5a620fc6600" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80eb-8a81-e807cbfbb6bd"><th id="XrT@" class="simple-table-header-color simple-table-header" style="width:236.33333333333334px">mesto_ID</th><th id="UqID" class="simple-table-header-color simple-table-header" style="width:236.33333333333334px">nazev</th><th id="}ThM" class="simple-table-header-color simple-table-header" style="width:236.33333333333334px">PSC</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8051-917f-e2287540f23f"><td id="XrT@" class="" style="width:236.33333333333334px">3</td><td id="UqID" class="" style="width:236.33333333333334px">Ostrava</td><td id="}ThM" class="" style="width:236.33333333333334px">700 00</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8086-b850-e55418c8d689"><td id="XrT@" class="" style="width:236.33333333333334px">4</td><td id="UqID" class="" style="width:236.33333333333334px">Pardubice</td><td id="}ThM" class="" style="width:236.33333333333334px">530 00</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8039-9328-eab4ded037dd"><td id="XrT@" class="" style="width:236.33333333333334px">6</td><td id="UqID" class="" style="width:236.33333333333334px">Přelouč</td><td id="}ThM" class="" style="width:236.33333333333334px">535 01</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80ad-8484-c92c86cf2378"><td id="XrT@" class="" style="width:236.33333333333334px">8</td><td id="UqID" class="" style="width:236.33333333333334px">Chrudim</td><td id="}ThM" class="" style="width:236.33333333333334px">123 45</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8019-913d-c91ad388bfc3"><td id="XrT@" class="" style="width:236.33333333333334px">9</td><td id="UqID" class="" style="width:236.33333333333334px">Veska</td><td id="}ThM" class="" style="width:236.33333333333334px">543 21</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80f5-822c-f7bf3ebf4a28"><td id="XrT@" class="" style="width:236.33333333333334px">22</td><td id="UqID" class="" style="width:236.33333333333334px">Chomutov</td><td id="}ThM" class="" style="width:236.33333333333334px">420 69</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="27c2a8a7-b204-8081-8236-cd02147e25f0" class="">SELECT - a jeho skládání</h1></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-80a2-a75c-e334f8783d97" class="bulleted-list"><li style="list-style-type:disc">nutnost pořadí + vše lze napsat jen jednou (až na JOIN)</li></ul></div><div style="display:contents" dir="auto"><ol type="1" id="27c2a8a7-b204-80c5-a247-e898aef4a9e3" class="numbered-list" start="1"><li>SELECT</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="27c2a8a7-b204-8091-95b4-c755605221cd" class="numbered-list" start="2"><li>FROM</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="27c2a8a7-b204-8044-a811-fc70f83fc939" class="numbered-list" start="3"><li>JOIN</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="27c2a8a7-b204-8045-ac18-d06ac48ce398" class="numbered-list" start="4"><li>WHERE (pro více podmínek použití logických funkcní OR, AND..)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="27c2a8a7-b204-80a5-849d-fd8aa29c22a3" class="numbered-list" start="5"><li>GROUP BY</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="27c2a8a7-b204-806c-bf62-ef7d3d420025" class="numbered-list" start="6"><li>HAVING</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="27c2a8a7-b204-8028-967d-f153341d496a" class="numbered-list" start="7"><li>ORDER BY</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="27c2a8a7-b204-80f0-8031-e7db14d84fff" class="numbered-list" start="8"><li>LIMIT</li></ol></div><div style="display:contents" dir="auto"><h2 id="27c2a8a7-b204-8094-acbd-f2d90f5da624" class="">SELECT</h2></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-8017-8609-d36bef07e07e" class="bulleted-list"><li style="list-style-type:disc">slouží pro výpis dat</li></ul></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-8093-af88-c81aac64e5a1" class="bulleted-list"><li style="list-style-type:disc">nutnost napsat, která data chceme vrátit (můžeme je pojmenovat přes AS, zároveň to ulehčí budoucí práci)</li></ul></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-802e-a768-e69026cb7aae" class="bulleted-list"><li style="list-style-type:disc">nutnost napsat hlavní tabulku (FROM)</li></ul></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-803c-8276-c75c563e1893" class="bulleted-list"><li style="list-style-type:disc">DISTINCT - odstraňuje duplicity</li></ul></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-806f-890a-c7ce651ad4ce" class="">Příklad syntaxe:</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-8082-929f-e757335c11bb" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT DISTINCT jmeno, vek AS aktualni_vek
+FROM studenti;</code></pre></div><div style="display:contents" dir="auto"><p id="27c2a8a7-b204-8024-92b9-d687eba0eb57" class="">Výsledek: </p></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-80c7-84f7-c773419ec876" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8011-bdbc-c23e8f8a77fc"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:353.5px">jmeno</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:353.5px">Aktualní věk</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8046-8039-ee8616aa7765"><td id="ECTA" class="" style="width:353.5px">Roman Červenka</td><td id="msT&gt;" class="" style="width:353.5px">19</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8092-87e2-f9f9a02d1f2f"><td id="ECTA" class="" style="width:353.5px">Adam Heydrich</td><td id="msT&gt;" class="" style="width:353.5px">18</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80fb-b36b-e7e943d77fd9"><td id="ECTA" class="" style="width:353.5px">Mr. Cecka</td><td id="msT&gt;" class="" style="width:353.5px">18</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80af-9955-fc7b2fa9f078"><td id="ECTA" class="" style="width:353.5px">Dominik Valentinu</td><td id="msT&gt;" class="" style="width:353.5px">18</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-807c-a7b5-cb28c476af20"><td id="ECTA" class="" style="width:353.5px">Feťák Breťťák</td><td id="msT&gt;" class="" style="width:353.5px">14</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-807c-97ff-c56e4502fda0"><td id="ECTA" class="" style="width:353.5px">Velký Fanda</td><td id="msT&gt;" class="" style="width:353.5px">18</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80f5-bb7d-ce0a63a63388"><td id="ECTA" class="" style="width:353.5px">Nigy Kaiser</td><td id="msT&gt;" class="" style="width:353.5px">18</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="27c2a8a7-b204-804c-804a-fa57366c9fd7" class="">JOIN</h2></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-80b4-8c62-e0b6ccb3e6e6" class="bulleted-list"><li style="list-style-type:disc">spojí tabulky</li></ul></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-80aa-9d8b-fe39f61abea3" class="bulleted-list"><li style="list-style-type:disc">podmínka ON (něco jako WHERE)</li></ul></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-8099-8967-dbf0b25f81cf" class="">Příklad syntaxe INNER JOIN:</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-80b3-af91-e87cbfcc0895" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT DISTINCT studenti.jmeno AS jmeno, studenti.vek AS vek, mesta.nazev AS trvale_bydliste
+FROM studenti
+INNER JOIN mesta ON studenti.mesto_ID = mesta.mesto_ID;</code></pre></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80be-917c-e932146d7004" class="">Výsledek</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-8078-a4fc-f64330969238" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-802a-8e50-da227bfb69f2"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">jmeno</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">vek</th><th id="jBSp" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">trvale_bydliste</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-805d-a7c7-c643e609720a"><td id="ECTA" class="" style="width:235.66666666666666px">Roman Červenka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">19</td><td id="jBSp" class="" style="width:235.66666666666666px">Chrudim</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80e1-b501-c228b3f83f60"><td id="ECTA" class="" style="width:235.66666666666666px">Adam Heydrich</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Ostrava</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80ba-9de8-d467d3a37de5"><td id="ECTA" class="" style="width:235.66666666666666px">Mr. Cecka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Veska</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80c6-af65-c55ea45dd77e"><td id="ECTA" class="" style="width:235.66666666666666px">Dominik Valentinu</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Přelouč</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-805b-89ed-c214cb4d9106"><td id="ECTA" class="" style="width:235.66666666666666px">Feťák Breťťák</td><td id="msT&gt;" class="" style="width:235.66666666666666px">14</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-801d-b283-d62580d10338"><td id="ECTA" class="" style="width:235.66666666666666px">Velký Fanda</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80f2-ade1-f8bd82b895b3" class="">Příklad syntaxe LEFT JOIN:</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-807d-a657-e34e4c94eb67" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT DISTINCT studenti.jmeno AS jmeno, studenti.vek AS vek, mesta.nazev AS trvale_bydliste
+FROM studenti 
+LEFT JOIN mesta ON studenti.mesto_ID = mesta.mesto_ID;</code></pre></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-8049-886f-eb57b137059b" class="">Výsledek</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-8062-aead-d45393ccb83e" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-809f-a929-eb820dffd2f8"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">jmeno</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">vek</th><th id="jBSp" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">trvale_bydliste</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8008-a84f-c4ae07bec301"><td id="ECTA" class="" style="width:235.66666666666666px">Roman Červenka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">19</td><td id="jBSp" class="" style="width:235.66666666666666px">Chrudim</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80f8-a461-f20b33beb0ce"><td id="ECTA" class="" style="width:235.66666666666666px">Adam Heydrich</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Ostrava</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80e7-9752-f33bbdc9f4ef"><td id="ECTA" class="" style="width:235.66666666666666px">Mr. Cecka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Veska</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-801f-a8d2-fe3c7aba09c8"><td id="ECTA" class="" style="width:235.66666666666666px">Dominik Valentinu</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Přelouč</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80b8-986f-fedc7a011555"><td id="ECTA" class="" style="width:235.66666666666666px">Feťák Breťťák</td><td id="msT&gt;" class="" style="width:235.66666666666666px">14</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8071-886b-c4e13942540a"><td id="ECTA" class="" style="width:235.66666666666666px">Velký Fanda</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-807b-8bc9-fc9adf901279"><td id="ECTA" class="" style="width:235.66666666666666px">Nigy Kaiser</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">NULL</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80a6-92b6-da10c479e5c2" class="">Příklad syntaxe RIGHT JOIN:</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-804b-896e-c7eec3f7dd98" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT DISTINCT studenti.jmeno AS jmeno, studenti.vek AS vek, mesta.nazev AS trvale_bydliste
+FROM studenti 
+RIGHT JOIN mesta ON studenti.mesto_ID = mesta.mesto_ID;</code></pre></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-8026-94c7-cc0d5d5a12ef" class="">Výsledek</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-8057-be82-e53fe62c9c2e" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-805f-9fab-ca292b351198"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">jmeno</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">vek</th><th id="jBSp" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">trvale_bydliste</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8065-831b-cae9f82b13a4"><td id="ECTA" class="" style="width:235.66666666666666px">Roman Červenka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">19</td><td id="jBSp" class="" style="width:235.66666666666666px">Chrudim</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8024-abc2-fae609295a3b"><td id="ECTA" class="" style="width:235.66666666666666px">Adam Heydrich</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Ostrava</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8005-82ba-e87ee18ae3a6"><td id="ECTA" class="" style="width:235.66666666666666px">Mr. Cecka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Veska</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8098-939b-e6ee53c07496"><td id="ECTA" class="" style="width:235.66666666666666px">Dominik Valentinu</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Přelouč</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-807c-a1f1-fb9515cdd19d"><td id="ECTA" class="" style="width:235.66666666666666px">Feťák Breťťák</td><td id="msT&gt;" class="" style="width:235.66666666666666px">14</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-803e-a297-fda92253af5c"><td id="ECTA" class="" style="width:235.66666666666666px">Velký Fanda</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-809d-a3dc-ff10a745958e"><td id="ECTA" class="" style="width:235.66666666666666px">NULL</td><td id="msT&gt;" class="" style="width:235.66666666666666px">NULL</td><td id="jBSp" class="" style="width:235.66666666666666px">Chomutov</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80bd-b220-dd29da8753a9" class="">Příklad syntaxe NATURAL INNER JOIN:</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-80d7-9589-c826142e92e1" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT DISTINCT studenti.jmeno AS jmeno, studenti.vek AS vek, mesta.nazev AS trvale_bydliste
+FROM studenti 
+NATURAL INNER JOIN mesta; 
+-- Automaticky připojí stejné sloupce (mesto_ID), lze využít u všech typů JOIN</code></pre></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-8051-a44c-c58f7653b503" class="">Výsledek</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-8046-b032-edce87ac3aa2" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8091-a4f9-dd190bc1d150"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">jmeno</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">vek</th><th id="jBSp" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">trvale_bydliste</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80ed-9a3c-c2abc164a65c"><td id="ECTA" class="" style="width:235.66666666666666px">Roman Červenka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">19</td><td id="jBSp" class="" style="width:235.66666666666666px">Chrudim</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8093-a777-ee161655ee19"><td id="ECTA" class="" style="width:235.66666666666666px">Adam Heydrich</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Ostrava</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80ff-b85f-dd8a771d1916"><td id="ECTA" class="" style="width:235.66666666666666px">Mr. Cecka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Veska</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80a4-b64f-dbd85cdb83fc"><td id="ECTA" class="" style="width:235.66666666666666px">Dominik Valentinu</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Přelouč</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8060-95ed-ec3ee0943049"><td id="ECTA" class="" style="width:235.66666666666666px">Feťák Breťťák</td><td id="msT&gt;" class="" style="width:235.66666666666666px">14</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8050-82a1-c7ae2a7fd75f"><td id="ECTA" class="" style="width:235.66666666666666px">Velký Fanda</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="27c2a8a7-b204-8094-96f2-d86e34d5178d" class="">WHERE</h2></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-8094-8cbd-efa610246448" class="bulleted-list"><li style="list-style-type:disc">redukuje záznamy na ty, co splňují podmínku</li></ul></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80d8-b64a-f72be1f25ddf" class="">Příklad syntaxe s WHERE</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-8052-bdb2-e2004986ef82" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT DISTINCT studenti.jmeno AS jmeno, studenti.vek AS vek, mesta.nazev AS trvale_bydliste
+FROM studenti 
+NATURAL INNER JOIN mesta
+WHERE mesta.nazev != &#x27;Veska&#x27;; </code></pre></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-8028-a0cf-d382a8e63554" class="">Výsledek</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-8017-89dd-c19b48dddff6" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80ab-b53b-fb28e69fe771"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">jmeno</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">vek</th><th id="jBSp" class="simple-table-header-color simple-table-header" style="width:235.66666666666666px">trvale_bydliste</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80f5-aba7-c29a2ddcb377"><td id="ECTA" class="" style="width:235.66666666666666px">Roman Červenka</td><td id="msT&gt;" class="" style="width:235.66666666666666px">19</td><td id="jBSp" class="" style="width:235.66666666666666px">Chrudim</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80ca-9f74-f178ef9c4f77"><td id="ECTA" class="" style="width:235.66666666666666px">Adam Heydrich</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Ostrava</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-802c-baea-d3910a275a32"><td id="ECTA" class="" style="width:235.66666666666666px">Dominik Valentinu</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Přelouč</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8037-8d71-c7402200ebe8"><td id="ECTA" class="" style="width:235.66666666666666px">Feťák Breťťák</td><td id="msT&gt;" class="" style="width:235.66666666666666px">14</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8043-9be4-c175a2afaff9"><td id="ECTA" class="" style="width:235.66666666666666px">Velký Fanda</td><td id="msT&gt;" class="" style="width:235.66666666666666px">18</td><td id="jBSp" class="" style="width:235.66666666666666px">Pardubice</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="27c2a8a7-b204-800d-acd5-edc4e01cd204" class="">GROUP BY a HAVING</h2></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-80f3-b36b-ccc0337d105c" class="bulleted-list"><li style="list-style-type:disc">seskupí záznamy a vyfiltruje</li></ul></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80fe-8dab-c80393178579" class="">Příklad syntaxe s GROUP BY s výběrem </h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-805d-8e6e-df0b6e0492e2" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT studenti.vek AS vek, COUNT(*) AS pocet_studentu
+FROM studenti
+INNER JOIN mesta ON studenti.mesto_ID = mesta.mesto_ID
+WHERE mesta.nazev != &#x27;Veska&#x27;
+GROUP BY studenti.vek
+HAVING COUNT(*) &gt;= 3
+ORDER BY studenti.vek;</code></pre></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80c9-bf4a-c414cb917546" class="">Výsledek</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-80e7-a818-eb7eb654e8c8" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80a5-8fac-c7259ab74dfe"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:167.5px">vek</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:167.5px">pocet_studentu</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80d8-8b19-f5ca19955957"><td id="ECTA" class="" style="width:167.5px">18</td><td id="msT&gt;" class="" style="width:167.5px">3</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="27c2a8a7-b204-8053-ba50-fb8daa104bea" class="">ORDER BY</h2></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-80f9-a6db-e3b5e8bd26d9" class="bulleted-list"><li style="list-style-type:disc">seřadí záznamy</li></ul></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-80a7-a599-fb6b5896378e" class="">Příklad syntaxe s GROUP BY s výběrem </h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-80c2-835d-ea12a0789315" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT studenti.vek AS vek, COUNT(*) AS pocet_studentu
+FROM studenti
+INNER JOIN mesta ON studenti.mesto_ID = mesta.mesto_ID
+WHERE mesta.nazev != &#x27;Veska&#x27;
+GROUP BY studenti.vek
+HAVING COUNT(*) &gt;= 1
+ORDER BY COUNT(*) ASC, studenti.vek DESC;</code></pre></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-807e-9f7f-e190d0e1cdb7" class="">Výsledek</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-80b1-be7d-c04361e98728" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80a1-a1ed-e309b086e643"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:167.5px">vek</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:167.5px">pocet_studentu</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-802a-8714-da549e73a85c"><td id="ECTA" class="" style="width:167.5px">19</td><td id="msT&gt;" class="" style="width:167.5px">1</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8078-9228-d00fc93e368f"><td id="ECTA" class="" style="width:167.5px">14</td><td id="msT&gt;" class="" style="width:167.5px">1</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-805d-a80d-eb6b472adde9"><td id="ECTA" class="" style="width:167.5px">18</td><td id="msT&gt;" class="" style="width:167.5px">3</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="27c2a8a7-b204-803e-b20c-ef18b851ab37" class="">LIMIT</h2></div><div style="display:contents" dir="auto"><ul id="27c2a8a7-b204-806f-ad5b-f3fdd614a89f" class="bulleted-list"><li style="list-style-type:disc">vrátí určitý počet</li></ul></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-801f-ad66-dad96657bb2f" class="">Příklad syntaxe s GROUP BY s výběrem </h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27c2a8a7-b204-80b5-abd7-e32be9723e97" class="code code-wrap"><code class="language-SQL" style="white-space:pre-wrap;word-break:break-all">SELECT studenti.vek AS vek, COUNT(*) AS pocet_studentu
+FROM studenti
+INNER JOIN mesta ON studenti.mesto_ID = mesta.mesto_ID
+WHERE mesta.nazev != &#x27;Veska&#x27;
+GROUP BY studenti.vek
+HAVING COUNT(*) &gt;= 1
+ORDER BY COUNT(*) ASC, studenti.vek DESC
+LIMIT 2;</code></pre></div><div style="display:contents" dir="auto"><h3 id="27c2a8a7-b204-8023-9cda-c5639c4907b9" class="">Výsledek</h3></div><div style="display:contents" dir="ltr"><table id="27c2a8a7-b204-8049-bf0d-d58c5133b4eb" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8074-b9cc-ce06921480f7"><th id="ECTA" class="simple-table-header-color simple-table-header" style="width:167.5px">vek</th><th id="msT&gt;" class="simple-table-header-color simple-table-header" style="width:167.5px">pocet_studentu</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-8041-a1fa-d9d6a5b9a390"><td id="ECTA" class="" style="width:167.5px">19</td><td id="msT&gt;" class="" style="width:167.5px">1</td></tr></div><div style="display:contents" dir="ltr"><tr id="27c2a8a7-b204-80c9-9da6-d3e23005f61b"><td id="ECTA" class="" style="width:167.5px">14</td><td id="msT&gt;" class="" style="width:167.5px">1</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="27c2a8a7-b204-8091-b1e0-fc615e87af23" class="">SELECT a jeho funkce</h1></div><div style="display:contents" dir="auto"><p id="2872a8a7-b204-80ad-8525-ee8d320e8c3c" class="">btw si to prostě najdi v<strong> ZEAL</strong>, můžeš při zkoušení :)</p></div><div style="display:contents" dir="auto"><h2 id="2872a8a7-b204-80b8-be41-d874e90e666c" class=""><strong>Matematické</strong></h2></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-80ba-8b82-f76c74533e4a" class="bulleted-list"><li style="list-style-type:disc"><strong>ROUND(cislo) </strong>- zaokrouhlí</li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-80a0-b794-f95bc1f76690" class="bulleted-list"><li style="list-style-type:disc"><strong>FLOOR(cislo) </strong>- zaokrouhlí dolů</li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-8030-8f02-f7aaefd6e97a" class="bulleted-list"><li style="list-style-type:disc"><strong>CEILING(cislo)</strong> - zaokrouhlí nahoru</li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-8017-a151-d442d5b5741d" class="bulleted-list"><li style="list-style-type:disc"><strong>TRUNCATE(cislo)</strong> - smaže desetinné místo (<code>FLOOR()</code>u kladných čísel, <code>CEILING()</code> u negativních čísel)</li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-80b0-8e9c-fb3ff2d7a822" class="bulleted-list"><li style="list-style-type:disc"><strong>ABS(cislo) </strong>- absolutní hodnota</li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-8099-a69e-d566991caf60" class="bulleted-list"><li style="list-style-type:disc"><strong>POWER(cislo)</strong> - pro mocninu</li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-80af-94cc-ff6b6d39e14a" class="bulleted-list"><li style="list-style-type:disc"><strong>SQRT(cislo)</strong> - pro odmocninu</li></ul></div><div style="display:contents" dir="auto"><h2 id="2872a8a7-b204-8013-a271-fcec257b7972" class=""><strong>Stringové</strong></h2></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-803c-bfba-c069d9d5942f" class="bulleted-list"><li style="list-style-type:disc"><strong>CONCAT(str1, ‘ - ’, str2) </strong>- spojuje řetězce </li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-806c-942f-c85bf678b733" class="bulleted-list"><li style="list-style-type:disc"><strong>LENGTH(str1)</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-8085-996a-e72b9e8177cf" class="bulleted-list"><li style="list-style-type:disc"><strong>UPPER() </strong>- VŠECHNO VELKÝM</li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-800b-ab45-f474d8042a5d" class="bulleted-list"><li style="list-style-type:disc"><strong>LOWER()</strong> - všechno malým</li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-80f1-8af6-fbb42d6334f5" class="bulleted-list"><li style="list-style-type:disc"><strong>TRIM(), LTRIM(), RTRIM() </strong></li></ul></div><div style="display:contents" dir="auto"><h2 id="2872a8a7-b204-8096-a89f-f620dfa72470" class=""><strong>Datumové</strong></h2></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-808c-b855-e566486d8b51" class="bulleted-list"><li style="list-style-type:disc"><strong>DATE_FORMAT(date, regex) </strong>- zformátuje datum<div style="display:contents" dir="auto"><ul id="2872a8a7-b204-80ec-832b-ff2bfaaa90cd" class="bulleted-list"><li style="list-style-type:circle">příklad regexu ‘%d. %m. %Y’ - !!jenom 1 písmenko, zbytek se tam proste napíše</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-8010-af9c-e760ad15c0e3" class="bulleted-list"><li style="list-style-type:disc"><strong>DAY()</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-8071-93cb-c6ab106de7ce" class="bulleted-list"><li style="list-style-type:disc"><strong>MONTH()</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2872a8a7-b204-80e8-8074-fcb24e9391af" class="bulleted-list"><li style="list-style-type:disc"><strong>YEAR()</strong></li></ul></div><div style="display:contents" dir="auto"><p id="2872a8a7-b204-80be-9a48-c6d8a1e4d27d" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

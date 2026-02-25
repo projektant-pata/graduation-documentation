@@ -1,0 +1,714 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>WA - maturitní otázky</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2652a8a7-b204-8022-840b-dea40010ccf7" class="page sans"><header><h1 class="page-title" dir="auto">WA - maturitní otázky</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-created_time"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/clock_gray.svg" style="width:14px;height:14px;display:block"/></span>Created</th><td><time>@September 5, 2025 8:20 AM</time></td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/arrow-circle-down_gray.svg" style="width:14px;height:14px;display:block"/></span>Class</th><td><span class="selected-value select-value-color-brown">MP</span></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2952a8a7-b204-80bd-a4df-f559848bc268" class="">HTML + CSS</h1></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8066-bc49-e091831a4914" class="bulleted-list"><li style="list-style-type:disc">všechny otázky 1.-4. odkazují na otázku 5.</li></ul></div><div style="display:contents" dir="ltr"><figure id="2952a8a7-b204-806d-b2d3-db07b2622ebc" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/1%20HTML%20-%20struktura%20dokumentu,%20textov%C3%A9%20prvky%20str%C3%A1nk%202952a8a7b204806db2d3db07b2622ebc.html">1. HTML - struktura dokumentu, textové prvky stránky, seznamy, odkazy, menu</a></figure></div><div style="display:contents" dir="ltr"><figure id="2a12a8a7-b204-80f7-ab7d-f26fc4624632" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/2%20HTML%20-%20modern%C3%AD%20responzivn%C3%AD%20layout%20str%C3%A1nky%202a12a8a7b20480f7ab7df26fc4624632.html">2. HTML - moderní responzivní layout stránky</a></figure></div><div style="display:contents" dir="ltr"><figure id="2a12a8a7-b204-803f-b704-c4d3b499a681" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/3%20HTML%20-%20odd%C3%ADly,%20%C4%8Dl%C3%A1nky,%20obr%C3%A1zky,%20tabulky%202a12a8a7b204803fb704c4d3b499a681.html">3. HTML - oddíly, články, obrázky, tabulky</a></figure></div><div style="display:contents" dir="ltr"><figure id="2a12a8a7-b204-8067-a525-ec2488acb78c" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/4%20HTML%20formul%C3%A1%C5%99e%202a12a8a7b2048067a525ec2488acb78c.html">4. HTML formuláře</a></figure></div><div style="display:contents" dir="ltr"><figure id="2a12a8a7-b204-806a-8121-c422a86da8d4" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/5%20Kask%C3%A1dov%C3%A9%20styly%20CSS%202a12a8a7b204806a8121c422a86da8d4.html">5. Kaskádové styly CSS</a></figure></div><div style="display:contents" dir="auto"><h1 id="2cd2a8a7-b204-80b0-9195-fce6d6639cea" class="">JavaScript</h1></div><div style="display:contents" dir="ltr"><figure id="2fe2a8a7-b204-8068-8f1c-ef58f1af6f36" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/6%20JS%20-%20z%C3%A1klady%20programov%C3%A1n%C3%AD%20-%20prom%C4%9Bnn%C3%A9,%20pole,%20podm%202fe2a8a7b20480688f1cef58f1af6f36.html">6. JS - základy programování - proměnné, pole, podmíněné příkazy, cykly</a></figure></div><div style="display:contents" dir="ltr"><figure id="2fe2a8a7-b204-804b-a3f8-e2ebe2888d30" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/7%20JS%20-%20Document%20Object%20Model%202fe2a8a7b204804ba3f8e2ebe2888d30.html">7. JS - Document Object Model</a></figure></div><div style="display:contents" dir="ltr"><figure id="2fe2a8a7-b204-80d7-84b4-d71046238a9f" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/8%20JS%20-%20ud%C3%A1losti%20a%20u%C5%BEivatelsk%C3%A9%20funkce%202fe2a8a7b20480d784b4d71046238a9f.html">8. JS - události a uživatelské funkce</a></figure></div><div style="display:contents" dir="ltr"><figure id="2fe2a8a7-b204-807a-b2f3-f79b827cedf6" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/9%20objekty%20Date,%20Math,%20String%202fe2a8a7b204807ab2f3f79b827cedf6.html">9. objekty Date, Math, String</a></figure></div><div style="display:contents" dir="ltr"><figure id="2fe2a8a7-b204-80a0-a896-fcdaf52205b7" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/10%20JS%20-%20dynamick%C3%A9%20formul%C3%A1%C5%99e,%20kontrola%20dat,%20regul%C3%A1r%202fe2a8a7b20480a0a896fcdaf52205b7.html">10. JS - dynamické formuláře, kontrola dat, regulární výrazy</a></figure></div><div style="display:contents" dir="auto"><h1 id="2c62a8a7-b204-80c5-82d5-d68a46075653" class="">PHP - práce s daty</h1></div><div style="display:contents" dir="ltr"><figure id="2cd2a8a7-b204-80b8-ae3a-d05f093713a2" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/11%20-16%20-%20pr%C3%A1ce%20s%20DB%202cd2a8a7b20480b8ae3ad05f093713a2.html">11.-16. - práce s DB</a></figure></div><div style="display:contents" dir="ltr"><figure id="2cd2a8a7-b204-8011-9eca-f1504db81d49" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/11%20PHP%20-%20vyhled%C3%A1v%C3%A1n%C3%AD%20a%20filtr%20dat%202cd2a8a7b20480119ecaf1504db81d49.html">11. PHP - vyhledávání a filtr dat</a></figure></div><div style="display:contents" dir="ltr"><figure id="2cd2a8a7-b204-80eb-ae82-f44de917b605" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/12%20PHP%20-%20v%C3%BDpis%20a%20%C5%99azen%C3%AD%20dat%202cd2a8a7b20480ebae82f44de917b605.html">12. PHP - výpis a řazení dat</a></figure></div><div style="display:contents" dir="ltr"><figure id="2cd2a8a7-b204-80fd-99db-efd96d94d8c0" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/13%20PHP%20-%20vlo%C5%BEen%C3%AD%20dat%20do%20datab%C3%A1ze%202cd2a8a7b20480fd99dbefd96d94d8c0.html">13. PHP - vložení dat do databáze</a></figure></div><div style="display:contents" dir="ltr"><figure id="2cd2a8a7-b204-8013-a088-e6cdf24786f7" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/14%20PHP%20-%20na%C4%8Dten%C3%AD%20dat%20do%20fomul%C3%A1%C5%99e%202cd2a8a7b2048013a088e6cdf24786f7.html">14. PHP - načtení dat do fomuláře</a></figure></div><div style="display:contents" dir="ltr"><figure id="2cd2a8a7-b204-801d-aa0f-f69c9d261ef7" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/15%20PHP%20-%20ulo%C5%BEen%C3%AD%20editovan%C3%BDch%20dat%202cd2a8a7b204801daa0ff69c9d261ef7.html">15. PHP - uložení editovaných dat</a></figure></div><div style="display:contents" dir="ltr"><figure id="2cd2a8a7-b204-80bf-8300-fe0ead7a9c29" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/16%20PHP%20-%20smaz%C3%A1n%C3%AD%20dat%202cd2a8a7b20480bf8300fe0ead7a9c29.html">16. PHP - smazání dat</a></figure></div><div style="display:contents" dir="auto"><h1 id="2cd2a8a7-b204-808c-92da-fe3a6573b4c1" class="">PHP - obecně</h1></div><div style="display:contents" dir="ltr"><figure id="2c62a8a7-b204-8061-b919-f7159db44272" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/17%20PHP%20-%20regul%C3%A1rn%C3%AD%20v%C3%BDrazy,%20datumov%C3%A9%20a%20%C5%99et%C4%9Bzcov%C3%A9%20fu%202c62a8a7b2048061b919f7159db44272.html">17. PHP - regulární výrazy, datumové a řetězcové funkce</a></figure></div><div style="display:contents" dir="ltr"><figure id="2c62a8a7-b204-8075-ba3f-e4e880fc295e" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/18%20PHP%20-%20vlastn%C3%AD%20u%C5%BEivatelsk%C3%A9%20funkce%20a%20t%C5%99%C3%ADdy%202c62a8a7b2048075ba3fe4e880fc295e.html">18. PHP - vlastní uživatelské funkce a třídy</a></figure></div><div style="display:contents" dir="ltr"><figure id="2c62a8a7-b204-80c8-9ffd-c85d40588632" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/19%20PHP%20-%20session,%20cookies%202c62a8a7b20480c89ffdc85d40588632.html">19. PHP - session, cookies</a></figure></div><div style="display:contents" dir="ltr"><figure id="2c62a8a7-b204-803a-aac3-da1881abed5e" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/20%20PHP%20-%20soubory%202c62a8a7b204803aaac3da1881abed5e.html">20. PHP - soubory</a></figure></div><div style="display:contents" dir="auto"><h1 id="2652a8a7-b204-80c3-8a89-d625a0c6db65" class="">Databáze</h1></div><div style="display:contents" dir="ltr"><figure id="2662a8a7-b204-80dc-bf1e-d3bc19725f1b" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/21%20N%C3%A1vrh%20datab%C3%A1ze,%20z%C3%A1kladn%C3%AD%20datab%C3%A1zov%C3%A9%20pojmy,%20dato%202662a8a7b20480dcbf1ed3bc19725f1b.html">21. Návrh databáze, základní databázové pojmy, datové typy </a></figure></div><div style="display:contents" dir="ltr"><figure id="27c2a8a7-b204-802a-9a84-c76a0b2e4d5c" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/22%20Prim%C3%A1rn%C3%AD%20kl%C3%AD%C4%8D,%20ciz%C3%AD%20kl%C3%AD%C4%8D,%20normalizace%2027c2a8a7b204802a9a84c76a0b2e4d5c.html">22. Primární klíč, cizí klíč, normalizace</a></figure></div><div style="display:contents" dir="ltr"><figure id="27c2a8a7-b204-8001-a378-e8d6c55cab3d" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/23%20Spojov%C3%A1n%C3%AD%20v%C3%ADce%20tabulek,%20seskupov%C3%A1n%C3%AD%20v%C3%BDsledk%C5%AF%2027c2a8a7b2048001a378e8d6c55cab3d.html">23. Spojování více tabulek, seskupování výsledků</a></figure></div><div style="display:contents" dir="ltr"><figure id="27c2a8a7-b204-80b5-be8c-ddfd201e06b1" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/24%20V%C3%BDpis%20dat,%20vestav%C4%9Bn%C3%A9%20funkce%2027c2a8a7b20480b5be8cddfd201e06b1.html">24. Výpis dat, vestavěné funkce</a></figure></div><div style="display:contents" dir="ltr"><figure id="27c2a8a7-b204-803f-ad1d-f9a44eaa0455" class="link-to-page"><a href="WA%20-%20maturitn%C3%AD%20ot%C3%A1zky/25%20Z%C3%A1klady%20SQL%20p%C5%99%C3%ADkaz%C5%AF,%20p%C5%99id%C3%A1v%C3%A1n%C3%AD,%20%C3%BAprava%20a%20odstra%2027c2a8a7b204803fad1df9a44eaa0455.html">25. Základy SQL příkazů, přidávání, úprava a odstranění dat</a></figure></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-8093-8ece-e4a5b0449040" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

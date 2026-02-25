@@ -1,0 +1,777 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>17. PHP - regulární výrazy, datumové a řetězcové funkce</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2c62a8a7-b204-8061-b919-f7159db44272" class="page sans"><header><h1 class="page-title" dir="auto">17. PHP - regulární výrazy, datumové a řetězcové funkce</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2e22a8a7-b204-80bf-87db-c39ee272b9f0" class="">Regulární výrazy</h1></div><div style="display:contents" dir="auto"><h3 id="2e62a8a7-b204-80d8-873c-d6fc4f92ceff" class="">Regex</h3></div><div style="display:contents" dir="ltr"><table id="2e62a8a7-b204-8076-9f98-f1aa9805a270" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8085-ade4-cd049774c098"><th id="xm`{" class="simple-table-header-color simple-table-header"><strong>Znak/Konstrukce</strong></th><th id="TC`u" class="simple-table-header-color simple-table-header"><strong>Význam</strong></th><th id="pdtS" class="simple-table-header-color simple-table-header"><strong>Příklad</strong></th><th id="GtTO" class="simple-table-header-color simple-table-header"></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8051-9531-dcc03188bb02"><td id="xm`{" class="">.</td><td id="TC`u" class="">Jakýkoli jeden znak</td><td id="pdtS" class=""><code>a.c</code> najde &quot;abc&quot;, &quot;a5c&quot;</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80b7-b7a5-c3b7ead820bc"><td id="xm`{" class="">*</td><td id="TC`u" class="">Předchozí znak 0× nebo vícekrát</td><td id="pdtS" class=""><code>ab*c</code> najde &quot;ac&quot;, &quot;abc&quot;, &quot;abbbc&quot;</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8034-86a8-c4a2014d50b7"><td id="xm`{" class="">+</td><td id="TC`u" class="">Předchozí znak 1× nebo vícekrát</td><td id="pdtS" class=""><code>ab+c</code> najde &quot;abc&quot;, &quot;abbbc&quot;, ale ne &quot;ac&quot;</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8089-a049-e8af8f2fd7de"><td id="xm`{" class="">?</td><td id="TC`u" class="">Předchozí znak 0× nebo 1×</td><td id="pdtS" class=""><code>ab?c</code> najde &quot;ac&quot;, &quot;abc&quot;, ale ne &quot;abbbc&quot;</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80a6-a309-cce97379115c"><td id="xm`{" class="">^</td><td id="TC`u" class="">Začátek řetězce/řádku</td><td id="pdtS" class=""><code>^abc</code> najde &quot;abc&quot; na začátku</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80df-a380-d5e2671ea7c8"><td id="xm`{" class="">$</td><td id="TC`u" class="">Konec řetězce/řádku</td><td id="pdtS" class=""><code>abc$</code> najde &quot;abc&quot; na konci</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80f9-bfa2-c8c193fff426"><td id="xm`{" class="">[]</td><td id="TC`u" class="">Jeden znak ze skupiny</td><td id="pdtS" class=""><code>[aeiou]</code> najde jakoukoliv samohlásku</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8094-a6c3-c541ab5a27e3"><td id="xm`{" class="">[0-9]</td><td id="TC`u" class="">Rozsah znaků</td><td id="pdtS" class=""><code>[0-9]</code> najde libovolnou číslici</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80f0-8702-f3840f6e0db3"><td id="xm`{" class="">[^...]</td><td id="TC`u" class="">OPAK - všechno KROMĚ znaků v závorce</td><td id="pdtS" class=""><code>[^0-9]</code> najde cokoliv kromě číslic</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80bd-be18-fb7eba0c2310"><td id="xm`{" class="">\d</td><td id="TC`u" class="">Číslice (0-9)</td><td id="pdtS" class=""><code>\d+</code> najde jedno nebo více čísel</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80a7-bcfe-c15e31e79699"><td id="xm`{" class="">\D</td><td id="TC`u" class="">NE-číslice (cokoliv kromě číslic)</td><td id="pdtS" class=""><code>\D+</code> najde slova a symboly</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80e2-819c-f43429a945e7"><td id="xm`{" class="">\w</td><td id="TC`u" class="">Alfanumerické znaky (a-z, A-Z, 0-9, _)</td><td id="pdtS" class=""><code>\w+</code> najde jedno slovo</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-803b-8a23-c541d28b7c74"><td id="xm`{" class="">\W</td><td id="TC`u" class="">NE-alfanumerické znaky (kromě a-z, A-Z, 0-9, _)</td><td id="pdtS" class=""><code>\W+</code> najde mezery a symboly</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8024-9a73-e208adb63792"><td id="xm`{" class="">\s</td><td id="TC`u" class="">Bílý znak (mezera, tab, nový řádek)</td><td id="pdtS" class=""><code>\s+</code> najde mezery</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-800b-8787-f595f799facd"><td id="xm`{" class="">\S</td><td id="TC`u" class="">NE-bílý znak (cokoliv kromě mezer)</td><td id="pdtS" class=""><code>\S+</code> najde text bez mezer</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8025-b815-e04569af4cd2"><td id="xm`{" class="">{n}</td><td id="TC`u" class="">Přesně n opakování</td><td id="pdtS" class=""><code>\d{4}</code> najde čtyřmístné číslo</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8048-81d5-c92bdb41b905"><td id="xm`{" class="">{m,n}</td><td id="TC`u" class="">m až n opakování</td><td id="pdtS" class=""><code>\d{2,4}</code> najde 2-4 číslice</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-8055-8224-c066c6b33f58"><td id="xm`{" class="">()</td><td id="TC`u" class="">Zachycující skupina</td><td id="pdtS" class=""><code>(\d{4})</code> uloží rok do skupiny</td><td id="GtTO" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e62a8a7-b204-80e4-a724-cf54882fa4dd"><td id="xm`{" class="">\</td><td id="TC`u" class="">Escape speciálních znaků</td><td id="pdtS" class=""><code>\.</code> najde tečku</td><td id="GtTO" class=""></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e62a8a7-b204-807f-a23d-f7fb855f10fa" class="">Metody</h3></div><div style="display:contents" dir="auto"><div><div style="display:contents" dir="auto"><p id="2e62a8a7-b204-80d6-b8cb-cbc9f125858f" class=""><code><strong>preg_match(string $patt, string $subj, array &amp;$matches, int $flags, int offset)</strong></code><strong> </strong></p></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-809e-a28a-fa8fa7071f3c" class="bulleted-list"><li style="list-style-type:disc">vrátí 1 při shodě, 0 při neshodě a false při chybě</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-809b-8641-e70b2e8cbb22" class="bulleted-list"><li style="list-style-type:disc"><strong>parametry</strong><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-805f-8307-dae7fb2d705d" class="bulleted-list"><li style="list-style-type:circle">pattern (regex)<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8089-9e2f-c2d0b6369820" class="bulleted-list"><li style="list-style-type:square">povinný</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80b1-a2bb-ec9ab9e17e3c" class="bulleted-list"><li style="list-style-type:circle">subject (text)<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80f8-82d4-e141d454071c" class="bulleted-list"><li style="list-style-type:square">povinný</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80db-8d10-e77aeffad052" class="bulleted-list"><li style="list-style-type:circle">matches <div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8001-8486-d9f946031c0c" class="bulleted-list"><li style="list-style-type:square">uloží shody (napřed [0] - všechen text, pak shody jednotlivých podmínek (závorek)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8045-9abf-d54ba6234e7c" class="bulleted-list"><li style="list-style-type:square">matches[0] = všechen text, co měl shodu</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8005-afd2-e6cd30e02018" class="bulleted-list"><li style="list-style-type:square">matches[1] = text odpovídající první závorce (subpatternu)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80f0-bcf1-cca3c4cdab80" class="bulleted-list"><li style="list-style-type:square">matches[2] = text odpovídající druhé závorce (subpatternu)</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-800c-82f6-f96c03ddc4e7" class="bulleted-list"><li style="list-style-type:circle">flags<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8094-9fae-ceafbe1e933a" class="bulleted-list"><li style="list-style-type:square">mění výsledek</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80ca-a4d5-cc321e7b5cb7" class="bulleted-list"><li style="list-style-type:square">může mít kombinace (když se dá | mezi hodnoty)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80f8-823f-e812e18f0848" class="bulleted-list"><li style="list-style-type:square"><code>PREG_OFFSET_CAPTURE</code> = matches bude obsahovat i offset v bajtech</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80c8-904f-c9cd362e20eb" class="bulleted-list"><li style="list-style-type:square"><code>PREG_UNMATCHED_AS_NULL</code> = když např matches[1] by byl “” (nic nenalezeno), tak ho změní na <code>NULL</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8017-9a87-cbb160ee369a" class="bulleted-list"><li style="list-style-type:circle">offset<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80ec-92cb-ea8302d180d9" class="bulleted-list"><li style="list-style-type:square">od jakého bajtu začne fungovat <code>preg_match</code></li></ul></div></li></ul></div></li></ul></div></div></div><div style="display:contents" dir="auto"><div><div style="display:contents" dir="auto"><h3 id="2e62a8a7-b204-8048-8a9a-db4c1a40d702" class="">Ukázka matches v <code>preg_match</code></h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2e62a8a7-b204-80ba-9878-cf347aba0afe" class="code code-wrap"><code class="language-PHP" style="white-space:pre-wrap;word-break:break-all">&lt;?php
+preg_match(&#x27;/(foo)(bar)(baz)/&#x27;, &#x27;foobarbaz&#x27;, $matches, PREG_OFFSET_CAPTURE);
+print_r($matches);
+/* Array
+(
+    [0] =&gt; Array
+        (
+            [0] =&gt; foobarbaz
+            [1] =&gt; 0
+        )
+
+    [1] =&gt; Array
+        (
+            [0] =&gt; foo
+            [1] =&gt; 0
+        )
+
+    [2] =&gt; Array
+        (
+            [0] =&gt; bar
+            [1] =&gt; 3
+        )
+
+    [3] =&gt; Array
+        (
+            [0] =&gt; baz
+            [1] =&gt; 6
+        )
+
+) */
+
+?&gt;</code></pre></div></div></div><div style="display:contents" dir="auto"><div><div style="display:contents" dir="auto"><p id="2e62a8a7-b204-8009-b219-c08b398a9e24" class=""><code><strong>preg_match_all(string $patt, string $subj, array &amp;$matches, int $flags, int offset)</strong></code><strong> </strong></p></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8070-8afb-c5cc412c127e" class="bulleted-list"><li style="list-style-type:disc">vrátí počet shod (včetně 0) či false při chybě</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8014-b409-c25524478b35" class="bulleted-list"><li style="list-style-type:disc"><strong>hlavička</strong><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8064-9544-e1a840ba2fc0" class="bulleted-list"><li style="list-style-type:circle">pattern (regex)<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80c4-96ac-fa4a0b3bd267" class="bulleted-list"><li style="list-style-type:square">povinný</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-808c-b050-f4ef6e3217cb" class="bulleted-list"><li style="list-style-type:circle">subject (text)<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80d1-9bbb-e3869a493590" class="bulleted-list"><li style="list-style-type:square">povinný</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8023-a4e0-f3f27f3b4ad0" class="bulleted-list"><li style="list-style-type:circle">matches<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8079-9bdd-d25544ca8bc0" class="bulleted-list"><li style="list-style-type:square">uloží shody, struktura záleží na flags</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80f8-95ad-d2151b117b1e" class="bulleted-list"><li style="list-style-type:circle">flags<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8001-8fd0-f7454297ac81" class="bulleted-list"><li style="list-style-type:square"><code>PREG_PATTERN_ORDER</code> = seskupení podle subpatternů<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80bf-b724-deb88971ce93" class="bulleted-list"><li style="list-style-type:disc">výchozí</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80ac-9ecc-d83c861da965" class="bulleted-list"><li style="list-style-type:disc">seskupení dle sloupců</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-806b-80bc-c1710a285bf8" class="bulleted-list"><li style="list-style-type:square"><code>PREG_SET_ORDER</code> = seskupení dle řádků</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-80ea-9f3f-d4bf727a5816" class="bulleted-list"><li style="list-style-type:square"><code>PREG_OFFSET_CAPUTRE</code> = matches bude obsahovat i offset v bajtech</li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-8057-a9db-d60704702f2d" class="bulleted-list"><li style="list-style-type:square"><code>PREG_UNMATCHED_AS_NULL</code> = když např matches[1] by byl “” (nic nenalezeno), tak ho změní na <code>NULL</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-801c-97ab-f8bcc13a44ad" class="bulleted-list"><li style="list-style-type:circle">offset<div style="display:contents" dir="auto"><ul id="2e62a8a7-b204-804e-8682-caca11a31d55" class="bulleted-list"><li style="list-style-type:square">od jakého bajtu začne fungovat <code>preg_match_all</code></li></ul></div></li></ul></div></li></ul></div></div></div><div style="display:contents" dir="auto"><div><div style="display:contents" dir="auto"><h3 id="2e62a8a7-b204-80a0-a875-d1f80c11a225" class="">Ukázka matches a flags v <code>preg_match_all</code></h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2e62a8a7-b204-807d-994f-f3b0b391d10c" class="code code-wrap"><code class="language-PHP" style="white-space:pre-wrap;word-break:break-all">$text = &quot;Jana 25, Petr 30&quot;;
+$regex = &#x27;/([a-zA-Z]+) (\d+)/&#x27;; // 1. závorka = Jméno, 2. závorka = Věk
+
+// Seskupí všechna Jména k sobě a všechny Věky k sobě
+preg_match_all($regex, $text, $matchesPattern, PREG_PATTERN_ORDER);
+print_r($matchesPattern);
+/* Výsledek:
+Array (
+    [0] =&gt; Array ( [0] =&gt; &quot;Jana 25&quot;, [1] =&gt; &quot;Petr 30&quot; ), // Všechny celé shody
+    [1] =&gt; Array ( [0] =&gt; &quot;Jana&quot;,    [1] =&gt; &quot;Petr&quot;    ), // Všechna jména
+    [2] =&gt; Array ( [0] =&gt; &quot;25&quot;,      [1] =&gt; &quot;30&quot;      )  // Všechny věky
+)
+*/
+
+// Seskupí data po jednotlivých &quot;osobách&quot;
+preg_match_all($regex, $text, $matchesSet, PREG_SET_ORDER);
+print_r($matchesSet);
+/* Výsledek:
+Array (
+    [0] =&gt; Array (               // 1. osoba (Jana)
+        [0] =&gt; &quot;Jana 25&quot;,
+        [1] =&gt; &quot;Jana&quot;,
+        [2] =&gt; &quot;25&quot;
+    ),
+    [1] =&gt; Array (               // 2. osoba (Petr)
+        [0] =&gt; &quot;Petr 30&quot;,
+        [1] =&gt; &quot;Petr&quot;,
+        [2] =&gt; &quot;30&quot;
+    )
+)
+*/
+</code></pre></div></div></div><div style="display:contents" dir="auto"><h1 id="2e22a8a7-b204-804d-aef9-fff806db27fb" class="">Datumové funkce</h1></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-8085-b8a2-e32d99b96e29" class=""><code><strong>new DateTime()</strong></code><strong> </strong>- objekt s aktuálním časem</p></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-80b7-b321-e68254df8f99" class=""><code><strong>-&gt;format(&#x27;d-m-Y&#x27;)</strong></code><strong> </strong>- naformátuje datum</p></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-8096-93c4-c2f573e2c40b" class=""><code><strong>-&gt;modify(&#x27;+1 day&#x27;)</strong></code><strong> </strong>- úprava času</p></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-8011-9499-fe5762def052" class=""><code><strong>-&gt;diff($date2)</strong></code><strong> </strong>- porovná 2 datumy</p></div><div style="display:contents" dir="auto"><h1 id="2e22a8a7-b204-8058-8bb6-fea4daff3261" class="">Řetězové funkce</h1></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-80aa-a895-f6562f655934" class=""><code><strong>trim()</strong></code><strong> </strong>- smaže bílé znaky ze začátku a konce</p></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-80d6-a8f5-fe528dd1aa0f" class=""><code><strong>toLowerCase()</strong></code><strong> </strong>- převede vše na malé písmena </p></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-8026-83cd-e6e7946ba58f" class=""><code><strong>toUpperCase()</strong></code><strong> </strong>- převede vše na velké písmena</p></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-80cd-b98c-e059bad66a48" class=""><code><strong>implode($lepidlo, $pole)</strong></code><strong> </strong>- spojí pole do řetězce ((” - ” [a, b]) = “a - b”</p></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-8094-8624-d59809f69ce2" class=""><code><strong>explode($sekacek, $string)</strong></code><strong> </strong>- převede řetězec na pole (”,”, ”a,b”) = [a,b]</p></div><div style="display:contents" dir="auto"><p id="2e22a8a7-b204-80b5-9579-ed996ffd9a7a" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d52a8a7-b204-8008-a3d2-cd72ae72e938" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

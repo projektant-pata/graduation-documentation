@@ -1,0 +1,805 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>8. JS - události a uživatelské funkce</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2fe2a8a7-b204-80d7-84b4-d71046238a9f" class="page sans"><header><h1 class="page-title" dir="auto">8. JS - události a uživatelské funkce</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="3092a8a7-b204-805c-8975-d9dfc2e954f3" class="">Funkce</h1></div><div style="display:contents" dir="auto"><ul id="3092a8a7-b204-808a-9df7-f229054422e7" class="bulleted-list"><li style="list-style-type:disc">blok kódu, jež je možné spustit odkudkoli</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8093-9e2f-fdb50a694ab0" class="bulleted-list"><li style="list-style-type:disc">lowkey <code>Objekt</code><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80ee-a275-e267fc18840c" class="bulleted-list"><li style="list-style-type:circle">některým možno dát proměnné jako objektu</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80de-9ecf-e3c4cb2358e2" class="bulleted-list"><li style="list-style-type:circle">některé mají konstruktor new </li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="3092a8a7-b204-80b0-a15d-e1ca9049b270" class="">Deklarace funkce</h2></div><div style="display:contents" dir="auto"><p id="3092a8a7-b204-808a-ba84-fe26a64fad45" class="">3 typy:</p></div><div style="display:contents" dir="auto"><h3 id="3092a8a7-b204-806a-9915-c31fece29ddc" class="">Klasická deklarace</h3></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-80fa-b91c-c1ede6b92ef3" class=""><code>function nazev(..) {blok}</code></p></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8097-af7d-d3e6f5a5a54f" class="bulleted-list"><li style="list-style-type:disc">povinný název</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8092-a551-c3ab49026459" class="bulleted-list"><li style="list-style-type:disc">podporuje <strong>hoisting</strong> (vloží se na začátek kódu, ať jde volat odkudkoli)</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8046-a21c-d35235d2ff23" class="bulleted-list"><li style="list-style-type:disc"><code>this</code> odkazuje na vnitřní blok</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8052-8cb0-fd483993bbef" class="bulleted-list"><li style="list-style-type:disc">lze použít konstruktor (<code>new</code>)</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80f2-b4bc-c8475c0878f4" class="bulleted-list"><li style="list-style-type:disc">speciální objekt <code>arguments</code></li></ul></div><div style="display:contents" dir="auto"><h3 id="3092a8a7-b204-8074-aaed-e996dd52b60d" class="">Funkční výraz (function expression)</h3></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-8013-a933-de2b36d0503d" class=""><code>const foo = function(a, b) {blok}</code></p></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80b2-88cb-d36abea43b8d" class="bulleted-list"><li style="list-style-type:disc">jako klasická deklarace, ale</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-807f-a4c0-d32fcc53c563" class="bulleted-list"><li style="list-style-type:disc">nepodporuje <strong>hoisting</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80fb-8a72-c813ea635b04" class="bulleted-list"><li style="list-style-type:disc">může být anonymní (beze jména)</li></ul></div><div style="display:contents" dir="auto"><h3 id="3092a8a7-b204-8062-ad13-e9ae324a975a" class="">Lambda (arrow function)</h3></div><div style="display:contents" dir="auto"><p id="3092a8a7-b204-80e2-9569-f0eb2cceaa5b" class=""><code>const foo = (a, b) =&gt; {blok}</code></p></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8015-ade7-e759a83b8725" class="bulleted-list"><li style="list-style-type:disc">osekaná funkce<div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80b6-99a9-d5180a602742" class="bulleted-list"><li style="list-style-type:circle">kratší a čitelnější syntax</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8002-a2cf-f2edc50df8f9" class="bulleted-list"><li style="list-style-type:circle">nemá this (bere this z místa, kde je deklarována, proto používat na vlastní nebezpečí)</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-804c-93ec-ccaf1d7e3f1c" class="bulleted-list"><li style="list-style-type:circle">nemá new</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80bb-adfd-d6caa8ecee71" class="bulleted-list"><li style="list-style-type:circle">nemá hoisting</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="30a2a8a7-b204-80a8-a00d-d5089fd79a61" class="">Spouštění funkce se zpožděním / v časovém intervalu</h3></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-8080-bb91-f5fb0be94e2c" class=""><code><strong>setTimeout()</strong></code> - pokud chceme zpoždění</p></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-805a-8195-c2f2d83b2e3f" class=""><code><strong>setInterval()</strong></code> - pokud interval</p></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80d0-bd67-fb335a2b3b49" class="bulleted-list"><li style="list-style-type:disc">liší se jen tím, že se jedna opakuje a názvem</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8027-b2f2-ea8edb6bc3a7" class="bulleted-list"><li style="list-style-type:disc">hlavička - <code>(nazevFunkce, param1, param2..)</code></li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80dc-a789-c6440f1df339" class="bulleted-list"><li style="list-style-type:disc">vrací svoje ID </li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8014-987a-ef68d7707796" class="bulleted-list"><li style="list-style-type:disc">lze je zrušit přes <code>clearTimeout(id)</code> a <code>clearInterval(id)</code></li></ul></div><div style="display:contents" dir="auto"><h2 id="30a2a8a7-b204-8005-95cf-e7c4a0055c85" class="">Ukázka</h2></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="30a2a8a7-b204-8017-9eb9-df0f98acccce" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">/* ==========================================================================
+   1. DEKLARACE FUNKCÍ
+   ========================================================================== */
+
+// a) Function Declaration (Klasická)
+// ✅ Hoisting (lze volat předem), ✅ má &#x27;this&#x27;, ✅ má &#x27;arguments&#x27;, ✅ lze &#x27;new&#x27;
+function scitej(a, b) {
+    console.log(&quot;Klasická funkce arguments:&quot;, arguments);
+    return a + b;
+}
+
+// b) Function Expression (Výraz)
+// ❌ Bez hoistingu (až po řádku), ✅ má &#x27;this&#x27;, ✅ má &#x27;arguments&#x27;
+const nasob = function(a, b) {
+    return a * b;
+};
+
+// c) Arrow Function (Šipková)
+// ❌ Bez hoistingu, ❌ NEMÁ vlastní &#x27;this&#x27; (bere z okolí!), ❌ NEMÁ &#x27;arguments&#x27;, ❌ NELZE &#x27;new&#x27;
+const odecti = (a, b) =&gt; a - b; 
+// const odecti = (a, b) =&gt; { return a - b; } // delší zápis s blokem
+
+/* ==========================================================================
+   2. OBJEKTY A &#x27;THIS&#x27; (Klasika vs Arrow)
+   ========================================================================== */
+
+const uzivatel = {
+    jmeno: &quot;Karel&quot;,
+    
+    // Klasická metoda -&gt; &#x27;this&#x27; je tento objekt (uzivatel)
+    pozdravKlasicky: function() {
+        console.log(`Ahoj, já jsem ${this.jmeno} (Klasika)`);
+    },
+
+    // Arrow metoda -&gt; &#x27;this&#x27; je to, co je venku (zde window/global), NE objekt!
+    // ⚠️ Častá chyba začátečníků
+    pozdravArrow: () =&gt; {
+        console.log(`Ahoj, já jsem ${this.jmeno} (Arrow - chyba!)`); 
+    },
+
+    // Arrow v callbacku -&gt; Tady je super! Dědí &#x27;this&#x27; z metody &#x27;zpozdenePozdraveni&#x27;
+    zpozdenePozdraveni: function() {
+        setTimeout(() =&gt; {
+            console.log(`...po vteřině: Jsem ${this.jmeno} (Arrow v callbacku OK)`);
+        }, 1000);
+    }
+};
+
+uzivatel.pozdravKlasicky(); // &quot;Ahoj, já jsem Karel&quot;
+uzivatel.pozdravArrow();    // &quot;Ahoj, já jsem undefined&quot; (protože this != uzivatel)
+uzivatel.zpozdenePozdraveni(); // Funguje správně díky arrow funkci
+
+
+function pozdrav(jmeno) {
+    console.log(&quot;Ahoj &quot; + jmeno);
+}
+
+/* ==========================================================================
+   3. Timeout a Interval
+   ========================================================================== */
+
+// Spustí funkci &#x27;pozdrav&#x27; za 2000 ms (2 sekundy) s parametrem &quot;Karel&quot;
+let id = setTimeout(pozdrav, 2000, &quot;Karel&quot;);
+
+function tikTak() {
+    console.log(&quot;Tik ťak...&quot;);
+}
+
+// Spouští &#x27;tikTak&#x27; každou vteřinu (1000 ms)
+let id = setInterval(tikTak, 1000);
+</code></pre></div><div style="display:contents" dir="auto"><h1 id="30a2a8a7-b204-8081-aa26-f1447a1bbdd9" class="">Události, Listenery a Handlery</h1></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-8057-bd9f-f34514aa9df2" class="">Jak fungují ve 3 krocích</p></div><div style="display:contents" dir="auto"><ol type="1" id="30a2a8a7-b204-80d6-9e91-cf01e9df441e" class="numbered-list" start="1"><li>Něco se stane (kliknutí tlačítka…)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="30a2a8a7-b204-80d5-b8c3-dd0bf8c5bb6a" class="numbered-list" start="2"><li>Vznikne Event objekt (objekt s informacemi, co se stalo, kde…)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="30a2a8a7-b204-80e9-8c96-c47f3d83b4ce" class="numbered-list" start="3"><li>Spustí se Handler (manipulátor)</li></ol></div><div style="display:contents" dir="auto"><h3 id="30a2a8a7-b204-8017-85b2-ca175f0af852" class="">Nejčastější události</h3></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-8079-aabf-e6ddbeee5e3c" class=""><code><strong>click</strong></code><strong> </strong>- kliknutí myši</p></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-803c-a146-dfed59257777" class=""><code><strong>submit</strong></code><strong> </strong>- odeslání formuláře</p></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-8043-a932-ec3fc02929bf" class=""><code><strong>keydown</strong></code><strong> </strong>- stisk klávesy</p></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-8021-bd6b-d54bce959dd6" class=""><code><strong>DOMContentLoaded</strong></code><strong> </strong>- načtení obsahu na stránce (často u scriptu, lze nahradit s parametrem defer)</p></div><div style="display:contents" dir="auto"><h3 id="30b2a8a7-b204-801e-be54-e7f600f9d11c" class=""><code>change</code> x <code>input</code></h3></div><div style="display:contents" dir="auto"><ul id="30b2a8a7-b204-80be-a62b-d718bc4823a6" class="bulleted-list"><li style="list-style-type:disc">input event se posílá vždy po napsání charakteru</li></ul></div><div style="display:contents" dir="auto"><ul id="30b2a8a7-b204-8048-9673-fbf48c174f58" class="bulleted-list"><li style="list-style-type:disc">change event se pošle až po změny focusu inputu (dokončení/kliknutí vedle)</li></ul></div><div style="display:contents" dir="auto"><ul id="30b2a8a7-b204-8095-8cac-c4eda9f87a38" class="bulleted-list"><li style="list-style-type:disc">change jde u checkboxů a selectů, input jen u text-like inputů</li></ul></div><div style="display:contents" dir="auto"><h2 id="30a2a8a7-b204-8029-88e9-ee6447576513" class="">Listenery a Handlery</h2></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-8011-a590-f0b2cfbd1730" class=""><strong>Listener</strong> = část, co poslouchá pro event a spustí <code>handler</code></p></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-80ae-9d93-e2b6605a092a" class=""><strong>Handler </strong>= všechna logika, co se má vykonat při té události</p></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-80c8-a716-cd6de9c096c7" class="">2 způsoby:</p></div><div style="display:contents" dir="auto"><h3 id="30a2a8a7-b204-80d9-bfe7-e22094aed819" class="">On.. </h3></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-802f-89e4-e48f75749c25" class="bulleted-list"><li style="list-style-type:disc">např. onclick, onload</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8067-91a0-d7d1dd8119ae" class="bulleted-list"><li style="list-style-type:disc">k jednomu eventu lze přiřadit 1 funkce</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-803d-9103-d2fab67665d2" class="bulleted-list"><li style="list-style-type:disc">zastaralé</li></ul></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-80e9-bf93-ecbc3b4d128f" class=""><strong>v HTML</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="30a2a8a7-b204-809f-846a-cc107c0cb89c" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;button onclick=&quot;kliknuto()&quot;&gt;Klikni mě&lt;/button&gt;</code></pre></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-80ae-936a-eba93dfb628d" class=""><strong>v JS</strong></p></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-806e-88ed-f341180bbe2b" class="bulleted-list"><li style="list-style-type:disc">lepší jak v HTML (oddělení logiky od frontendu bo grafici)</li></ul></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="30a2a8a7-b204-803f-8e48-c79a259b9bd5" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const btn = document.querySelector(&quot;button&quot;);
+btn.onclick = () =&gt; console.log(&quot;Klik!&quot;);</code></pre></div><div style="display:contents" dir="auto"><h3 id="30a2a8a7-b204-807f-bc35-e1ab66594e48" class="">addEventListener</h3></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80f6-b2b7-f33551d4c0cc" class="bulleted-list"><li style="list-style-type:disc">nové možnosti<div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-807e-becd-da509420dec3" class="bulleted-list"><li style="list-style-type:circle">více event listenerů na 1 event</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80f5-a268-f6bcf8c1503e" class="bulleted-list"><li style="list-style-type:circle">parametry a možnosti navíc (ukázka základních<div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-80cf-b55f-f6e66a65f365" class="bulleted-list"><li style="list-style-type:square"><code>once</code> - vykoná se jen jednou, pak se blokne</li></ul></div><div style="display:contents" dir="auto"><ul id="30a2a8a7-b204-8019-a75d-f97dec8b3935" class="bulleted-list"><li style="list-style-type:square"><code>capture</code> - změna směru šíření (z probublávání na kapťuru)</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2fe2a8a7-b204-8015-8169-f0486c8171c3" class="bulleted-list"><li style="list-style-type:disc">moderní přístup</li></ul></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="30a2a8a7-b204-8018-95bb-e3779e91a419" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">const btn = document.querySelector(&quot;button&quot;);
+
+btn.addEventListener(&quot;click&quot;, () =&gt; {
+    console.log(&quot;První akce&quot;);
+});
+
+btn.addEventListener(&quot;click&quot;, (event) =&gt; {
+    console.log(&quot;Druhá akce&quot;);
+},{
+  once: true,
+  passive: true
+}););</code></pre></div><div style="display:contents" dir="auto"><h1 id="30a2a8a7-b204-80c9-a12f-f74c99e06139" class="">Bajer hund</h1></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Jak udělám globální a lokální proměnnou</summary><div class="indented"><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-80d4-afdc-f738a97d22bc" class="">lokální je v bloku kódu</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Jak zavolám funkci unitř jiné funkce?</summary><div class="indented"><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-808f-95ca-e57c7fe28908" class="">normálně, nazev()</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Může mít funkce funkce?</summary><div class="indented"><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-805e-8f17-d54e98a3b0da" class="">ano, bo lowkey funkce == objekt</p></div><div style="display:contents" dir="auto"><p id="30a2a8a7-b204-8004-9dc4-e4ad89025263" class="">dokonce může mít i param</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="30a2a8a7-b204-8011-9ffd-d6c4d36fff83" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">function pozdrav() {
+		pozdrav.ahoj = &quot;ahoj&quot;;
+    console.log(pozdrav.ahoj); 
+}
+
+pozdrav.pomocna = function() {
+    console.log(&quot;Ahoj je slovnesky ahoj&quot;);
+}
+
+pozdrav();          // Spustí hlavní
+pozdrav.pomocna();  // Spustí tu nalepenou</code></pre></div></div></details></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

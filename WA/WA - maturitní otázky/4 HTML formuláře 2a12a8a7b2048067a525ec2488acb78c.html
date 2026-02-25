@@ -1,0 +1,777 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>4. HTML formuláře</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2a12a8a7-b204-8067-a525-ec2488acb78c" class="page sans"><header><h1 class="page-title" dir="auto">4. HTML formuláře</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2a12a8a7-b204-80ac-9801-fd01c8464ef0" class="">Formulář</h1></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80c0-a7d7-e6012eaa402e" class="bulleted-list"><li style="list-style-type:disc">posílá data ve formě asociativního pole</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80d0-8a69-fcc3bc312dfe" class="bulleted-list"><li style="list-style-type:disc"><strong>atributy</strong><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a6-b678-c98de1400b92" class="bulleted-list"><li style="list-style-type:circle"><code>action</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8041-968a-c631e88cc7c6" class="bulleted-list"><li style="list-style-type:square">= kam se mají data z formu zaslat</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80c5-bda2-c7dd8b546fd2" class="bulleted-list"><li style="list-style-type:square">např. php soubor, metoda mailto:pri@kl.ad</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80d5-882a-c66d89abb98d" class="bulleted-list"><li style="list-style-type:circle"><code>method</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80df-b7ac-f569bc94bd2e" class="bulleted-list"><li style="list-style-type:square">= jak se mají data poslat</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f5-9554-ee171f883372" class="bulleted-list"><li style="list-style-type:square">hodnoty:<div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80d7-9f7c-dad127f22981" class="bulleted-list"><li style="list-style-type:disc">GET (data jsou v URL)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8094-8a4d-c203ee4da2ec" class="bulleted-list"><li style="list-style-type:disc">POST (data jsou v těle)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8082-96ca-c973e0f0bf2e" class="bulleted-list"><li style="list-style-type:disc">dialog </li></ul></div></li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-8007-9fdd-c27925835a0e" class=""><code>&lt;label&gt;</code></h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80e8-8492-c607a914581e" class="bulleted-list"><li style="list-style-type:disc">popisek k metadatu (např. inputu)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80b1-8811-fcd463e7192b" class="bulleted-list"><li style="list-style-type:disc"><strong>atributy</strong><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8070-860a-ee1aab738328" class="bulleted-list"><li style="list-style-type:circle"><code>for</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8008-9bde-df25a647a1ff" class="bulleted-list"><li style="list-style-type:square">pro jaké id má odkazovat (<strong>ne name!!</strong>)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80b5-9e5d-ffd8e1c5cc00" class="bulleted-list"><li style="list-style-type:square">po kliknutí se dá focus na prvek s id</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-80a7-86b2-c6aff3668be2" class=""><code>&lt;input&gt;</code></h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a8-bfc3-c2ded3943ee9" class="bulleted-list"><li style="list-style-type:disc"><strong>atributy</strong><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8070-91d1-e006a6e23aab" class="bulleted-list"><li style="list-style-type:circle"><code>type</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-801d-b71a-fb87523b8b44" class="bulleted-list"><li style="list-style-type:square">typ vstupu</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f6-b2fd-d5ea796f34e7" class="bulleted-list"><li style="list-style-type:square">základní hodnoty:</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f8-aff0-c45f6aab4222" class="bulleted-list"><li style="list-style-type:square">povinný atribut<div style="display:contents" dir="auto"><p id="2a12a8a7-b204-8091-8a75-cc1e3619f685" class=""><strong>Datové nevýběrové</strong></p></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80c1-bfb0-d7b1ffd5dee0" class="bulleted-list"><li style="list-style-type:disc"><code>text</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8096-a8dc-f5c93c16c367" class="bulleted-list"><li style="list-style-type:disc"><code>password</code> </li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80d7-b5d6-d87869bb4353" class="bulleted-list"><li style="list-style-type:disc"><code>email</code> </li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f4-ac5b-c88e1157b845" class="bulleted-list"><li style="list-style-type:disc"><code>tel</code> </li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8032-ae0c-f4e7c42120dc" class="bulleted-list"><li style="list-style-type:disc"><code>number</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-801b-9111-d6dea140ca1f" class="bulleted-list"><li style="list-style-type:disc"><code>color</code> </li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8014-804a-cd0c0fe10021" class="bulleted-list"><li style="list-style-type:disc"><code>date</code> </li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a9-87e3-d34c25ecef5c" class="bulleted-list"><li style="list-style-type:disc"><code>file</code></li></ul></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-8038-9622-cb37bd9056d8" class=""><strong>Datové výběrové</strong></p></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a6-827d-d6430bd44e76" class="bulleted-list"><li style="list-style-type:disc"><code>radio</code> - na výběr z více možností</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a3-90c3-ee2732b48c23" class="bulleted-list"><li style="list-style-type:disc"><code>checkbox</code> - true/false</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8067-8c08-e275eac7d867" class="bulleted-list"><li style="list-style-type:disc"><code>range</code> - posuvník</li></ul></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-8090-8e79-c76bd648d51b" class=""><strong>Ostatní</strong></p></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-805c-a9ed-d4b6790d6697" class="bulleted-list"><li style="list-style-type:disc"><code>hidden</code> - schová input, ale hodnota se pošle</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80de-8d8c-dcef4283f531" class="bulleted-list"><li style="list-style-type:disc"><code>submit</code> - pošle form</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-803a-b4ac-cf0ae426acd5" class="bulleted-list"><li style="list-style-type:disc"><code>reset</code> - resetuje všechny inputy na výchozí hodnotu</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8014-9cb3-f0b8e0726c33" class="bulleted-list"><li style="list-style-type:disc"><code>button</code> - nic nedělá, musí se modifikovat přes JS</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8014-ba6c-cd209b7c27a8" class="bulleted-list"><li style="list-style-type:circle"><code>name</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80ac-928a-f1fe0c354056" class="bulleted-list"><li style="list-style-type:square">povinný atribut</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8084-b004-ddad1cf31c97" class="bulleted-list"><li style="list-style-type:square">identifikátor do zaslaného asocativního pole</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80de-8098-faf44cfc5c08" class="bulleted-list"><li style="list-style-type:circle"><code>value</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-806b-af5a-c14f4c711f5c" class="bulleted-list"><li style="list-style-type:square">někdy povinný atribut, např<div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8031-9a08-e24b8a61f060" class="bulleted-list"><li style="list-style-type:disc">u <code>text</code> nepovinný</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8027-aff9-fea3c62bdd1a" class="bulleted-list"><li style="list-style-type:disc">u <code>radio</code> povinný</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8021-8b16-d262e60213eb" class="bulleted-list"><li style="list-style-type:square">odeslaná hodnota</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80df-aecd-eee558e1e506" class="bulleted-list"><li style="list-style-type:circle"><code>required</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8019-8770-c033fb9154ef" class="bulleted-list"><li style="list-style-type:square">nepovinný atribut</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80d3-b7e4-f7c37445fb69" class="bulleted-list"><li style="list-style-type:square">přidá povinnost vyplnění input</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8096-b47b-c87984bacfa7" class="bulleted-list"><li style="list-style-type:circle"><code>placeholder</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f5-b8ad-cbee3d7692c1" class="bulleted-list"><li style="list-style-type:square">nepovinný atribut</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80fd-8bd7-cb688c2100be" class="bulleted-list"><li style="list-style-type:square">výchozí hodnota inputu</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80b2-8f46-c84a38b58caa" class="">
+</p></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-808e-b8cc-f6e7482638c9" class=""><code>&lt;select&gt;</code></h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-809d-a173-d43df0075fea" class="bulleted-list"><li style="list-style-type:disc">= dropdown “input”</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8076-9ed6-de22a785fc68" class="bulleted-list"><li style="list-style-type:disc">atributy = input (až na type)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80d5-adb6-ea294817a43e" class="bulleted-list"><li style="list-style-type:disc">obsahuje <code>&lt;option&gt;</code></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-807d-8885-d6063977fa7e" class=""><code>&lt;option&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8049-8cf3-d97ef53a6d99" class="bulleted-list"><li style="list-style-type:disc">jedna z možností <code>&lt;select&gt;</code></li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-80e7-9a49-f0f93c732285" class=""><code>&lt;fieldset&gt;</code> a <code>&lt;legend&gt;</code></h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f1-b84a-f70fb177f279" class="bulleted-list"><li style="list-style-type:disc">užívá se ke seskupení a pojmenování <strong>skupin formulářových polí</strong></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8042-bccb-c59d24fed0e9" class=""><code>&lt;fieldset&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f4-ba54-e490d57e7b4b" class="bulleted-list"><li style="list-style-type:disc">jedna položka v poli</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8004-9b9b-c04a57e5cf61" class=""><code>&lt;legend&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80cb-bfea-d04565c81276" class="bulleted-list"><li style="list-style-type:disc">název položky</li></ul></div><div style="display:contents" dir="auto"><h1 id="2a12a8a7-b204-8094-97a4-dcc281b5ec57" class="">Ukázka</h1></div><div style="display:contents" dir="auto"><p id="2a62a8a7-b204-8005-91a9-f5fe21900f1c" class="">Stránka je k dispozici zde:</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a12a8a7-b204-80ac-8c8c-e00c35dbbcf5" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+	&lt;head&gt;
+	    &lt;meta charset=&quot;UTF-8&quot;&gt;
+	    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+	    &lt;title&gt;Document&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+	    &lt;h1&gt;Ultimátní brainrot dotazník&lt;/h1&gt;
+	    &lt;form action=&quot;mailto:richard.hyvl@gmail.com&quot;&gt;
+	        &lt;fieldset&gt;
+	            &lt;legend&gt;Základní info&lt;/legend&gt;
+	            
+	            &lt;p&gt;Jaká je tvoje Alpha přezdívka&lt;/p&gt;
+	            &lt;label for=&quot;nick&quot;&gt;Přezdívka:&lt;/label&gt;
+	            &lt;input id=&quot;nick&quot; name=&quot;nick&quot; type=&quot;text&quot;&gt;
+	
+	            &lt;p&gt;Bojíš se žen?&lt;/p&gt;
+	            &lt;label for=&quot;woman&quot;&gt;ano&lt;/label&gt;
+	            &lt;input id=&quot;woman&quot; name=&quot;woman&quot; type=&quot;checkbox&quot; required&gt;
+	        &lt;/fieldset&gt;
+	        &lt;fieldset&gt;
+	            &lt;legend&gt;Hygiena a péče&lt;/legend&gt;
+	            
+	            &lt;p&gt;Jaký typ umývání preferuješ?&lt;/p&gt;
+	            &lt;label for=&quot;shower&quot;&gt;Sprchu&lt;/label&gt;
+	            &lt;input type=&quot;radio&quot; name=&quot;eww&quot; id=&quot;shower&quot;&gt;
+	            &lt;label for=&quot;bath&quot;&gt;koupel&lt;/label&gt;
+	            &lt;input type=&quot;radio&quot; name=&quot;eww&quot; id=&quot;bath&quot;&gt;
+	            &lt;label for=&quot;never&quot;&gt;Bojím se vody&lt;/label&gt;
+	            &lt;input type=&quot;radio&quot; name=&quot;eww&quot; id=&quot;never&quot;&gt;
+	        &lt;/fieldset&gt;
+					&lt;fieldset&gt;
+	            &lt;legend&gt;Style a vzhled&lt;/legend&gt;
+	            
+	            &lt;p&gt;Jaké barvy je tvoje bugatti?&lt;/p&gt;
+	            &lt;label for=&quot;color&quot;&gt;Vyber barvu:&lt;/label&gt;
+	            &lt;input type=&quot;color&quot; name=&quot;color&quot; id=&quot;color&quot;&gt;
+	
+	            &lt;p&gt;Jak vysoká je tvoje aura&lt;/p&gt;
+	            &lt;label for=&quot;aura&quot;&gt;Mojža&lt;/label&gt;
+	            &lt;input type=&quot;range&quot; name=&quot;aura&quot; id=&quot;aura&quot;&gt;
+	            &lt;label for=&quot;aura&quot;&gt;John Black&lt;/label&gt;
+	        &lt;/fieldset&gt;
+	        &lt;fieldset&gt;
+	            &lt;legend&gt;Ostatní&lt;/legend&gt;
+	            
+	            &lt;p&gt;Pošli fotku tvoji mamky 🤯 (pokud se soubor vejde)&lt;/p&gt;
+	            &lt;label for=&quot;urmom&quot;&gt;Vybrat soubor:&lt;/label&gt;
+	            &lt;input type=&quot;file&quot; name=&quot;urmom&quot; id=&quot;urmom&quot;&gt;
+	        &lt;/fieldset&gt;
+
+	        &lt;br&gt;
+	        &lt;br&gt;
+	
+	        &lt;button id=&quot;submit&quot; type=&quot;submit&quot;&gt;Zaslat&lt;/button&gt;
+	        &lt;button type=&quot;reset&quot;&gt;Reset&lt;/button&gt;
+	    &lt;/form&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-802f-a8bf-d50b98b62f15" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-8040-b7c1-d4f0be32153f" class="">POKUD VIDÍŠ TOHLE, TAK MI ŘEKNI, POZNÁMKA ABYCH PŘIDAL ODKAZ NA WEB, KDE BUDE TAHLE UKÁZKA</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80e0-a8ee-c0c6701a510e" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80ed-8cf4-cb97ddfe23ed" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-8006-b691-d46650ea4d06" class="">pseudo<div class="indented"><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-8036-a58c-dd91ff458167" class="">::before</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80ca-9047-f7940853f22d" class="">::after</p></div></div></p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

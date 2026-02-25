@@ -1,0 +1,753 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>1. HTML - struktura dokumentu, textové prvky stránky, seznamy, odkazy, menu</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2952a8a7-b204-806d-b2d3-db07b2622ebc" class="page sans"><header><h1 class="page-title" dir="auto">1. HTML - struktura dokumentu, textové prvky stránky, seznamy, odkazy, menu</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><p id="2952a8a7-b204-804a-a074-dfbafaac016f" class="">= HyperText Markup Language</p></div><div style="display:contents" dir="auto"><h1 id="2a12a8a7-b204-8055-bcdb-d7119d8f43f1" class="">Struktura souboru</h1></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-8023-a48d-c3b7888b0632" class="">DOCTYPE</h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8078-b0c1-e76017f63ce5" class="bulleted-list"><li style="list-style-type:disc">píše se deklarace <strong>HTML</strong> dokumentu (čistě <strong>HTML</strong>, na nic jiného neexistuje<strong>)</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8010-8b0e-c196e42fc76f" class="bulleted-list"><li style="list-style-type:disc">může se specifikovat verze (jinak se vezme nejnovější - HTML5)</li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-80cc-8a2e-f213c7d10115" class="">HTML</h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80eb-be2d-e0e7b2b79d23" class="bulleted-list"><li style="list-style-type:disc">kořenový element, obsahuje všechny HTML tagy</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8067-bb3a-d98187097533" class="bulleted-list"><li style="list-style-type:disc">určuje se jazyk (cs pro češtinu)</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8010-b8c5-ca55bcae65f1" class="">HEAD</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80e8-bd46-d6f7145c4219" class="bulleted-list"><li style="list-style-type:disc">obsahuje info pro prohlížeč<div style="display:contents" dir="auto"><p id="2a12a8a7-b204-808d-acc1-ec4ddd8aaffc" class=""><strong>META </strong>- metadata jako kódování stránky (např. UTF-8 pro češtinu)</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-809a-8935-fd646426c793" class=""><strong>TITLE </strong>- titulek stránky, zobrazí se v záložce, okně a výsledku hledání</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80fe-986d-cb8fc444924e" class=""><strong>LINK </strong>- připojení externích souborů (např. CSS)</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-807f-b6e8-fba6b690696c" class=""><strong>SCRIPT </strong>- připojení JavaScriptu - externě i neexterně (musí se napsat <strong>defer </strong>v hlavičce, aby se správně spustil)</p></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-80c4-b454-e9d4bb311529" class="">BODY</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-806e-bee3-eaa1eece73f1" class="bulleted-list"><li style="list-style-type:disc">obsahuje tagy pro komponenty viditelné uživateli</li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-80ef-9fe0-e49c449408cf" class="">Typy tagů v body</h2></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-80f5-a477-ff4cfdddaf76" class="">Párové</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f0-8def-ed718afaba84" class="bulleted-list"><li style="list-style-type:disc">mají konečný tag - <code>&lt;..&gt;&lt;/..&gt;</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80bd-ae47-f9e0470f3443" class="bulleted-list"><li style="list-style-type:disc">např. <code>div</code>, <code>nav</code>, <code>header</code></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8072-8485-c656534be52c" class="">Nepárové</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8077-b581-e80a62169412" class="bulleted-list"><li style="list-style-type:disc">nemají konečný tag - <code>&lt;..&gt;</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80fe-8169-daa218726b0f" class="bulleted-list"><li style="list-style-type:disc">např. <code>img</code>, <code>meta</code>, <code>br</code></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-80e1-8311-e3536ab61575" class="">Nepovinně párové</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8054-9624-ea288ebf6ea4" class="bulleted-list"><li style="list-style-type:disc">konečný tag se může napsat, případně si je prohlížeč automaticky doplní</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8075-96c5-e7c34dcc4ddb" class="bulleted-list"><li style="list-style-type:disc">nedobrá praxe - nepřehledný kód a může se to doplnit v špatně (třeba u příkladu)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8043-be1f-c893ffbfd82c" class="bulleted-list"><li style="list-style-type:disc">např. <code>p</code>, <code>li</code></li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-8050-9c87-f03f163388aa" class="">Textové prvky </h2></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8059-a387-f31ab29609a6" class="">Nadpisy</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-804a-9cdb-fa733e6ce1e7" class="bulleted-list"><li style="list-style-type:disc">6 typů - <code>h1</code> - <code>h6</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8026-a69c-c97d40fbeb4a" class="bulleted-list"><li style="list-style-type:disc"><code>h1</code> by se měl <strong>vyskytovat jen jednou</strong> na stránce</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-801a-817c-d78f75be074a" class="bulleted-list"><li style="list-style-type:disc">důležité pro <strong>SEO</strong></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8058-809b-edea175857c2" class="">Odstavce</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-807e-9cf4-c7f00d537cb9" class="bulleted-list"><li style="list-style-type:disc">tag <code>p</code></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-804e-be55-e11e50abb5e7" class="">sup + sub</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80bb-b4c9-d53b536b3f92" class="bulleted-list"><li style="list-style-type:disc">text, ale s indexováním nahoře (sup) či dole (sub)</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8047-907d-d77c2cd6c982" class="">span</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8057-b6a0-fcb5c0d14698" class="bulleted-list"><li style="list-style-type:disc">tag <code>span</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8005-bc87-edc3d4d5a3f0" class="bulleted-list"><li style="list-style-type:disc">užívá se k obalení části textu</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a22a8a7-b204-80ef-a56c-e655ae855d99" class="">Relevantní CSS</h3></div><div style="display:contents" dir="ltr"><table id="2a22a8a7-b204-80d2-a448-f6a86082aa31" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-809b-9c77-f2426d3c978c"><th id="_xJw" class="simple-table-header-color simple-table-header">Vlastnost CSS</th><th id="DDLs" class="simple-table-header-color simple-table-header">Popis</th><th id="s=E^" class="simple-table-header-color simple-table-header">Příklady</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8083-ad19-c840e2f74f25"><td id="_xJw" class=""><code>font-size</code></td><td id="DDLs" class="">Velikost písma</td><td id="s=E^" class=""><code>16px</code>, <code>2em</code>, <code>1.5rem</code>, <code>larger</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80c2-9a7e-dd270d397ae9"><td id="_xJw" class=""><code>font-family</code></td><td id="DDLs" class="">Typ písma</td><td id="s=E^" class=""><code>Arial</code>, <code>&quot;Times New Roman&quot;</code>, <code>sans-serif</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80d3-b696-d693f97e58f6"><td id="_xJw" class=""><code>font-weight</code></td><td id="DDLs" class="">Tloušťka</td><td id="s=E^" class=""><code>normal</code>, <code>bold</code>, <code>700</code>, <code>400</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8092-8a7f-c8c67992ad35"><td id="_xJw" class=""><code>font-style</code></td><td id="DDLs" class="">Styl písma</td><td id="s=E^" class=""><code>italic</code>, <code>normal</code>, <code>oblique</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8091-bd62-e7327a142091"><td id="_xJw" class=""><code>color</code></td><td id="DDLs" class="">Barva textu</td><td id="s=E^" class=""><code>#333</code>, <code>white</code>, <code>rgba(0,0,0,0.8)</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8077-99f0-cfed87d360f0"><td id="_xJw" class=""><code>text-align</code></td><td id="DDLs" class="">Zarovnání</td><td id="s=E^" class=""><code>left</code>, <code>center</code>, <code>right</code>, <code>justify</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8060-9478-ece1a46159be"><td id="_xJw" class=""><code>text-decoration</code></td><td id="DDLs" class="">Podtržení/přeškrtnutí</td><td id="s=E^" class=""><code>none</code>, <code>underline</code>, <code>line-through</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80d6-a111-ca9e362bca5f"><td id="_xJw" class=""><code>text-transform</code></td><td id="DDLs" class="">Transformace textu</td><td id="s=E^" class=""><code>uppercase</code>, <code>lowercase</code>, <code>capitalize</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-805d-9049-cd78a59dd51f" class="">Směrování</h2></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8052-8637-d2073337495c" class="">Odkazy</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8093-9b19-c0d1d82e2ee0" class="bulleted-list"><li style="list-style-type:disc">tag <code>a</code></li></ul></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80a6-99d0-d5ca286c7c2c" class=""><strong>Atributy</strong></p></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8000-b19f-fbca2aca1b03" class="bulleted-list"><li style="list-style-type:disc"><code>href</code> <div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8066-b963-cc43e6865124" class="bulleted-list"><li style="list-style-type:circle">povinný atribut</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80ef-a50a-d8685548dd2d" class="bulleted-list"><li style="list-style-type:circle">odkazuje na cílovou destinaci (url, id na stránce..)</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8090-9566-d7c624fb4db6" class="bulleted-list"><li style="list-style-type:disc"><code>target</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80b8-ab5e-d445a56ba3fb" class="bulleted-list"><li style="list-style-type:circle">nepovinný atribut</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8015-b9b1-e8fa5c731170" class="bulleted-list"><li style="list-style-type:circle">co nastane po odkazování</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8020-a1f1-e54d25efeba9" class="bulleted-list"><li style="list-style-type:circle">nejčastěji hodnota <code>_blank</code> (otevře nové okno s cílovou destinací)</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-80c6-a400-dd60e5a5f116" class="">Tlačítka (ne na odkazy)</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8028-b6a3-cd4293fddfc7" class="bulleted-list"><li style="list-style-type:disc">tag <code>button</code></li></ul></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-802e-a881-cb7e0ec6b28b" class=""><strong>Atributy</strong></p></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8034-9ebb-c65cea98039a" class="bulleted-list"><li style="list-style-type:disc"><code>type</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80d4-b294-ee587be83d93" class="bulleted-list"><li style="list-style-type:circle">jak se chová tlačítko po stisknutí<div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80ca-8e68-ff42c012dab1" class="bulleted-list"><li style="list-style-type:square"><code>submit</code> - odešle formulář</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-802b-ab93-c5f919394270" class="bulleted-list"><li style="list-style-type:square"><code>reset</code> - resetuje všechny parametry na výchozí</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-806e-b682-d184ae9639f5" class="bulleted-list"><li style="list-style-type:square"><code>button</code> - nic nedělá, potřebuje JS</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8042-81c4-cfede9103202" class="bulleted-list"><li style="list-style-type:disc"><code>disabled</code> - znefunkční tlačítko</li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-8079-933c-eb28147804ba" class="">Seznamy</h2></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-803f-bb18-d98cd6d36f9f" class="">Seřazený seznam</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8059-b45a-d431717e79df" class="bulleted-list"><li style="list-style-type:disc">tag <code>ol</code> (ordered list)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8059-83cb-cab99ce8a61e" class="bulleted-list"><li style="list-style-type:disc">odrážky budou začínat 1., 2., 3., …</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-808c-9c20-fc4e2ebeea43" class="">Neseřazený seznam</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-807a-b501-fb73573c868b" class="bulleted-list"><li style="list-style-type:disc">tag <code>ul</code> (unordered list)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8086-85ed-d7da4b73e13d" class="bulleted-list"><li style="list-style-type:disc">odrážky začínají stejným symbolem (default je -)</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-806d-a879-ca3b40a17d9f" class="">Odrážky</h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80e0-bfae-e5193a4a8999" class="bulleted-list"><li style="list-style-type:disc">tag <code>li</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80c5-81f3-c5e995688c61" class="bulleted-list"><li style="list-style-type:disc">musí být v seznamu</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a22a8a7-b204-8089-b9f7-e8155d23e5e5" class="">Relevantní CSS</h3></div><div style="display:contents" dir="ltr"><table id="2a22a8a7-b204-802a-b8f7-c716f7eaa9e3" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80e4-a3cc-fcb3bdd9a1ed"><th id="s@`u" class="simple-table-header-color simple-table-header"><strong>Vlastnost CSS</strong></th><th id="tuTT" class="simple-table-header-color simple-table-header"><strong>Popis</strong></th><th id="[xFW" class="simple-table-header-color simple-table-header" style="width:329px"><strong>Příklady</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8082-991a-f05e3879bfe2"><td id="s@`u" class=""><code>list-style-type</code></td><td id="tuTT" class="">Typ odrážky/číslování</td><td id="[xFW" class="" style="width:329px"><code>disc</code> (tečka), <code>circle</code> (kruh), <code>square</code> (čtverec), <code>decimal</code> (1,2,3), <code>lower-roman</code> (i, ii, iii)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8049-8656-ef5b10cbfa6e"><td id="s@`u" class=""><code>list-style-position</code></td><td id="tuTT" class="">Pozice odrážky</td><td id="[xFW" class="" style="width:329px"><code>outside</code> (mimo text), <code>inside</code> (v textu)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-801d-96ab-f0d6edeb19bb"><td id="s@`u" class=""><code>list-style-image</code></td><td id="tuTT" class="">Vlastní obrázek jako odrážka</td><td id="[xFW" class="" style="width:329px"><code>url(icon.png)</code>, <code>none</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80e6-8b8a-c055a9b0c413"><td id="s@`u" class=""><code>list-style</code></td><td id="tuTT" class="">Zkratka</td><td id="[xFW" class="" style="width:329px"><code>disc outside</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2952a8a7-b204-80e3-b440-f6e18e574c75" class="">Ukázka kódu</h1></div><div style="display:contents" dir="auto"><p id="2a62a8a7-b204-80a9-a287-d04fdaeeb8a2" class="">Stránka je k dispozici zde:</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a12a8a7-b204-8016-bc2b-d67bf973cb30" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;cs&quot;&gt;
+	&lt;head&gt;    
+		&lt;meta charset=&quot;UTF-8&quot;&gt;
+		&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;    
+		&lt;title&gt;Recept&lt;/title&gt;    
+		&lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;    
+		&lt;script src=&quot;script.js&quot; defer&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;    
+		&lt;h1&gt;Recept na žemlovku&lt;/h1&gt;
+    &lt;h2&gt;Ingredience:&lt;/h2&gt;    
+    &lt;ul&gt;        
+    &lt;li&gt;6 rohlíků&lt;/li&gt;        
+    &lt;li&gt;500 ml mléka&lt;/li&gt;        
+    &lt;li&gt;3 vejce&lt;/li&gt;        
+    &lt;li&gt;100 g cukru&lt;/li&gt;        
+    &lt;li&gt;1 balíček vanilkového cukru&lt;/li&gt;        
+    &lt;li&gt;200 g jablek (oloupaných a nakrájených na kostičky)&lt;/li&gt;        
+    &lt;li&gt;50 g rozinek (volitelné)&lt;/li&gt;        
+    &lt;li&gt;máslo na vymazání formy&lt;/li&gt;        
+    &lt;li&gt;špetka skořice&lt;/li&gt;        
+    &lt;li&gt;cukr moučka na posypání&lt;/li&gt;    
+	 &lt;/ul&gt;    
+	 &lt;h2&gt;Postup:&lt;/h2&gt;    
+	 &lt;ol&gt;&lt;!--  neni ukoncena, automaticky se doplni (ale spatne, p se vnoří, což by nemělo) --&gt;        
+		 &lt;li&gt;Rohlíky nakrájejte na plátky a dejte je do velké mísy.&lt;/li&gt;        
+		 &lt;li&gt;V jiné misce smíchejte mléko, vejce, cukr a vanilkový cukr. 
+		 Dobře promíchejte.&lt;/li&gt;        
+		 &lt;li&gt;Směs nalijte na nakrájené rohlíky a nechte je nasáknout asi 10 minut.&lt;/li&gt;        
+		 &lt;li&gt;Přidejte nakrájená jablka a rozinky do mísy a vše dobře promíchejte.&lt;/li&gt;        
+		 &lt;li&gt;Vymažte zapékací formu máslem a předehřejte troubu na 180 °C.&lt;/li&gt;        
+		 &lt;li&gt;Směs přesuňte do formy a posypte špetkou skořice.&lt;/li&gt;        
+		 &lt;li&gt;Pečte v předehřáté troubě asi 30-35 minut, dokud povrch nezezlátne.&lt;/li&gt;        
+		 &lt;li&gt;Po upečení nechte žemlovku mírně vychladnout, 
+		 poté ji posypte cukrem moučkou.&lt;/li&gt;        
+		 &lt;li&gt;Podávejte teplou nebo studenou podle chuti.&lt;/li&gt;    
+		&lt;p&gt;Dobrou chuť! Jo a taky odkaz na &lt;a href=&quot;https://www.youtube.com/watch?v=xvFZjo5PgG0&quot; target=&quot;_blank&quot;&gt; super tajnou stránku &lt;/a&gt;, aby byl příklad na odkazy&lt;/p&gt;
+		&lt;!-- &lt;/ol&gt; - sem ho vložil prohlížeč --&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80f2-a5ff-d0e6806fceb1" class="">POKUD VIDÍŠ TOHLE, TAK MI ŘEKNI, POZNÁMKA ABYCH PŘIDAL ODKAZ NA WEB, KDE BUDE TAHLE UKÁZKA</p></div><div style="display:contents" dir="auto"><h1 id="2952a8a7-b204-80d4-ada6-d735f54ff9a8" class="">Bajer hund</h1></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Které tagy se mohou vyskytnout všude? Třeba v ul, kde lze jen li</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2952a8a7-b204-8003-a7ab-f6bbc6851142" class="bulleted-list"><li style="list-style-type:disc">komentář</li></ul></div><div style="display:contents" dir="auto"><ul id="2952a8a7-b204-802c-9b49-ed18f6910e89" class="bulleted-list"><li style="list-style-type:disc">script</li></ul></div></div></details></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

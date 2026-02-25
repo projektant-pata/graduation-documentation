@@ -1,0 +1,854 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>3. HTML - oddíly, články, obrázky, tabulky</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2a12a8a7-b204-803f-b704-c4d3b499a681" class="page sans"><header><h1 class="page-title" dir="auto">3. HTML - oddíly, články, obrázky, tabulky</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2a12a8a7-b204-8049-8314-fbae7b8d8e5e" class="">Oddily</h1></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80e1-9ada-f50f3a24c246" class="bulleted-list"><li style="list-style-type:disc">všechno to jsou prakticky divy, ale rozlišují se bo:<div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8075-b1b4-e34bcd75bbb7" class="bulleted-list"><li style="list-style-type:circle">lepší čitelnost kódu</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a4-ba91-f5b8b7c4a5f1" class="bulleted-list"><li style="list-style-type:circle">lepší SEO</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-80e6-8ff6-e9cfb5d8802b" class="">Obecné</h2></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8033-989f-d65c0b5ec4ff" class=""><code>&lt;div&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8014-9de4-f78d6e87b71f" class="bulleted-list"><li style="list-style-type:disc">“otec oddílů”</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8000-b50c-dbd9d9277bd5" class="bulleted-list"><li style="list-style-type:disc">využije se, pokud se nehodí některý z jiných oddílů</li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-8090-8bdf-dff954e55b01" class="">Navigační</h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a3-856a-e8a1dbd06a51" class="bulleted-list"><li style="list-style-type:disc">nachází se na horní části stránky</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-805a-84c1-d9a8241db1c0" class=""><code>&lt;header&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-806c-9290-f15cce65f201" class="bulleted-list"><li style="list-style-type:disc">úvodní část</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-801e-8390-ce8ab7f3abcf" class="bulleted-list"><li style="list-style-type:disc">často obsahuje<div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80bc-9aa0-d97b2bf2cec7" class="bulleted-list"><li style="list-style-type:circle">nadpis</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8056-8072-eafb7efe8a36" class="bulleted-list"><li style="list-style-type:circle">logo</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8019-8c28-db5d263de2dd" class="bulleted-list"><li style="list-style-type:circle"><code>&lt;nav&gt;</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8008-8457-ce65a10ff2bc" class=""><code>&lt;nav&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-803e-a820-c98add7cff7c" class="bulleted-list"><li style="list-style-type:disc">rozcestník v <code>&lt;header&gt;</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8074-8c14-d472969cbea8" class="bulleted-list"><li style="list-style-type:disc">odkazuje na podstránky</li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-8084-85c1-c859997e1ac1" class="">Obsahové</h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-802c-b89a-d861875fd2ab" class="bulleted-list"><li style="list-style-type:disc">nachází se uprostřed stránky</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-80a0-8509-cc76162d45ea" class=""><code>&lt;main&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80c0-9150-d6d1f481a1ef" class="bulleted-list"><li style="list-style-type:disc">hlavní myšlenka stránky (obsah)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80b1-97b6-ea6fe199cb93" class="bulleted-list"><li style="list-style-type:disc">něco jako</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8077-819a-c5cbedd38e11" class="bulleted-list"><li style="list-style-type:disc">obsahuje sekce (<code>&lt;section&gt;</code>)</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-80c2-8cdd-ff04a4aca5e3" class=""><code>&lt;section&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8019-961e-f3039627ebd5" class="bulleted-list"><li style="list-style-type:disc">rozdělují obsah na stránce</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8026-a713-f2b73c798a3d" class="bulleted-list"><li style="list-style-type:disc">obsahuje články (<code>&lt;arcicle&gt;</code>)</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-80d4-8aad-c079ea4f99a1" class=""><code>&lt;article&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-808c-8fd7-c9f54e2eaa6e" class="bulleted-list"><li style="list-style-type:disc">obsahuje jednotlivé myšlenky (části obsahu)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-804b-a2c4-ca5cb7f87c0c" class="bulleted-list"><li style="list-style-type:disc">často obsahuje <div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8067-8bda-c03b94d685ce" class="bulleted-list"><li style="list-style-type:circle">texty</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80e1-aa58-d784b065123d" class="bulleted-list"><li style="list-style-type:circle">obrázky</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80ba-b529-f38dd0a75c3a" class="bulleted-list"><li style="list-style-type:circle">seznamy</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-8093-bfdd-c33355aa70e6" class="">Patičkové</h2></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-802e-9b01-ef821d692832" class="bulleted-list"><li style="list-style-type:disc">nachází se na konci stránky</li></ul></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8093-826a-fcca1cd11094" class=""><code>&lt;footer&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f2-a872-ce78d41b2e4a" class="bulleted-list"><li style="list-style-type:disc">závěrečná část stránky</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80fb-b5f8-ce779b322fab" class="bulleted-list"><li style="list-style-type:disc">často obsahuje<div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a9-bd86-e34eb12cb9bc" class="bulleted-list"><li style="list-style-type:circle">copyright ©</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80ed-9ceb-decce08be291" class="bulleted-list"><li style="list-style-type:circle">odkazy</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8039-8213-f7c809536d84" class="bulleted-list"><li style="list-style-type:circle">logo</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="2a12a8a7-b204-80b0-b4e5-f21f99d855fb" class="">Doplňkové </h2></div><div style="display:contents" dir="auto"><h3 id="2a12a8a7-b204-8056-b8f7-dcae3054c253" class=""><code>&lt;aside&gt;</code></h3></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8097-8ba1-c73161222e08" class="bulleted-list"><li style="list-style-type:disc">boční obsah (sidebar)</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-809f-a705-e08e4c0a74e0" class="bulleted-list"><li style="list-style-type:disc">2 využití <div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-809b-a7cd-f87554e7abf6" class="bulleted-list"><li style="list-style-type:circle">jako rozcestník</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-806f-91ca-f71a0d201709" class="bulleted-list"><li style="list-style-type:circle">místo pro reklamy</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a22a8a7-b204-808f-9bcf-fcecfafa14e5" class="">Relevantní CSS</h3></div><div style="display:contents" dir="ltr"><table id="2a22a8a7-b204-80a3-a49f-e807a8794caa" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8085-9f61-fc162cc14344"><th id="yOtF" class="simple-table-header-color simple-table-header"><strong>Vlastnost CSS</strong></th><th id="Kzab" class="simple-table-header-color simple-table-header"><strong>Popis</strong></th><th id="LmdM" class="simple-table-header-color simple-table-header"><strong>Příklady</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8023-a591-fcd336098bb2"><td id="yOtF" class=""><code>display:</code></td><td id="Kzab" class="">Aktivuje flexbox</td><td id="LmdM" class=""><code>flex</code>, <code>inline-flex</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8002-b1a7-da3343fe4173"><td id="yOtF" class=""><code>text-align</code></td><td id="Kzab" class="">Zarovnání textu</td><td id="LmdM" class=""><code>center</code>, <code>left</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8067-9254-f07923a9332f"><td id="yOtF" class=""><code>padding</code></td><td id="Kzab" class="">Vnitřní okraj</td><td id="LmdM" class=""><code>50px 20px</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2a12a8a7-b204-803d-b213-e7950d22bc72" class="">Obrázky</h1></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80b2-b553-eddd380cd4c3" class="bulleted-list"><li style="list-style-type:disc">tag <code>&lt;img&gt;</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-807f-8e32-feb3ca135554" class="bulleted-list"><li style="list-style-type:disc">nepárový</li></ul></div><div style="display:contents" dir="ltr"><table id="2a12a8a7-b204-8054-8c66-fd726ec0f4ab" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-80d8-bc74-d41fdba829b7"><td id="XeFv" class="" style="width:97.33332824707031px"><strong>Atribut</strong></td><td id="&gt;`k\" class="" style="width:498.3333435058594px"><strong>Účel</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-80f2-9fd2-ca827e66d772"><td id="XeFv" class="" style="width:97.33332824707031px"><code><strong>src</strong></code></td><td id="&gt;`k\" class="" style="width:498.3333435058594px">cesta k obrázku</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-801d-89d4-d8bc20f8020b"><td id="XeFv" class="" style="width:97.33332824707031px"><code><strong>alt</strong></code></td><td id="&gt;`k\" class="" style="width:498.3333435058594px">název obrázku zobrazený při nenačtení a přečten při režimu pro neslyšící</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-809a-ad57-ce13066dab49" class="bulleted-list"><li style="list-style-type:disc">atributy<div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8040-bb7d-f91841d9f618" class="bulleted-list"><li style="list-style-type:circle"><code>src</code> <div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a5-a842-f87bdeff226f" class="bulleted-list"><li style="list-style-type:square">povinný</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-800c-9794-dc7f515284c9" class="bulleted-list"><li style="list-style-type:square">cesta k obrázku</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80a2-b22b-c25f29b29e63" class="bulleted-list"><li style="list-style-type:circle"><code>alt</code><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8042-8189-ef9d041b01ab" class="bulleted-list"><li style="list-style-type:square">povinný</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8023-8194-d5d71973c1d9" class="bulleted-list"><li style="list-style-type:square">text, který se zobrazí při neúspěšném načtení obrázku</li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80f9-a4b6-e16aa06c0939" class="bulleted-list"><li style="list-style-type:square">také vhodné pro SEO a nevidomé</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2a22a8a7-b204-800e-a42b-dd0d17c6aa42" class="">Relevantní CSS</h3></div><div style="display:contents" dir="ltr"><table id="2a22a8a7-b204-8009-b006-e4b5b41f8c0a" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8029-955a-eb541846f5ce"><th id="t{Vj" class="simple-table-header-color simple-table-header">Vlastnost CSS</th><th id="L@J;" class="simple-table-header-color simple-table-header">Popis</th><th id="?V^x" class="simple-table-header-color simple-table-header">Příklady</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80ab-a803-c7601a7f8c18"><td id="t{Vj" class=""><code>object-fit</code></td><td id="L@J;" class="">Přizpůsobení obsahu</td><td id="?V^x" class=""><code>cover</code>, <code>contain</code>, <code>fill</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80f2-839a-c9c6495718c9"><td id="t{Vj" class=""><code>aspect-ratio</code></td><td id="L@J;" class="">Pozice obrázku v kontejneru</td><td id="?V^x" class=""><code>center</code>, <code>top</code>, <code>bottom</code>, <code>50% 50%</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-8070-b046-f1ac2020d353"><td id="t{Vj" class=""><code>filter</code></td><td id="L@J;" class="">Efekty</td><td id="?V^x" class=""><code>blur(5px)</code>, <code>grayscale(100%)</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2a12a8a7-b204-80e7-b0bb-fbb231d29be6" class="">Tabulky</h1></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-80e2-9dca-f9700ba81c4c" class="bulleted-list"><li style="list-style-type:disc">tag <code>&lt;table&gt;</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2a12a8a7-b204-8002-8d2d-ef87dd031cef" class="bulleted-list"><li style="list-style-type:disc">spojení buňěk je možné přes atributy <code>col-span</code> a <code>row-span</code></li></ul></div><div style="display:contents" dir="ltr"><table id="2a12a8a7-b204-8052-9e3c-e4e174fa9f62" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-8096-a303-e030256ba0ab"><th id="GUAE" class="simple-table-header-color simple-table-header"><strong>Tag</strong></th><th id="nkEF" class="simple-table-header-color simple-table-header" style="width:266px"><strong>Účel</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-8038-9dcc-cf46012bb261"><td id="GUAE" class="">&lt;table&gt;</td><td id="nkEF" class="" style="width:266px">Obaluje celou tabulku</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-80e0-94a2-ebb6c30b32c8"><td id="GUAE" class="">&lt;thead&gt;</td><td id="nkEF" class="" style="width:266px">Hlavička tabulky (obvykle první řádek)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-809a-8e1d-df3b8fc39560"><td id="GUAE" class="">&lt;tbody&gt;</td><td id="nkEF" class="" style="width:266px">Tělo tabulky s daty</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-80a0-b885-fb2d46bb3be0"><td id="GUAE" class="">&lt;tfoot&gt;</td><td id="nkEF" class="" style="width:266px">Patička tabulky (součty, shrnutí)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-807a-9151-f36630f4c183"><td id="GUAE" class="">&lt;tr&gt;</td><td id="nkEF" class="" style="width:266px">Řádek tabulky (table row)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-8096-9a45-e05d49271824"><td id="GUAE" class="">&lt;th&gt;</td><td id="nkEF" class="" style="width:266px">Hlavičková buňka (table head)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2a12a8a7-b204-8088-920d-d1421d5ef789"><td id="GUAE" class="">&lt;td&gt;</td><td id="nkEF" class="" style="width:266px">Běžná datová buňka (table data)</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2a22a8a7-b204-80fb-9be2-f6a42f340e5a" class="">Relevantní CSS</h3></div><div style="display:contents" dir="ltr"><table id="2a22a8a7-b204-8024-9338-eaec53cd2019" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-803e-961b-cc7f9b86d66c"><th id="t{Vj" class="simple-table-header-color simple-table-header">Vlastnost CSS</th><th id="L@J;" class="simple-table-header-color simple-table-header">Popis</th><th id="?V^x" class="simple-table-header-color simple-table-header">Příklady</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80bc-aae8-e0da3516647e"><td id="t{Vj" class=""><code>border-collapse</code></td><td id="L@J;" class="">Slučování hranic buněk</td><td id="?V^x" class=""><code>collapse</code>, <code>separate</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-804b-bc73-fd62e14b8f3e"><td id="t{Vj" class=""><code>border-spacing</code></td><td id="L@J;" class="">Mezera mezi buňkami</td><td id="?V^x" class=""><code>10px</code>, <code>5px 10px</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2a22a8a7-b204-80d3-8542-c90823afa812"><td id="t{Vj" class=""><code>table-layout</code></td><td id="L@J;" class="">Způsob výpočtu šířky</td><td id="?V^x" class=""><code>auto</code>, <code>fixed</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2a12a8a7-b204-8035-8b54-d2ee6730cbef" class="">Ukázka</h1></div><div style="display:contents" dir="auto"><p id="2a62a8a7-b204-80af-8b35-d342ae3e4b31" class="">Stránka je k dispozici zde:</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a12a8a7-b204-8043-acb3-e5edf4b1f535" class="code code-wrap"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;cs&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Galský fotbal - Oficiální web&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Hlavička s navigací --&gt;
+  &lt;header&gt;
+    &lt;h1&gt;⚽ Galský fotbal&lt;/h1&gt;
+    &lt;nav&gt;
+      &lt;a href=&quot;#uvod&quot;&gt;Úvod&lt;/a&gt;
+      &lt;a href=&quot;#o-sportu&quot;&gt;O sportu&lt;/a&gt;
+      &lt;a href=&quot;#tymy&quot;&gt;Týmy&lt;/a&gt;
+      &lt;a href=&quot;#kontakt&quot;&gt;Kontakt&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;!-- Hlavní obsah --&gt;
+  &lt;main&gt;
+    &lt;!-- Úvodní sekce --&gt;
+    &lt;section id=&quot;uvod&quot;&gt;
+      &lt;h2&gt;Vítejte v světě galského fotbalu!&lt;/h2&gt;
+      &lt;img src=&quot;galsky-fotbal.jpg&quot; alt=&quot;Hráči hrající galský fotbal&quot; width=&quot;500&quot;&gt;
+      &lt;p&gt;Galský fotbal (Gaelic football) je tradiční irský sport, který kombinuje prvky fotbalu a rugbytu. Hraje se s kulatým míčem na velkém hřišti s H-brankou na konci.&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;!-- Sekce o sportu --&gt;
+    &lt;section id=&quot;o-sportu&quot;&gt;
+      &lt;h2&gt;Co je galský fotbal?&lt;/h2&gt;
+      &lt;article&gt;
+        &lt;h3&gt;Historie a pravidla&lt;/h3&gt;
+        &lt;p&gt;Galský fotbal má svou historii sahající do 19. století v Irsku. Sport vyžaduje obratnost, sílu a týmové porozumění.&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Základní pravidla:&lt;/strong&gt;&lt;/p&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Hráči mohou míč nosit v rukou maximálně 4 kroky&lt;/li&gt;
+          &lt;li&gt;Míč lze kopnout nebo podržet v ruce&lt;/li&gt;
+          &lt;li&gt;Gól (mezi brankama dole) = 1 bod&lt;/li&gt;
+          &lt;li&gt;Gól nad brankama (H-branka) = 3 body&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/article&gt;
+    &lt;/section&gt;
+
+    &lt;!-- Sekce s týmy --&gt;
+    &lt;section id=&quot;tymy&quot;&gt;
+      &lt;h2&gt;Top 5 týmů na světě&lt;/h2&gt;
+      &lt;article&gt;
+        &lt;p&gt;Tady je přehled nejlepších galských fotbalových týmů v současné době:&lt;/p&gt;
+        
+        &lt;table border=&quot;1&quot;&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th&gt;Pořadí&lt;/th&gt;
+              &lt;th&gt;Název týmu&lt;/th&gt;
+              &lt;th&gt;Země&lt;/th&gt;
+              &lt;th&gt;Mistrovství&lt;/th&gt;
+              &lt;th&gt;Roky úspěchu&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+          &lt;tr&gt;
+              &lt;td&gt;1&lt;/td&gt;
+              &lt;td&gt;Dublin GAA&lt;/td&gt;
+              &lt;td&gt;Irsko&lt;/td&gt;
+              &lt;td&gt;31&lt;/td&gt;
+              &lt;td&gt;1997, 2002, 2011, 2015, 2023&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;2&lt;/td&gt;
+              &lt;td&gt;Meath GAA&lt;/td&gt;
+              &lt;td&gt;Irsko&lt;/td&gt;
+              &lt;td&gt;7&lt;/td&gt;
+              &lt;td&gt;1949, 1951, 1954, 1966, 1988&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;3&lt;/td&gt;
+              &lt;td&gt;Kerry GAA&lt;/td&gt;
+              &lt;td&gt;Irsko&lt;/td&gt;
+              &lt;td&gt;37&lt;/td&gt;
+              &lt;td&gt;1975, 1980, 1997, 2009&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;4&lt;/td&gt;
+              &lt;td&gt;Cork GAA&lt;/td&gt;
+              &lt;td&gt;Irsko&lt;/td&gt;
+              &lt;td&gt;8&lt;/td&gt;
+              &lt;td&gt;1990, 2010, 2022&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;5&lt;/td&gt;
+              &lt;td&gt;Tyrone GAA&lt;/td&gt;
+              &lt;td&gt;Irsko&lt;/td&gt;
+              &lt;td&gt;3&lt;/td&gt;
+              &lt;td&gt;2003, 2005, 2021&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/article&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;!-- Boční obsah --&gt;
+  &lt;!-- Nezobrazuje se na straně, bo neni cas, jen pro představu --&gt;
+  &lt;aside&gt;
+    &lt;div class=&quot;sidebar-box&quot;&gt;
+      &lt;h3&gt;📚 Rychlé informace&lt;/h3&gt;
+      &lt;p&gt;&lt;strong&gt;Počet hráčů:&lt;/strong&gt; 15 na hřišti&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;Délka zápasu:&lt;/strong&gt; 70 minut&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;Původ:&lt;/strong&gt; Irsko&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;sidebar-box&quot;&gt;
+      &lt;h3&gt;🔗 Užitečné odkazy&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;GAA - Oficiální web&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Turnaje&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Tréninky&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Novinky&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;sidebar-box&quot;&gt;
+      &lt;h3&gt;🏅 Zajímavosti&lt;/h3&gt;
+      &lt;p&gt;Galský fotbal se hraje v Irsku více než 150 let a je jedním z nejstarších sport
+
+ů na světě.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/aside&gt;
+
+  &lt;!-- Patička --&gt;
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2025 Galský fotbal. Všechna práva vyhrazena.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#kontakt&quot;&gt;Kontakt&lt;/a&gt; | &lt;a href=&quot;#o-nas&quot;&gt;O nás&lt;/a&gt; | &lt;a href=&quot;#podmínky&quot;&gt;Podmínky&lt;/a&gt;&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-8049-8df3-f3c8b3f1ae08" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80b8-b908-df6d3b1646df" class="">pseudo trida - preddefinovana virtualni trida, selector dle podminky, ne dle nazvu</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80ed-98d8-c0d88eee9443" class="">syntax : (:first-child)</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80eb-8d2a-f53f994aa1ea" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-8067-a24f-f464be77b6c4" class="">mezera x bez mezery</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80ba-8e1e-c8bc006de7f6" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-806f-8e54-c3907189ff0b" class="">first-child x first-of-type</p></div><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-806f-b8be-c925f220c426" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
