@@ -1,0 +1,734 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>7. OOP - dědičnost a polymorfismus</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2732a8a7-b204-80f4-a8a8-e9367a428753" class="page sans"><header><h1 class="page-title" dir="auto">7. OOP - dědičnost a polymorfismus</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2882a8a7-b204-8003-9ec3-ccbfd962542b" class="">Dědičnost</h1></div><div style="display:contents" dir="auto"><ul id="2882a8a7-b204-8011-aa92-d7c7e9678d23" class="bulleted-list"><li style="list-style-type:disc">umožňuje potomkovi zdědit všechny atributy a třídy rodiče</li></ul></div><div style="display:contents" dir="auto"><ul id="2882a8a7-b204-8020-9c78-f3444797f690" class="bulleted-list"><li style="list-style-type:disc">pro dědění se užívá <code>extends</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8083-9f6b-db43e076438b" class="bulleted-list"><li style="list-style-type:disc">lze dědit jen z <strong>jedné třídy</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-806d-a422-d7b3518f0d6b" class="bulleted-list"><li style="list-style-type:disc"><code>super()</code> - odkázání na konstruktor předka</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8048-8723-f8f9ef53a90f" class="bulleted-list"><li style="list-style-type:disc"><code>super.</code> - odkázání na proměnnou/metodu předka (musí být <code>protected</code>)</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8091-9f28-f01729dc78a2" class="bulleted-list"><li style="list-style-type:disc"><strong>jakýkoliv potomek může zastoupit svého předka</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="3102a8a7-b204-800d-9944-c2ceee1ea0a0" class="bulleted-list"><li style="list-style-type:disc"><strong>absolutní předek </strong>= <code>Object</code><div style="display:contents" dir="auto"><ul id="3102a8a7-b204-809f-b0a6-fc55635d60d1" class="bulleted-list"><li style="list-style-type:circle">dědí se od něj <div style="display:contents" dir="auto"><ul id="3102a8a7-b204-8086-8d41-ecc048ace5aa" class="bulleted-list"><li style="list-style-type:square">konstruktor bez parametru</li></ul></div><div style="display:contents" dir="auto"><ul id="3102a8a7-b204-8006-bb0e-d0c49c9107e2" class="bulleted-list"><li style="list-style-type:square">metody t<code>oString()</code>, <code>equals()</code>, <code>notify()</code>...</li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h1 id="2902a8a7-b204-8094-a7e6-e2a273aa118e" class="">Polymorfismus</h1></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80aa-8792-c1a0a7809a31" class="bulleted-list"><li style="list-style-type:disc">umožňuje, aby různé objekty reagovali na stejnou metodu různými způsoby</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-805c-a9a1-c81c93c9d8dc" class="bulleted-list"><li style="list-style-type:disc">funguje na principu <strong>překrytí</strong> - <code>@override</code> (přepíše původní logiku)</li></ul></div><div style="display:contents" dir="auto"><h1 id="2882a8a7-b204-80d2-b32b-e47bd429062f" class="">Abstrakce a final</h1></div><div style="display:contents" dir="auto"><h3 id="2902a8a7-b204-8047-812e-c940f722c2f8" class="">Ve zkratce</h3></div><div style="display:contents" dir="ltr"><table id="2902a8a7-b204-801a-8f5a-d5228073ee71" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-803b-845c-ccb4977f48f4"><td id="qgbr" class="" style="width:236.33333333333334px"></td><td id="&lt;eAH" class="" style="width:236.33333333333334px"><strong>Abstract</strong></td><td id="^xEa" class="" style="width:236.33333333333334px"><strong>Final</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-8093-877e-dd5f7f02abe1"><td id="qgbr" class="" style="width:236.33333333333334px"><strong>Proměnná</strong></td><td id="&lt;eAH" class="" style="width:236.33333333333334px">❌</td><td id="^xEa" class="" style="width:236.33333333333334px">= konstanta (nelze změnit)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-8089-a1a3-fd82afee0877"><td id="qgbr" class="" style="width:236.33333333333334px"><strong>Metoda</strong></td><td id="&lt;eAH" class="" style="width:236.33333333333334px">nemá tělo → musí být implementována v potomkovi</td><td id="^xEa" class="" style="width:236.33333333333334px">nelze <code>@override</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-80d7-8331-ee96e104e072"><td id="qgbr" class="" style="width:236.33333333333334px"><strong>Třída</strong></td><td id="&lt;eAH" class="" style="width:236.33333333333334px">nelze instancovat → nutnost potomka pro implementaci</td><td id="^xEa" class="" style="width:236.33333333333334px">kastrace (nemůže mít potomky)</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="2902a8a7-b204-8089-a159-e2100f7dae8a" class="">Interface</h2></div><div style="display:contents" dir="auto"><p id="2912a8a7-b204-801e-9602-fe8960c02fcc" class="">= rozhraní</p></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-804b-8f4d-e77887003d91" class="bulleted-list"><li style="list-style-type:disc">sada definic, co musí třída splňovat přes <code>implements</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-809a-a5af-c68449049cca" class="bulleted-list"><li style="list-style-type:disc">může obsahovat metody <div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80c1-b091-e1a578aa7487" class="bulleted-list"><li style="list-style-type:circle">s tělem<div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80e8-ab79-c438d56c3901" class="bulleted-list"><li style="list-style-type:square"><code>defualt</code> - není potřeba přepisu</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-802e-a468-d9a1c032e985" class="bulleted-list"><li style="list-style-type:square"><code>static</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-803f-be35-f30e91bbe67c" class="bulleted-list"><li style="list-style-type:square"><code>private</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80f1-8213-c3a2b8396a20" class="bulleted-list"><li style="list-style-type:circle">bez těla <div style="display:contents" dir="auto"><ul id="30d2a8a7-b204-8007-b190-ef437e089271" class="bulleted-list"><li style="list-style-type:square"><code>abstact</code></li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-800b-92ad-e9d57106d6d8" class="bulleted-list"><li style="list-style-type:disc">může obsahovat vlastnosti (konstanty), pokud jsou<div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8017-98b8-d007d76f4d79" class="bulleted-list"><li style="list-style-type:circle">static</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-806b-a5fc-c47860cf1262" class="bulleted-list"><li style="list-style-type:circle">public</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-803e-a04c-f406a0320942" class="bulleted-list"><li style="list-style-type:circle">final</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-808d-bc5f-f6e77b8f1b4a" class="bulleted-list"><li style="list-style-type:disc">taky nemusí nic obsahovat</li></ul></div><div style="display:contents" dir="auto"><h3 id="2902a8a7-b204-807b-a9ad-d0836d886b6c" class="">Funkcionální rozhraní</h3></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80af-ae93-f9929d10adaa" class="bulleted-list"><li style="list-style-type:disc">anotace <code>@FunkcionalInterface</code> (volitelně)</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8026-b7fe-f7de835de085" class="bulleted-list"><li style="list-style-type:disc">obsahuje <strong>jednu </strong>abstraktní metodu (neabstraktních může mít více)</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80a5-a414-d13193f37181" class="bulleted-list"><li style="list-style-type:disc">může být zastoupeno lambda výrazem</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80ae-aab1-cd0fbe54cffb" class="bulleted-list"><li style="list-style-type:disc">standardní funkcionální rozhraní<div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8096-af88-e25097179850" class="bulleted-list"><li style="list-style-type:circle"><code>Function&lt;T, R&gt;</code> - převede typ T na R</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80bf-a577-e7c93ae15a7d" class="bulleted-list"><li style="list-style-type:circle"><code>Predicate&lt;T&gt;</code> - test podmínky (<code>true</code>/<code>false</code>)</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8085-91ce-faed86317796" class="bulleted-list"><li style="list-style-type:circle"><code>Consumer&lt;T&gt;</code> - přijímá hodnotu, nic nevrací</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80bc-852e-d8774405043b" class="bulleted-list"><li style="list-style-type:circle"><code>Suplier&lt;T&gt;</code> - nepřijímá nic, vrací hodnotu</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><p id="3102a8a7-b204-801d-ad5c-ce3d19ce3eef" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="2902a8a7-b204-80d2-bcc9-e5a0c16c03c3" class="">Ukázka </h1></div><div style="display:contents" dir="auto"><h2 id="2902a8a7-b204-801f-9389-f90928ad7ba7" class="">Ukázka polymorfismu</h2></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2902a8a7-b204-80a4-ad0f-cec602c23058" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">abstract class Zvire{
+	abstract void zvuk();
+}
+
+class Kocka extends Zvire{
+	@override
+	void zvuk(){
+		IO.println(&quot;Mnau&quot;);
+	}
+}
+
+class Kapr extends Zvire{
+	@override
+	void zvuk(){
+		IO.println(&quot;&quot;);
+	}
+}</code></pre></div><div style="display:contents" dir="auto"><h2 id="2912a8a7-b204-8051-86fc-dbc9b5a33c79" class="">Ukázka rozhraní</h2></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2912a8a7-b204-808f-bd02-eddaf36d3f1a" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">public interface IZvire(){
+	default void zvuk(){
+		IO.println(&quot;Zvuk&quot;);
+	}
+}</code></pre></div><div style="display:contents" dir="auto"><h1 id="2902a8a7-b204-809b-bd43-e479c13b61c7" class="">Frajer hund</h1></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Jaká znáš klíčová slova u dědičnosti?</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80f6-bb77-fab80717b098" class="bulleted-list"><li style="list-style-type:disc"><code>extends, </code></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8057-9856-c4f4ae472f40" class="bulleted-list"><li style="list-style-type:disc"><code>implements</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80d2-af90-cd2d1a3202c4" class="bulleted-list"><li style="list-style-type:disc"><code>override</code></li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>Jaký je rozdíl mezi abstraktní třídou a rozhraním?</strong></summary><div class="indented"><div style="display:contents" dir="ltr"><table id="2902a8a7-b204-80c5-99e8-e10e188ee2c6" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-8075-b675-ef955ae1e65c"><td id="Zhuu" class="" style="width:219px"></td><td id="_^wj" class="" style="width:219px"><strong>Abstraktní třída</strong></td><td id="Ucf}" class="" style="width:219px"><strong>Rozhraní</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-8073-8ecb-cf4412f2d50a"><td id="Zhuu" class="" style="width:219px"><strong>Metody</strong></td><td id="_^wj" class="" style="width:219px">metody obvykle mají tělo (pokud nejsou <code>abstract</code>)</td><td id="Ucf}" class="" style="width:219px">metody obvykle nemají tělo (pokud nejsou <code>default</code>, <code>priavate</code> nebo <code>static</code>)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-8025-b66c-dc08878b49d7"><td id="Zhuu" class="" style="width:219px"><strong>Atributy</strong></td><td id="_^wj" class="" style="width:219px">✅</td><td id="Ucf}" class="" style="width:219px">✅ (pokud jsou konstanty)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-80b9-b20b-e95785a4f2a0"><td id="Zhuu" class="" style="width:219px"><strong>Dědíčnost</strong></td><td id="_^wj" class="" style="width:219px">pouze 1x <code>extends</code></td><td id="Ucf}" class="" style="width:219px">může vícekrát <code>implements</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-804d-9641-d5fed9da8d1c"><td id="Zhuu" class="" style="width:219px"><strong>Konstruktor</strong></td><td id="_^wj" class="" style="width:219px">✅</td><td id="Ucf}" class="" style="width:219px">❌</td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-804c-99d6-c569142aa72f"><td id="Zhuu" class="" style="width:219px"><strong>Instancování</strong></td><td id="_^wj" class="" style="width:219px">❌</td><td id="Ucf}" class="" style="width:219px">❌</td></tr></div><div style="display:contents" dir="ltr"><tr id="2902a8a7-b204-807b-a320-f78249b24345"><td id="Zhuu" class="" style="width:219px"><strong>Účel</strong></td><td id="_^wj" class="" style="width:219px">Definuje identitu a chování tříd</td><td id="Ucf}" class="" style="width:219px">Definuje periferní schopnosti a kontrakt (smlouvu</td></tr></div></tbody></table></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>Takže v rozhraní nemohou být metody s tělem?</strong></summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8043-adc5-fcd409502b9c" class="bulleted-list"><li style="list-style-type:disc"><strong>Mohou</strong><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80a6-a36a-da4a4289d3a3" class="bulleted-list"><li style="list-style-type:circle"><code>default</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8048-8a17-c016f048508c" class="bulleted-list"><li style="list-style-type:circle"><code>private</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80db-a653-eb441f0029c6" class="bulleted-list"><li style="list-style-type:circle"><code>static</code></li></ul></div></li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>Co teda je polymorfismus?</strong></summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-807a-aaa6-efd31a94aa4c" class="bulleted-list"><li style="list-style-type:disc">⬆️</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>No a proč se to vlastně vůbec dělá?</strong></summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-80f9-9c33-fa354514b77f" class="bulleted-list"><li style="list-style-type:disc">jednoznačnost kódu</li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8049-9180-dab273e26c96" class="bulleted-list"><li style="list-style-type:disc">snižuje redundanci </li></ul></div><div style="display:contents" dir="auto"><ul id="2902a8a7-b204-8010-9059-f4bac2f57d60" class="bulleted-list"><li style="list-style-type:disc">lepší čitelnost</li></ul></div></div></details></div><div style="display:contents" dir="ltr"><figure id="2902a8a7-b204-8018-a1bc-d82fabb36c18" class="image"><a href="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="><img style="width:1px" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="/></a></figure></div><div style="display:contents" dir="auto"><p id="30d2a8a7-b204-80e4-9dc8-c18e1af5f48f" class="">pretizeni metod do polymorfismu</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

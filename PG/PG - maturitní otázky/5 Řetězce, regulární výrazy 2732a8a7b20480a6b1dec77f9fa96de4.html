@@ -1,0 +1,985 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>5. Řetězce, regulární výrazy</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2732a8a7-b204-80a6-b1de-c77f9fa96de4" class="page sans"><header><h1 class="page-title" dir="auto">5. Řetězce, regulární výrazy</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2832a8a7-b204-80cf-991b-cfc37ab3612c" class="">String (řetězce)</h1></div><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-804b-b922-ea987ce2b6a4" class="bulleted-list"><li style="list-style-type:disc">= objekt, co uchovává <strong>sekvenci znaků </strong>(”lepší char[]”)</li></ul></div><div style="display:contents" dir="auto"><h2 id="2832a8a7-b204-8005-9f98-c974dc74acd1" class="">Základní operace</h2></div><div style="display:contents" dir="ltr"><table id="2832a8a7-b204-80c1-8d3b-e28fa9e0e95d" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-80ef-96bf-df7b7874f6bf"><th id="nywZ" class="simple-table-header-color simple-table-header" style="width:214.3333282470703px"><strong>Operace</strong></th><th id="{PPK" class="simple-table-header-color simple-table-header" style="width:529.3333435058594px">Popis</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8092-9380-c8ea55303f7a"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>Vytvoření řetězce</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>String s = &quot;Ahoj Světe!&quot;</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-808a-b513-e6de94df0908"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>Porovnání řetězců</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.equals(String text2): boolean</code> - porovná řetězce (<strong>nejde použít =</strong>) na compareTo ci pridat + porovnat</td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-80df-af5a-c71b29face12"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>Délka řetězce</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.length(): int</code> -<strong> píše se závorka</strong>, protože to není atribut jako u pole, ale <strong>metoda</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-8095-bc1a-f9efe30bce9d"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>Zjištění charakteru na indexu</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.charAt(int index): char</code> - vrátí <code>char</code> na indexu</td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-8052-a992-fad577e4fef4"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>Rozdělení řetězce na části</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.split(&quot; &quot;): String[]</code>  - rozdělení <code>String</code> podle vstupu (např. mezer)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-806a-95c6-ebac301935ac"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>Odstranění bílých znaků</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.trim(): String</code> - odstraní bíle znaky (mezery, tabulátory) na <strong>začátku a konci </strong>řetězce</td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-80f0-8360-eedaa5b6b591"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>Najití části </strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.find(String s): int</code> - vrátí index první <code>char</code> při schodě, jinak <strong>-1</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-807a-8118-c5ba47aa8f5b"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>VELKÁ PÍSMENA</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.toUpperCase()</code> - převede všechny <code>char</code> v řetězci na velké</td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-8068-b6da-ef047126d4ae"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>malá písmena</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.toLowerCase()</code> - převede všechny <code>char</code> v řetězci na malé</td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-8069-9fb2-cdb8e1b1eee5"><td id="nywZ" class="" style="width:214.3333282470703px"><strong>Získání podřetězce</strong></td><td id="{PPK" class="" style="width:529.3333435058594px"><code>s.substring(int first, int last): String</code> - vrátí řetězec s <code>char</code> od počátečního až do posledního indexu (uvedeného v hlavičce)</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="2832a8a7-b204-80c1-ba6f-c885cd5af269" class=""><strong>Možnosti spojení řetězců</strong></h2></div><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-80a7-817f-e19851af4951" class="bulleted-list"><li style="list-style-type:disc"><code>str1 + str2</code> <div style="display:contents" dir="auto"><ul id="2832a8a7-b204-80c6-9463-f55550c6e0be" class="bulleted-list"><li style="list-style-type:circle"> stejně jako u např. int</li></ul></div><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-80ed-8647-efae0d2d0114" class="bulleted-list"><li style="list-style-type:circle">neprobíhá <strong>in-place</strong> (data se modifikují přímo na datech, co jsou alokována)</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-8023-a2c4-ddda78e2f48d" class="bulleted-list"><li style="list-style-type:disc"><code>str1.concat(str2)</code> <div style="display:contents" dir="auto"><ul id="2832a8a7-b204-80ab-9807-fb8a37ccc71e" class="bulleted-list"><li style="list-style-type:circle">probíhá <strong>in-place</strong></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-805b-a5d3-e9ca88d2fd3a" class="bulleted-list"><li style="list-style-type:disc"><code>String.format(&quot;String s, type param..&quot;): String</code> <div style="display:contents" dir="auto"><ul id="2832a8a7-b204-800e-a717-e9a5ca5623b6" class="bulleted-list"><li style="list-style-type:circle">něco jako <code><strong>printf</strong></code></li></ul></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2832a8a7-b204-8028-9199-d242968a3540" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">//ukazka
+String.format(&quot;%s má %d let.&quot;, jmeno, vek);</code></pre></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-80cb-8b83-de53d862d702" class="bulleted-list"><li style="list-style-type:disc"><code>Stringbuilder</code> a <code>Stringbuffer</code><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-8066-bc65-f7ae8a30a3c2" class="bulleted-list"><li style="list-style-type:circle">umožní měnit řetězec bez vytváření nového objektu</li></ul></div><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-806a-88bb-dfbee7c35c78" class="bulleted-list"><li style="list-style-type:circle"><strong>metody</strong><div style="display:contents" dir="auto"><ul id="2832a8a7-b204-8063-a510-c98de01ef535" class="bulleted-list"><li style="list-style-type:square"><code>append()</code></li></ul></div></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="29e2a8a7-b204-8038-a35e-fbd0a2ca6aa1" class=""><code>String</code> x <code>Stringbuilder</code></h3></div><div style="display:contents" dir="ltr"><table id="29e2a8a7-b204-8037-bd95-dadee6f6ddcc" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="29e2a8a7-b204-8024-be54-c1e8e4909ad9"><th id="g:Hj" class="simple-table-header-color simple-table-header">Vlastnost</th><th id="`fGa" class="simple-table-header-color simple-table-header">String</th><th id="\cGw" class="simple-table-header-color simple-table-header">StringBuilder</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="29e2a8a7-b204-80e2-8d76-fb70fca84359"><td id="g:Hj" class=""><strong>Měnitelnost</strong></td><td id="`fGa" class="">Neměnný (immutable)</td><td id="\cGw" class="">Měnitelný (mutable)</td></tr></div><div style="display:contents" dir="ltr"><tr id="29e2a8a7-b204-80f9-bb81-dec60807df4c"><td id="g:Hj" class=""><strong>Paměť</strong></td><td id="`fGa" class="">Každá změna = nový objekt</td><td id="\cGw" class="">Úpravy na místě</td></tr></div><div style="display:contents" dir="ltr"><tr id="29e2a8a7-b204-80e5-9cd2-c270c3325646"><td id="g:Hj" class=""><strong>Výkon</strong></td><td id="`fGa" class="">Pomalejší při častých úpravách</td><td id="\cGw" class="">Rychlejší při manipulacích</td></tr></div><div style="display:contents" dir="ltr"><tr id="29e2a8a7-b204-808e-8556-d326e0ef058e"><td id="g:Hj" class=""><strong>Thread-safe</strong></td><td id="`fGa" class="">Ano</td><td id="\cGw" class="">Ne</td></tr></div><div style="display:contents" dir="ltr"><tr id="29e2a8a7-b204-80c6-b6a2-dbeeae57115b"><td id="g:Hj" class=""><strong>Použití</strong></td><td id="`fGa" class="">Konstantní texty</td><td id="\cGw" class="">Časté spojování řetězců</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2832a8a7-b204-8064-b7a4-d242ae4ea333" class=""><code>Stringbuilder</code> x <code>Stringbuffer</code></h3></div><div style="display:contents" dir="ltr"><table id="2832a8a7-b204-8079-8a1a-db155a5f3a1d" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-807e-9feb-d232e81832c5"><td id="rH}O" class="" style="width:236.33333333333334px"></td><td id="zgm^" class="" style="width:236.33333333333334px"><code><strong>Stringbuilder</strong></code></td><td id="{ch&lt;" class="" style="width:236.33333333333334px"><code><strong>Stringbuffer</strong></code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-8050-a583-c8ea7b150acc"><td id="rH}O" class="" style="width:236.33333333333334px"><strong>Opětovné použití</strong></td><td id="zgm^" class="" style="width:236.33333333333334px">ne</td><td id="{ch&lt;" class="" style="width:236.33333333333334px">ano</td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-8063-90d6-dc3c374513d9"><td id="rH}O" class="" style="width:236.33333333333334px"><strong>Rychlost</strong></td><td id="zgm^" class="" style="width:236.33333333333334px">vyšší</td><td id="{ch&lt;" class="" style="width:236.33333333333334px">nižší</td></tr></div><div style="display:contents" dir="ltr"><tr id="2832a8a7-b204-80ee-a4f7-c599c942b9d3"><td id="rH}O" class="" style="width:236.33333333333334px"><strong>Synchronizovanost</strong></td><td id="zgm^" class="" style="width:236.33333333333334px">ne (nebezpečí u více vláken)</td><td id="{ch&lt;" class="" style="width:236.33333333333334px">ano</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2962a8a7-b204-802d-875d-fd20d6914acd" class="">Regulární výrazy</h1></div><div style="display:contents" dir="auto"><p id="29f2a8a7-b204-8092-bcf7-dd7814580268" class="">= regex</p></div><div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-8034-b6a5-e01d4a62f589" class="bulleted-list"><li style="list-style-type:disc">vyhledání textu dle vzoru</li></ul></div><div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-80a0-b0b5-fbde0ddbcb60" class="bulleted-list"><li style="list-style-type:disc">2 způsoby využití v Javě:<div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-800e-8ee7-f95e056590b9" class="bulleted-list"><li style="list-style-type:circle">Metody třídy <code>String</code></li></ul></div><div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-8012-ad30-e8541b2e3e53" class="bulleted-list"><li style="list-style-type:circle"><code>Pattern</code> a <code>Matcher</code></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="29f2a8a7-b204-8021-898c-ed22d3e31431" class="">Metody třídy String</h2></div><div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-801b-ba03-f0eb323f3825" class="bulleted-list"><li style="list-style-type:disc">používá se pro <strong>jednorázové </strong>použití</li></ul></div><div style="display:contents" dir="auto"><p id="29f2a8a7-b204-8026-8799-e4c3aefb4e1d" class=""><code>matches()</code>  - vrací <code>boolean</code>, pokud se text shoduje s regexem</p></div><div style="display:contents" dir="auto"><p id="29f2a8a7-b204-800d-b34b-e150aee3b221" class=""><code>replaceAll()</code> - nahradí všechny části řetězce shodné s regexem</p></div><div style="display:contents" dir="auto"><h2 id="29f2a8a7-b204-80db-b5bb-fabe92d6fce8" class="">Pattern a matcher</h2></div><div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-807b-91af-eee4aa1dbefc" class="bulleted-list"><li style="list-style-type:disc">používá se při několikanásobném užití jednoho regexu</li></ul></div><div style="display:contents" dir="auto"><h3 id="2962a8a7-b204-805e-89de-ddda3a78cd5d" class="">Pattern</h3></div><div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-8044-9d05-f0b9942f41f6" class="bulleted-list"><li style="list-style-type:disc">vytvoří se pattern pro regulární výraz</li></ul></div><div style="display:contents" dir="auto"><p id="29f2a8a7-b204-80b6-ba46-e38f7a5cb19f" class=""><code>compile(String regex)</code> - vytvoří <code>Pattern</code> (statická metoda)</p></div><div style="display:contents" dir="auto"><p id="29f2a8a7-b204-80e0-9faa-c80680fbe7f6" class=""><code>matcher(String txt)</code>  - vytvoří <code>Matcher</code></p></div><div style="display:contents" dir="auto"><h3 id="29f2a8a7-b204-808d-8964-c271692fbe49" class="">Matcher</h3></div><div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-80a2-8fd9-d9cbd1633f1f" class="bulleted-list"><li style="list-style-type:disc">porovnává text s <code>Pattern</code> a hledá shody</li></ul></div><div style="display:contents" dir="auto"><p id="29f2a8a7-b204-8017-8136-ea7c75ea6e80" class=""><code>find(): boolean</code> - vrací <code>true</code>, pokud je shoda <strong>v</strong> textu</p></div><div style="display:contents" dir="auto"><p id="29f2a8a7-b204-80c2-acb2-e1663dea37f3" class=""><code>matches(): boolean</code> - vrací <code>true</code>, pokud je shodný <strong>celý</strong> text </p></div><div style="display:contents" dir="auto"><h2 id="29f2a8a7-b204-801e-bdfe-ddf248c62505" class="">Regex</h2></div><div style="display:contents" dir="ltr"><table id="29f2a8a7-b204-8002-8e48-f50a9755b7b9" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-80d4-8fb3-f6cedf19bdcd"><th id="xm`{" class="simple-table-header-color simple-table-header"><strong>Znak/Konstrukce</strong></th><th id="TC`u" class="simple-table-header-color simple-table-header"><strong>Význam</strong></th><th id="pdtS" class="simple-table-header-color simple-table-header"><strong>Příklad</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8048-87ed-f357aa891ad8"><td id="xm`{" class="">.</td><td id="TC`u" class="">Jakýkoli jeden znak</td><td id="pdtS" class=""><code>a.c</code> najde &quot;abc&quot;, &quot;a5c&quot;</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8063-91b7-f0e4565305d7"><td id="xm`{" class="">*</td><td id="TC`u" class="">Předchozí znak 0× nebo vícekrát</td><td id="pdtS" class=""><code>ab*c</code> najde &quot;ac&quot;, &quot;abc&quot;, &quot;abbbc&quot;</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-80fc-9343-e1ebca988557"><td id="xm`{" class="">+</td><td id="TC`u" class="">Předchozí znak 1× nebo vícekrát</td><td id="pdtS" class=""><code>ab+c</code> najde &quot;abc&quot;, &quot;abbbc&quot;, ale ne &quot;ac&quot;</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8041-8164-cb6ad633fb1e"><td id="xm`{" class="">?</td><td id="TC`u" class="">Předchozí znak 0× nebo 1×</td><td id="pdtS" class=""><code>ab?c</code> najde &quot;ac&quot;, &quot;abc&quot;, ale ne &quot;abbbc&quot;</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8075-98e4-d4792f71c1b2"><td id="xm`{" class="">^</td><td id="TC`u" class="">Začátek řetězce/řádku</td><td id="pdtS" class=""><code>^abc</code> najde &quot;abc&quot; na začátku</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8020-8a8f-eda399140be2"><td id="xm`{" class="">$</td><td id="TC`u" class="">Konec řetězce/řádku</td><td id="pdtS" class=""><code>abc$</code> najde &quot;abc&quot; na konci</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-80f6-9bb0-e189aab14821"><td id="xm`{" class="">[]</td><td id="TC`u" class="">Jeden znak ze skupiny</td><td id="pdtS" class=""><code>[aeiou]</code> najde jakoukoliv samohlásku</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-804c-8ea8-c5eb3c62fe51"><td id="xm`{" class="">[0-9]</td><td id="TC`u" class="">Rozsah znaků</td><td id="pdtS" class=""><code>[0-9]</code> najde libovolnou číslici</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8070-a495-e979c935bd12"><td id="xm`{" class="">[^...]</td><td id="TC`u" class="">OPAK - všechno KROMĚ znaků v závorce</td><td id="pdtS" class=""><code>[^0-9]</code> najde cokoliv kromě číslic</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-80e8-b935-d0c426950128"><td id="xm`{" class="">\d</td><td id="TC`u" class="">Číslice (0-9)</td><td id="pdtS" class=""><code>\d+</code> najde jedno nebo více čísel</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8020-8049-f58db94ce247"><td id="xm`{" class="">\D</td><td id="TC`u" class="">NE-číslice (cokoliv kromě číslic)</td><td id="pdtS" class=""><code>\D+</code> najde slova a symboly</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-80a5-b8c2-fb9211810dd9"><td id="xm`{" class="">\w</td><td id="TC`u" class="">Alfanumerické znaky (a-z, A-Z, 0-9, _)</td><td id="pdtS" class=""><code>\w+</code> najde jedno slovo</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8033-8e3a-c2096336f243"><td id="xm`{" class="">\W</td><td id="TC`u" class="">NE-alfanumerické znaky (kromě a-z, A-Z, 0-9, _)</td><td id="pdtS" class=""><code>\W+</code> najde mezery a symboly</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8078-8446-c5fc2e7bd38e"><td id="xm`{" class="">\s</td><td id="TC`u" class="">Bílý znak (mezera, tab, nový řádek)</td><td id="pdtS" class=""><code>\s+</code> najde mezery</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-8068-9582-daffe888f48e"><td id="xm`{" class="">\S</td><td id="TC`u" class="">NE-bílý znak (cokoliv kromě mezer)</td><td id="pdtS" class=""><code>\S+</code> najde text bez mezer</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-80b4-b6b1-c1a5493196c3"><td id="xm`{" class="">{n}</td><td id="TC`u" class="">Přesně n opakování</td><td id="pdtS" class=""><code>\d{4}</code> najde čtyřmístné číslo</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-800b-82bd-d9a8d9944cc4"><td id="xm`{" class="">{m,n}</td><td id="TC`u" class="">m až n opakování</td><td id="pdtS" class=""><code>\d{2,4}</code> najde 2-4 číslice</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-80e1-9eac-ed5d6967d6cc"><td id="xm`{" class="">()</td><td id="TC`u" class="">Zachycující skupina</td><td id="pdtS" class=""><code>(\d{4})</code> uloží rok do skupiny</td></tr></div><div style="display:contents" dir="ltr"><tr id="29f2a8a7-b204-80ce-ae1a-d8cef2796957"><td id="xm`{" class="">\</td><td id="TC`u" class="">Escape speciálních znaků</td><td id="pdtS" class=""><code>\.</code> najde tečku</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="29f2a8a7-b204-80a7-9045-c222ccfe939e" class="">Ukázka</h1></div><div style="display:contents" dir="auto"><h2 id="29f2a8a7-b204-804d-83c8-f196d0fdb6f0" class="">StringBuilder </h2></div><div style="display:contents" dir="auto"><ul id="29f2a8a7-b204-803c-a957-cc915e1afa4b" class="bulleted-list"><li style="list-style-type:disc"><code>StringBuffer</code> má stejnou syntax</li></ul></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="29f2a8a7-b204-80e8-b308-cb0973711796" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">StringBuilder sb = new StringBuilder(&quot;je&quot;); //&quot;je&quot;
+ 
+sb.append(&quot; hořký!&quot;); //&quot;je hořký!&quot;
+
+sb.insert(0, &quot;Život &quot;); //&quot;Život je hořký!&quot;
+
+sb.replace(9, 15, &quot;boj&quot;); //&quot;Život je boj&quot;
+
+sb.delete(0, 9); // &quot;boj&quot;
+
+sb.reverse(); // &quot;job&quot;
+
+sb.setLength(0); // &quot;&quot;</code></pre></div><div style="display:contents" dir="auto"><h2 id="29f2a8a7-b204-8060-932c-e0285ed146c9" class="">Hledání pomocí: metody třídy String x Pattern a Matcher</h2></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="29f2a8a7-b204-80c3-88b2-f56e858c3157" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">// Parametrz
+String text = &quot;Život je hořký. Bohudík!&quot;;
+String slovo = &quot;hořký&quot;;
+
+int pozice = text.indexOf(slovo);
+
+if (pozice != -1) {
+    IO.println(&quot;Pozice: &quot; + pozice); // 9
+    IO.println(&quot;Konec: &quot; + (pozice + slovo.length())); // 14
+}
+
+Pattern pattern = Pattern.compile(slovo );
+Matcher matcher = pattern.matcher(text);
+
+if (matcher.find()) {
+    IO.println(&quot;Pozice: &quot; + matcher.start()); // 9
+    IO.println(&quot;Konec: &quot; + matcher.end()); // 14
+}</code></pre></div><div style="display:contents" dir="auto"><h1 id="29f2a8a7-b204-8005-82a2-d06cf04ab0f5" class="">Cvičení na regex</h1></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Základní </summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">IČO</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-80e5-8fe4-e44e66e6c5a2" class=""><strong>ZADÁNÍ</strong></p></div><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8023-b654-fa52764f5173" class="">Udělej regex na IČO</p></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-80a2-9555-ec9eadec00eb" class="toggle"><li><details open=""><summary><strong>TEMPLATE</strong></summary><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a02a8a7-b204-80e7-b597-d47f39c3da18" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidator {
+    private static final String REGEX = &quot;&quot;;
+    private static final Pattern PATTERN =
+            Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+
+    public static boolean isValidExample(String example) {
+        if (example == null) {
+            return false;
+        }
+        Matcher matcher = PATTERN.matcher(example);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        String[] examples = {
+                &quot;69855706&quot;,// valid
+                &quot;22360808&quot;,// valid
+                &quot;12345678&quot;,// valid
+                &quot;jednadvatrictyripetsestsemdosm&quot;, // invalid
+                &quot;012345678&quot;, // invalid
+                &quot;67 67 67 67&quot; // invalid
+        };
+
+        for (String example : examples) {
+            System.out.println(example + &quot;: &quot; + isValidExample(example)); // pro mrdky co nemaji javu 25 je sout :(
+        }
+    }
+}</code></pre></div></details></li></ul></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-80f2-9561-d44be25374e0" class="toggle"><li><details open=""><summary><strong>ŘEŠENÍ</strong></summary><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8053-8f23-e1becb7c581f" class=""><code>&quot;[\\d]{8}&quot;</code></p></div></details></li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">PSČ</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-803b-b8f9-ea5157daa60b" class=""><strong>ZADÁNÍ</strong></p></div><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8066-9967-d2ab8c32d764" class="">Udělej regex na PSČ</p></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-808d-8198-cd71a058b86c" class="toggle"><li><details open=""><summary><strong>TEMPLATE</strong></summary><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a02a8a7-b204-8023-bb19-c4eb07123515" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidator {
+    private static final String REGEX = &quot;&quot;;
+    private static final Pattern PATTERN =
+            Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+
+    public static boolean isValidExample(String example) {
+        if (example == null) {
+            return false;
+        }
+        Matcher matcher = PATTERN.matcher(example);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        String[] examples = {
+                &quot;530 09&quot;,// valid
+                &quot;535 01&quot;,// valid
+                &quot;708 00&quot;,// valid
+                &quot;12345&quot;, // invalid
+                &quot;678a3&quot;, // invalid
+                &quot;010 101&quot; // invalid
+        };
+
+        for (String example : examples) {
+            System.out.println(example + &quot;: &quot; + isValidExample(example)); // pro mrdky co nemaji javu 25 je sout :(
+        }
+    }
+}</code></pre></div></details></li></ul></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-8054-a700-ca9e41ff2c19" class="toggle"><li><details open=""><summary><strong>ŘEŠENÍ</strong></summary><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-806f-9fc6-f95f7173f7e5" class=""><code>&quot;[\\d]{3}\\s[\\d]{2}”</code></p></div></details></li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Rodné číslo</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-801d-847e-e4f6e699d8d5" class=""><strong>ZADÁNÍ</strong></p></div><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8036-a338-feadd9258216" class="">Udělej regex na rodné číslo (zatím neřeš, zda je den a měsíc reálný)</p></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-8083-bb9e-da7995129a5e" class="toggle"><li><details open=""><summary><strong>TEMPLATE</strong></summary><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a02a8a7-b204-8071-aa2f-d9ce54460d31" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidator {
+    private static final String REGEX = &quot;&quot;;
+    private static final Pattern PATTERN = 
+				    Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+
+    public static boolean isValidExample(String example) {
+        if (example == null) {
+            return false;
+        }
+        Matcher matcher = PATTERN.matcher(example);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        String[] examples = {
+            &quot;755212/0345&quot;,    // valid
+            &quot;705020/1234&quot;,    // valid
+            &quot;536231/0123&quot;,    // valid
+            &quot;1234567890&quot;,     // invalid
+            &quot;991301/1234&quot;,    // invalid
+            &quot;70154512&quot;        // invalid
+        };
+
+        for (String example : examples) {
+            System.out.println(example + &quot;: &quot; + isValidExample(example)); // pro mrdky co nemaji javu 25 je sout :(
+        }
+    }
+}
+</code></pre></div></details></li></ul></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-8084-a9cf-c9c80fb29b95" class="toggle"><li><details open=""><summary><strong>ŘEŠENÍ</strong></summary><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-80c8-a1e8-c4a6ea9c1b71" class=""><code>&quot;^\\d{6}/\\d{4}$”</code></p></div></details></li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Soubor</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-80e0-aaeb-d31632319613" class=""><strong>ZADÁNÍ</strong></p></div><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8000-adf6-e06b094a8dd4" class="">Udělej regex na detekci souboru (čistě název.přípona s max length 4)</p></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-80df-a78f-eedca52c9020" class="toggle"><li><details open=""><summary><strong>TEMPLATE</strong></summary><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a02a8a7-b204-80a6-afd9-cf148c2eb976" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidator {
+    private static final String REGEX = &quot;&quot;;
+    private static final Pattern PATTERN = 
+				    Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+
+    public static boolean isValidExample(String example) {
+        if (example == null) {
+            return false;
+        }
+        Matcher matcher = PATTERN.matcher(example);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        String[] examples = {
+            &quot;dokument.pdf&quot;,    // valid
+            &quot;honzovonudesky.jpg&quot;,        // valid
+            &quot;data.json&quot;,      // valid
+            &quot;neco.neccooooo&quot;,       // invalid - 4 znaky
+            &quot;test&quot;,            // invalid - bez přípony
+            &quot;.pdf&quot;        // invalid - bez názvu
+        };
+
+        for (String example : examples) {
+            System.out.println(example + &quot;: &quot; + isValidExample(example)); // pro mrdky co nemaji javu 25 je sout :(
+        }
+    }
+}
+</code></pre></div></details></li></ul></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-80f9-a625-c62b63329bc3" class="toggle"><li><details open=""><summary><strong>ŘEŠENÍ</strong></summary><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8031-b191-e546783195f6" class=""><code>&quot;^[^.]+\\.[a-zA-Z]{1,4}$”</code></p></div></details></li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Lehké </summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">IPv4</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-80a4-9596-dec6fa57dc71" class=""><strong>ZADÁNÍ</strong></p></div><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8097-a0c6-cc2ce8cd37bb" class="">Udělej regex na IPv4 (neřeš velikost čísel, pouze formát)</p></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-8043-95c2-d0235a4134e9" class="toggle"><li><details open=""><summary><strong>TEMPLATE</strong></summary><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a02a8a7-b204-801b-a28b-e85eb4396495" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidator {
+    private static final String REGEX = &quot;&quot;;
+    private static final Pattern PATTERN =
+            Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+
+    public static boolean isValidExample(String example) {
+        if (example == null) {
+            return false;
+        }
+        Matcher matcher = PATTERN.matcher(example);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        String[] examples = {
+                &quot;192.168.0.1&quot;,// valid
+                &quot;0.0.0.0&quot;,// valid
+                &quot;67.67.67.67&quot;,// valid
+                &quot;localhost&quot;, // invalid
+                &quot;69.420.999.2000&quot;, // invalid
+                &quot;1.2.3&quot; // invalid
+        };
+
+        for (String example : examples) {
+            System.out.println(example + &quot;: &quot; + isValidExample(example)); // pro mrdky co nemaji javu 25 je sout :(
+        }
+    }
+}</code></pre></div></details></li></ul></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-8050-a821-cd1c39e68da1" class="toggle"><li><details open=""><summary><strong>ŘEŠENÍ</strong></summary><div style="display:contents" dir="auto"><p id="2a12a8a7-b204-80bc-b8a1-ccb48ddc3daf" class=""><code>&quot;^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$&quot;</code></p></div></details></li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Telefonní číslo</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-805b-b59e-ce090d36299b" class=""><strong>ZADÁNÍ</strong></p></div><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-800a-ad29-d855ad4b8cba" class="">Udělej regex na jednoduché telefonní číslo formátu  <code>+XXX XXX XXX XXX</code></p></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-8083-af6e-e5b9af0cf0e8" class="toggle"><li><details open=""><summary><strong>TEMPLATE</strong></summary><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a02a8a7-b204-809b-83c9-f48f4346bb14" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidator {
+    private static final String REGEX = &quot;&quot;;
+    private static final Pattern PATTERN =
+            Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+
+    public static boolean isValidExample(String example) {
+        if (example == null) {
+            return false;
+        }
+        Matcher matcher = PATTERN.matcher(example);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        String[] examples = {
+                &quot;+420 123 456 789&quot;,// valid
+                &quot;+420 777 878 715&quot;,// valid
+                &quot;+420 608 033 010&quot;,// valid
+                &quot;123 123 123&quot;, // invalid
+                &quot;+677987654321&quot;, // invalid
+                &quot;+420 676 767 676 767&quot; // invalid
+        };
+
+        for (String example : examples) {
+            System.out.println(example + &quot;: &quot; + isValidExample(example)); // pro mrdky co nemaji javu 25 je sout :(
+        }
+    }
+}</code></pre></div></details></li></ul></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-80b8-991d-d407955de870" class="toggle"><li><details open=""><summary><strong>ŘEŠENÍ</strong></summary><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8059-9dce-edf1ed92d7e9" class=""><code>neco</code></p></div></details></li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Střední </summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Web (s možností https:// nebo www.)</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-80eb-9209-f3221c6a873a" class=""><strong>ZADÁNÍ</strong></p></div><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8091-a06e-fe05547213d8" class="">Udělej regex na webovou stránku včetně předpony (buď https:// nebo www.)</p></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-80f2-b86d-fd11596ba421" class="toggle"><li><details open=""><summary><strong>TEMPLATE</strong></summary><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="29f2a8a7-b204-8060-8f22-e2e9407c314c" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidator {
+    private static final String REGEX = &quot;&quot;;
+    private static final Pattern PATTERN =
+            Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+
+    public static boolean isValidExample(String example) {
+        if (example == null) {
+            return false;
+        }
+        Matcher matcher = PATTERN.matcher(example);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        String[] examples = {
+                &quot;www.pornhub.com&quot;,// valid
+                &quot;https://spse.cz&quot;,// valid
+                &quot;laibr.cz&quot;,// valid
+                &quot;semnepatricisla@67.sk&quot;, // invalid
+                &quot;JoAVelkaPismena@TakyNe.sk&quot;, // invalid
+                &quot;forgor@koncovka&quot; // invalid
+        };
+
+        for (String example : examples) {
+            System.out.println(example + &quot;: &quot; + isValidExample(example)); // pro mrdky co nemaji javu 25 je sout :(
+        }
+    }
+}</code></pre></div></details></li></ul></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-8094-9996-e947dc889c09" class="toggle"><li><details open=""><summary><strong>ŘEŠENÍ</strong></summary><div style="display:contents" dir="auto"><p id="29f2a8a7-b204-80d7-9c84-f1659ca1cea6" class=""><code>&quot;^(https?://)?(www\\.)?[\\w.-]+\\.[a-z]{2,}(/.*)?$&quot;</code></p></div></details></li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Pokročilé </summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">Silné heslo</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-8029-8340-e2073071092b" class=""><strong>ZADÁNÍ</strong></p></div><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-80ce-9847-cded5d018f44" class="">Udělej regex na detekci silného hesla (8+ charakterů, min. 1 velké a malé písmeno a číslice)</p></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-809f-b622-e99fd54b436b" class="toggle"><li><details open=""><summary><strong>TEMPLATE</strong></summary><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a02a8a7-b204-8041-a703-e801796137b4" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class EmailValidator {
+    private static final String REGEX = &quot;&quot;;
+    private static final Pattern PATTERN = Pattern.compile(REGEX);
+
+    public static boolean isValidExample(String example) {
+        if (example == null) {
+            return false;
+        }
+        Matcher matcher = PATTERN.matcher(example);
+        return matcher.matches();
+    }
+
+    public static void main(String[] args) {
+        String[] examples = {
+                &quot;Heslo123&quot;,      // valid
+                &quot;Password9&quot;,     // valid
+                &quot;MyPass2024&quot;,    // valid
+                &quot;heslo123&quot;,      // invalid
+                &quot;HESLO123&quot;,      // invalid
+                &quot;Heslo&quot;          // invalid
+        };
+
+        for (String example : examples) {
+            System.out.println(example + &quot;: &quot; + isValidExample(example)); // pro mrdky co nemaji javu 25 je sout :(
+        }
+    }
+}
+</code></pre></div></details></li></ul></div><div style="display:contents" dir="auto"><ul id="2a02a8a7-b204-80e8-868e-cfb169c79bf9" class="toggle"><li><details open=""><summary><strong>ŘEŠENÍ</strong></summary><div style="display:contents" dir="auto"><p id="2a02a8a7-b204-80cc-97c3-cf0ae8c387f5" class=""><code>&quot;^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$”</code></p></div></details></li></ul></div></div></details></div></div></details></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

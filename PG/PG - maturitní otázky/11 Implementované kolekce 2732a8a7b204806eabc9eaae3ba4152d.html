@@ -1,0 +1,713 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>11. Implementované kolekce</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2732a8a7-b204-806e-abc9-eaae3ba4152d" class="page sans"><header><h1 class="page-title" dir="auto">11. Implementované kolekce</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2e42a8a7-b204-807b-9816-e8864a51b523" class="">Java Collection Framework</h1></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80d4-aff3-ef6783b4813b" class="bulleted-list"><li style="list-style-type:disc">knihovna hotových datových struktur (např. <code>List</code>, <code>Set</code>)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8043-8407-ed28300ce7f6" class="bulleted-list"><li style="list-style-type:disc">dělí se na 3 základní části <div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8085-863d-ecce16d248fe" class="bulleted-list"><li style="list-style-type:circle"><code>Collection</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-801e-bc06-ea2de02905f6" class="bulleted-list"><li style="list-style-type:circle"><code>Map</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80b8-9932-ffd2156167f2" class="bulleted-list"><li style="list-style-type:circle">pomocná rozhraní</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="2e42a8a7-b204-8040-a029-fd7000fe3d5e" class="">Collection</h2></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8007-b9bf-f4f45abbb41b" class="bulleted-list"><li style="list-style-type:disc">dělí se na 3 části<div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8077-b6ee-f033b3e0d937" class="bulleted-list"><li style="list-style-type:circle">rozhraní (<code>List</code>, <code>Set</code>..)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80ab-8ef7-d91cf8117bf7" class="bulleted-list"><li style="list-style-type:circle">jejich implementace (<code>ArrayList</code>, <code>HashSet</code>..)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8087-8de3-d3297a64e528" class="bulleted-list"><li style="list-style-type:circle">algoritmy (<code>Collection.sort()</code>, <code>Collection.shuffle()</code>..)</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-80a9-bac2-e68ee67ef5aa" class=""><strong>Definované metody</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-80c7-ad29-e9b2b1be97b8" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80e2-9aa4-e7f3a104064d"><th id="WSmP" class="simple-table-header-color simple-table-header"><strong>Metoda</strong></th><th id=";TaK" class="simple-table-header-color simple-table-header" style="width:263px"><strong>Popis</strong></th><th id="pDLa" class="simple-table-header-color simple-table-header"><strong>Návratový typ</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-808b-a802-e11d2f35652d"><td id="WSmP" class=""><code>add(E e)</code></td><td id=";TaK" class="" style="width:263px">Přidá prvek do kolekce</td><td id="pDLa" class=""><code>boolean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-809d-8f94-d579dd98bc4e"><td id="WSmP" class=""><code>remove(Object o)</code></td><td id=";TaK" class="" style="width:263px">Odstraní prvek z kolekce</td><td id="pDLa" class=""><code>boolean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8029-af82-f0297e4e79fd"><td id="WSmP" class=""><code>size()</code></td><td id=";TaK" class="" style="width:263px">Vrátí počet prvků</td><td id="pDLa" class=""><code>int</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80c8-953c-fee2da98f501"><td id="WSmP" class=""><code>isEmpty()</code></td><td id=";TaK" class="" style="width:263px">Vrací <code>true</code>, pokud je kolekce prázdná</td><td id="pDLa" class=""><code>boolean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80a9-8a2a-d5bc60dce867"><td id="WSmP" class=""><code>contains(Object o)</code></td><td id=";TaK" class="" style="width:263px">Zjistí, zda kolekce obsahuje prvek</td><td id="pDLa" class=""><code>boolean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8032-b13d-ec3189aa5bb7"><td id="WSmP" class=""><code>iterator()</code></td><td id=";TaK" class="" style="width:263px">Vrátí iterátor pro průchod kolekcí</td><td id="pDLa" class=""><code>Iterator&lt;E&gt;</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-801f-a214-d469289068de" class="">List (seznam)</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80ce-85e7-cf9cc730f64a" class="bulleted-list"><li style="list-style-type:disc">seřazený seznam duplicitních prvků</li></ul></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-80ec-a776-c7547fefefe3" class=""><strong>Implementace</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-802b-a9aa-d0f25db07aaf" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-801f-9573-f314e939daaf"><th id="L;pf" class="simple-table-header-color simple-table-header"><strong>Implementace</strong></th><th id="FZJC" class="simple-table-header-color simple-table-header"><strong>Struktura</strong></th><th id=";N;y" class="simple-table-header-color simple-table-header" style="width:124.44999694824219px"><strong>Přístup k prvku</strong></th><th id="Jind" class="simple-table-header-color simple-table-header" style="width:119px"><strong>Přidání/Mazání</strong></th><th id="k|Tp" class="simple-table-header-color simple-table-header"><strong>Poznámka</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-809e-9bf4-d0f286b480f9"><td id="L;pf" class=""><code><strong>ArrayList</strong></code></td><td id="FZJC" class="">Dynamické pole</td><td id=";N;y" class="" style="width:124.44999694824219px">O(1)</td><td id="Jind" class="" style="width:119px">O(n)</td><td id="k|Tp" class="">Rychlý přístup, pomalá modifikace uprostřed</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8015-bf9a-c52956dea088"><td id="L;pf" class=""><code><strong>LinkedList</strong></code></td><td id="FZJC" class="">Dvousměrně vázaný seznam</td><td id=";N;y" class="" style="width:124.44999694824219px">O(n)</td><td id="Jind" class="" style="width:119px">O(1)</td><td id="k|Tp" class="">Rychlá modifikace, pomalý přístup</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-802d-87cf-e59f8d68d704"><td id="L;pf" class=""><code><strong>Vector</strong></code></td><td id="FZJC" class="">Dynamické pole</td><td id=";N;y" class="" style="width:124.44999694824219px">O(1)</td><td id="Jind" class="" style="width:119px">O(n)</td><td id="k|Tp" class="">Synchronizovaný <code>ArrayList</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-80d3-85ae-f6742ea6531a" class=""><strong>Unikátní metody</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-802d-aa53-c28181aa9d50" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80e9-8be2-fda294aef603"><th id="zfhG" class="simple-table-header-color simple-table-header"><strong>Metoda</strong></th><th id="hOzt" class="simple-table-header-color simple-table-header" style="width:295px"><strong>Popis</strong></th><th id="nY;L" class="simple-table-header-color simple-table-header"><strong>Návratový typ</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8064-bbc8-e9493a620f5b"><td id="zfhG" class=""><code>add(int index, E e)</code></td><td id="hOzt" class="" style="width:295px">Vloží prvek na konkrétní pozici (posune ostatní)</td><td id="nY;L" class=""><code>void</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-807d-a3b4-d31ee5c31b10"><td id="zfhG" class=""><code>get(int index)</code></td><td id="hOzt" class="" style="width:295px">Vrátí prvek na daném indexu</td><td id="nY;L" class=""><code>E</code> (typ prvku)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80f8-8ec0-f7c16cd4cc3a"><td id="zfhG" class=""><code>remove(int index)</code></td><td id="hOzt" class="" style="width:295px">Odstraní prvek na daném indexu a vrátí ho</td><td id="nY;L" class=""><code>E</code> (typ prvku)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8087-88c8-ce2f3494ce32"><td id="zfhG" class=""><code>indexOf(Object o)</code></td><td id="hOzt" class="" style="width:295px">Vrátí index prvního výskytu prvku (nebo -1)</td><td id="nY;L" class=""><code>int</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80e7-974d-f4b38fe8df62"><td id="zfhG" class=""><code>subList(int from, int to)</code></td><td id="hOzt" class="" style="width:295px">Vrátí pohled na část seznamu (od <code>from</code> vč., do <code>to</code> bez)</td><td id="nY;L" class=""><code>List&lt;E&gt;</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8036-994d-cc037beb9cef" class="">Set (množiny)</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80e4-9d24-ffc3d3e06015" class="bulleted-list"><li style="list-style-type:disc">seznam <strong>unikátních</strong> prvků</li></ul></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-809e-8b6e-c27962383b2c" class=""><strong>Implementace</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-80d1-a0ec-e4f85c058937" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-804a-8f8d-d4d894b68561"><th id="Mu^~" class="simple-table-header-color simple-table-header" style="width:121.26666259765625px"><strong>Implementace</strong></th><th id="fyK:" class="simple-table-header-color simple-table-header" style="width:146.36666870117188px"><strong>Struktura</strong></th><th id="[Rem" class="simple-table-header-color simple-table-header" style="width:127.19999694824219px"><strong>Pořadí prvků</strong></th><th id="Jh=&gt;" class="simple-table-header-color simple-table-header" style="width:101.80000305175781px"><strong>Rychlost (Operace)</strong></th><th id="IVEi" class="simple-table-header-color simple-table-header" style="width:222.36666870117188px"><strong>Poznámka</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-803e-8c8a-ff55133d8c80"><td id="Mu^~" class="" style="width:121.26666259765625px"><code><strong>HashSet</strong></code></td><td id="fyK:" class="" style="width:146.36666870117188px">Hashovací tabulka</td><td id="[Rem" class="" style="width:127.19999694824219px">Náhodné (nezaručeno)</td><td id="Jh=&gt;" class="" style="width:101.80000305175781px">O(1)</td><td id="IVEi" class="" style="width:222.36666870117188px">Nejrychlejší, základní volba pro unikátní prvky</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8038-b38a-fb8a01fd7123"><td id="Mu^~" class="" style="width:121.26666259765625px"><code><strong>LinkedHashSet</strong></code></td><td id="fyK:" class="" style="width:146.36666870117188px">Hashovací tabulka + Spojový seznam</td><td id="[Rem" class="" style="width:127.19999694824219px">Podle vložení</td><td id="Jh=&gt;" class="" style="width:101.80000305175781px">O(1)</td><td id="IVEi" class="" style="width:222.36666870117188px">Pomalější než HashSet, ale pamatuje si historii vkládání</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80e4-8639-d91cebb880dd"><td id="Mu^~" class="" style="width:121.26666259765625px"><code><strong>TreeSet</strong></code></td><td id="fyK:" class="" style="width:146.36666870117188px">Red-Black Tree (Strom)</td><td id="[Rem" class="" style="width:127.19999694824219px">Setříděné (podle hodnoty)</td><td id="Jh=&gt;" class="" style="width:101.80000305175781px">O(log n)</td><td id="IVEi" class="" style="width:222.36666870117188px">Nejpomalejší, ale prvky jsou vždy seřazené (např. abecedně)</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8015-89af-fecd24188cbe" class="">Queue (fronty)</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8029-a35b-fa79fef9cd9b" class="bulleted-list"><li style="list-style-type:disc">FIFO struktura</li></ul></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-80dd-91ac-e8a3d68f4b19" class=""><strong>Implementace</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-807a-8502-c5852911dee9" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8042-a594-f902f6ec8b1c"><th id="`eOF" class="simple-table-header-color simple-table-header" style="width:131.93333435058594px"><strong>Implementace</strong></th><th id="YYz|" class="simple-table-header-color simple-table-header"><strong>Struktura / Chování</strong></th><th id="gxU&lt;" class="simple-table-header-color simple-table-header"><strong>Pořadí zpracování</strong></th><th id="`A]v" class="simple-table-header-color simple-table-header"><strong>Poznámka</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8097-93ef-e77a553133f9"><td id="`eOF" class="" style="width:131.93333435058594px"><code><strong>LinkedList</strong></code></td><td id="YYz|" class="">Spojový seznam</td><td id="gxU&lt;" class="">FIFO (First-In-First-Out)</td><td id="`A]v" class="">Univerzální: Implementuje frontu i obousměrný seznam</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8009-83fd-c4c2fe2ccfa3"><td id="`eOF" class="" style="width:131.93333435058594px"><code><strong>PriorityQueue</strong></code></td><td id="YYz|" class="">Prioritní fronta (Halda)</td><td id="gxU&lt;" class="">Podle priority (nejmenší/největší prvek)</td><td id="`A]v" class="">Porušuje FIFO</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-80b6-b676-c73ebe108825" class=""><strong>Unikátní metody</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-8092-a7ef-db91b6aa94ce" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-809f-809e-d6673891a38f"><th id="X?qG" class="simple-table-header-color simple-table-header" style="width:100px"><strong>Metoda</strong></th><th id="sfZz" class="simple-table-header-color simple-table-header" style="width:285px"><strong>Popis</strong></th><th id="MLmt" class="simple-table-header-color simple-table-header" style="width:263px"><strong>Chování při chybě / prázdné frontě</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8005-ae5d-e34aa017cc85"><td id="X?qG" class="" style="width:100px"><code>offer(E e)</code></td><td id="sfZz" class="" style="width:285px">Přidá prvek na konec fronty</td><td id="MLmt" class="" style="width:263px">Vrátí <code>false</code>, pokud nelze přidat (např. plná kapacita)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-809d-8185-f784f02277aa"><td id="X?qG" class="" style="width:100px"><code>poll()</code></td><td id="sfZz" class="" style="width:285px">Odstraní a vrátí prvek z čela fronty</td><td id="MLmt" class="" style="width:263px">Vrátí <code>null</code>, pokud je fronta prázdná</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80a5-8642-c95ff0576c40"><td id="X?qG" class="" style="width:100px"><code>peek()</code></td><td id="sfZz" class="" style="width:285px">Vrátí prvek z čela fronty bez jeho odebrání</td><td id="MLmt" class="" style="width:263px">Vrátí <code>null</code>, pokud je fronta prázdná</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-800d-97d0-e86327d55a92" class=""><strong>Dequeue</strong></h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80c2-ab57-c447d8c00206" class="bulleted-list"><li style="list-style-type:disc">fronta, ale podporuje operace na obou koncích</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80d6-a623-d25b6231f7c9" class="bulleted-list"><li style="list-style-type:disc">podporuje zároveň FIFO a LIFO strukturu</li></ul></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-808d-b8df-c4dd02e5142d" class=""><strong>Implementace </strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-8021-89a6-cd33b75d00b4" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8069-b929-df17767c9d65"><th id="cc|I" class="simple-table-header-color simple-table-header"><strong>Implementace</strong></th><th id="fCmb" class="simple-table-header-color simple-table-header"><strong>Struktura</strong></th><th id="Qt[o" class="simple-table-header-color simple-table-header"><strong>Vlastnosti</strong></th><th id="&gt;yUE" class="simple-table-header-color simple-table-header"><strong>Použití</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80cc-a0a6-d81af8848c5e"><td id="cc|I" class=""><code><strong>ArrayDeque</strong></code></td><td id="fCmb" class="">Dynamické pole </td><td id="Qt[o" class="">Efektivnější, rychlejší, méně paměti než LinkedList</td><td id="&gt;yUE" class="">Pro “klasický” <code>Deque</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80cd-b043-df69332943ed"><td id="cc|I" class=""><code><strong>LinkedList</strong></code></td><td id="fCmb" class="">Spojový seznam</td><td id="Qt[o" class="">Flexibilnější </td><td id="&gt;yUE" class="">Univerzální: Implementuje frontu i obousměrný seznam</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-8073-b050-e63eb582df31" class=""><strong>Unikátní metody</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-80a3-991f-d879c10d3b68" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80fe-81c9-f908917d5801"><th id="lBsk" class="simple-table-header-color simple-table-header"><strong>Metoda</strong></th><th id="U^\=" class="simple-table-header-color simple-table-header" style="width:283px"><strong>Popis</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8033-b5ef-fa30ad5351ed"><td id="lBsk" class=""><code>addFirst(E e)</code></td><td id="U^\=" class="" style="width:283px">Přidá prvek na začátek (hlavu) fronty</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8041-b8d8-ce467f761fdf"><td id="lBsk" class=""><code>addLast(E e)</code></td><td id="U^\=" class="" style="width:283px">Přidá prvek na konec (ocas) fronty</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80f0-9dfd-d9974d4021a9"><td id="lBsk" class=""><code>pollFirst()</code></td><td id="U^\=" class="" style="width:283px">Odstraní a vrátí první prvek ze začátku</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80f2-974a-caaf5462d377"><td id="lBsk" class=""><code>pollLast()</code></td><td id="U^\=" class="" style="width:283px">Odstraní a vrátí poslední prvek z konce</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="2e42a8a7-b204-80ce-974b-cab673220277" class="">Map (mapy)</h2></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80be-92c4-d33cc3250e32" class="bulleted-list"><li style="list-style-type:disc">funguje na základě K-V </li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8008-abfe-da7c80e77dce" class="bulleted-list"><li style="list-style-type:disc">unikátní klíče a hodnoty s možností duplicit</li></ul></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-8087-a9a6-f289b2da4a72" class=""><strong>Implementace</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-805f-8661-ec496458e46e" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80a4-af50-c3158fdf949e"><th id="XZOS" class="simple-table-header-color simple-table-header" style="width:131.75px"><strong>Implementace</strong></th><th id="^SJJ" class="simple-table-header-color simple-table-header"><strong>Struktura</strong></th><th id="p?DJ" class="simple-table-header-color simple-table-header" style="width:164.11666870117188px"><strong>Pořadí prvků (klíčů)</strong></th><th id="Zz{U" class="simple-table-header-color simple-table-header" style="width:94px"><strong>Rychlost</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8013-a456-cd65c428ff5a"><td id="XZOS" class="" style="width:131.75px"><code><strong>HashMap</strong></code></td><td id="^SJJ" class="">Hashovací tabulka</td><td id="p?DJ" class="" style="width:164.11666870117188px">Náhodné (nezaručeno)</td><td id="Zz{U" class="" style="width:94px">O(1)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8012-8d5b-c63b37337f37"><td id="XZOS" class="" style="width:131.75px"><code><strong>LinkedHashMap</strong></code></td><td id="^SJJ" class="">Hash tabulka + Spojový seznam</td><td id="p?DJ" class="" style="width:164.11666870117188px">Podle pořadí vložení</td><td id="Zz{U" class="" style="width:94px">O(1)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80ee-8561-f62e258ff2f2"><td id="XZOS" class="" style="width:131.75px"><code><strong>TreeMap</strong></code></td><td id="^SJJ" class="">Red-Black Tree (Strom)</td><td id="p?DJ" class="" style="width:164.11666870117188px">Setříděné (podle klíče)</td><td id="Zz{U" class="" style="width:94px">O(log n)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8070-a2b0-f782c6f28b5c"><td id="XZOS" class="" style="width:131.75px"><code><strong>Hashtable</strong></code></td><td id="^SJJ" class="">Hashovací tabulka</td><td id="p?DJ" class="" style="width:164.11666870117188px">Náhodné</td><td id="Zz{U" class="" style="width:94px">O(1)</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-80a7-b6e2-c6cb0fd68695" class=""><strong>Unikátní metody</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-8080-b16e-e22ddcabf245" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8082-baa0-f9765e9b4c10"><th id="gKUp" class="simple-table-header-color simple-table-header" style="width:193.88333129882812px"><strong>Metoda</strong></th><th id="afKX" class="simple-table-header-color simple-table-header" style="width:272.1166687011719px"><strong>Popis</strong></th><th id="PbUA" class="simple-table-header-color simple-table-header" style="width:255px"><strong>Návratová hodnota</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8028-951c-e8fd8d1fe65b"><td id="gKUp" class="" style="width:193.88333129882812px"><code>put(K key, V value)</code></td><td id="afKX" class="" style="width:272.1166687011719px">Vloží (nebo přepíše) záznam pod klíčem</td><td id="PbUA" class="" style="width:255px">Původní hodnota (pokud klíč existoval), jinak <code>null</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8042-a1a5-e58e9ae53ce9"><td id="gKUp" class="" style="width:193.88333129882812px"><code>get(Object key)</code></td><td id="afKX" class="" style="width:272.1166687011719px">Vyhledá hodnotu podle klíče</td><td id="PbUA" class="" style="width:255px">Hodnota přiřazená klíči, nebo <code>null</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8084-8607-d6e490788b60"><td id="gKUp" class="" style="width:193.88333129882812px"><code>remove(Object key)</code></td><td id="afKX" class="" style="width:272.1166687011719px">Smaže záznam podle klíče</td><td id="PbUA" class="" style="width:255px">Smazaná hodnota (nebo <code>null</code>, pokud klíč neexistoval)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8064-a843-fb586dc45a5a"><td id="gKUp" class="" style="width:193.88333129882812px"><code>containsKey(Object key)</code></td><td id="afKX" class="" style="width:272.1166687011719px">Zjistí, zda mapa obsahuje daný klíč</td><td id="PbUA" class="" style="width:255px"><code>boolean</code> (<code>true</code>/<code>false</code>)</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="2e42a8a7-b204-808a-9e9a-f7c1253330d6" class="">Pomocná rozhraní</h2></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8041-910f-f9ec4b58203f" class="">Iterator //dotat iterable</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8033-a310-da2c57058a11" class="bulleted-list"><li style="list-style-type:disc">slouží k procházení <code>Collection</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8035-9028-e6008fbe8eb8" class="bulleted-list"><li style="list-style-type:disc">seznam by se neměl měnit, když k němu přistupuje <code>iterator</code></li></ul></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-80d2-b4fc-cb15362e0d33" class=""><strong>Unikátní metody</strong></p></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-8099-b28f-c6c8b1e6355d" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-802c-929f-e878d4c1b31c"><th id="g_Ec" class="simple-table-header-color simple-table-header"><strong>Metoda</strong></th><th id="Iveb" class="simple-table-header-color simple-table-header" style="width:410px"><strong>Popis</strong></th><th id="jdAG" class="simple-table-header-color simple-table-header"><strong>Návratová hodnota</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80ab-8b0b-fa4cca1e5e51"><td id="g_Ec" class=""><code>hasNext()</code></td><td id="Iveb" class="" style="width:410px">Zjistí, zda je v kolekci k dispozici další prvek</td><td id="jdAG" class=""><code>boolean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80e7-82f2-fafa8a10de2e"><td id="g_Ec" class=""><code>next()</code></td><td id="Iveb" class="" style="width:410px">Vrátí aktuální prvek a posune &quot;kurzor&quot; na další</td><td id="jdAG" class=""><code>E</code> (typ prvku)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80c1-aeca-cece7b09b9a8"><td id="g_Ec" class=""><code>remove()</code></td><td id="Iveb" class="" style="width:410px">Bezpečně odstraní poslední prvek vrácený metodou <code>next()</code></td><td id="jdAG" class=""><code>void</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-80c9-98e9-d7fb303d3f8b" class="">ListIterator</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8095-9f4e-c49336befd33" class="bulleted-list"><li style="list-style-type:disc"><code>Iterator</code>, ale umí procházet oběma směry</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80de-8970-de4c32de6f09" class="bulleted-list"><li style="list-style-type:disc">lze měnit seznam při iteraci</li></ul></div><div style="display:contents" dir="auto"><p id="2e42a8a7-b204-80cd-8002-e2981b19e356" class=""><strong>Unikátní metody</strong></p></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80d6-9868-f0f529beed18" class="bulleted-list"><li style="list-style-type:disc">stejné jako Iterator plus</li></ul></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-80c4-8c1f-c2f37a2c2929" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8091-8cea-ef4a5041b28b"><th id="g_Ec" class="simple-table-header-color simple-table-header"><strong>Metoda</strong></th><th id="Iveb" class="simple-table-header-color simple-table-header" style="width:410px"><strong>Popis</strong></th><th id="jdAG" class="simple-table-header-color simple-table-header"><strong>Návratová hodnota</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8017-bc9c-f1421e2c6684"><td id="g_Ec" class=""><code>hasPrevious()</code></td><td id="Iveb" class="" style="width:410px">Zjistí, zda je v kolekci k dispozici předchozí prvek</td><td id="jdAG" class=""><code>boolean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-808e-8a67-d175acd948a3"><td id="g_Ec" class=""><code>previous()</code></td><td id="Iveb" class="" style="width:410px">Vrátí aktuální prvek a posune &quot;kurzor&quot; na předchozí</td><td id="jdAG" class=""><code>E</code> (typ prvku)</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-808f-b044-c483c8763932" class="">Comparator vs. Comparable</h3></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-801a-ba50-c47d3b879b5f" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80f1-a2ab-def82c6faa66"><th id="HrTu" class="simple-table-header-color simple-table-header">Vlastnost</th><th id="yH`^" class="simple-table-header-color simple-table-header">Comparator</th><th id="x}Hs" class="simple-table-header-color simple-table-header">Comparable</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8027-85b0-c55d2ec72011"><td id="HrTu" class=""><strong>Kde je:</strong></td><td id="yH`^" class="">Mimo třídu (samostatný objekt)</td><td id="x}Hs" class="">Uvnitř třídy objektu (<code>implements</code>)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-807f-bd8a-d8a4c4e491ce"><td id="HrTu" class=""><strong>Metoda:</strong></td><td id="yH`^" class=""><code>compare(obj1, obj2)</code></td><td id="x}Hs" class=""><code>compareTo(this, other)</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80cc-a277-e11372593e9f"><td id="HrTu" class=""><strong>Počet:</strong></td><td id="yH`^" class="">Můžeš jich mít nekonečně mnoho</td><td id="x}Hs" class="">Jen jedno výchozí řazení</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80e8-b2de-d36d315f742a"><td id="HrTu" class=""><strong>Volání:</strong></td><td id="yH`^" class=""><code>Collections.sort(list, comparator)</code></td><td id="x}Hs" class=""><code>Collections.sort(list)</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2e42a8a7-b204-80a7-9adf-f7bd431c1413" class="">Synchronizace v kolekcích </h1></div><div style="display:contents" dir="auto"><p id="30d2a8a7-b204-80b0-8402-ee6fcf0bceaa" class="">//do jine otazky</p></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80fb-bf0b-c24c1b595602" class="bulleted-list"><li style="list-style-type:disc"><code>Collections</code> nejsou thread-safe</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8092-ae7d-c92d34f73408" class="bulleted-list"><li style="list-style-type:disc">3 způsoby</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8072-a50d-fdd4cea950ef" class="">Zastaralé kolekce</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80f9-8af9-ff70ccf05e1a" class="bulleted-list"><li style="list-style-type:disc">staré třídy z JDK 1.0</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8078-8f22-f48916aad4f5" class="bulleted-list"><li style="list-style-type:disc">synchronizované, ale pomalé</li></ul></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-80bb-82c0-f5815fe2eec3" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80c7-bf22-f904a219d952"><th id="GzqO" class="simple-table-header-color simple-table-header"><strong>Kolekce</strong></th><th id="AJn~" class="simple-table-header-color simple-table-header" style="width:409px"><strong>Proč je stará špatná?</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-801a-8dd1-fd74b750205d"><td id="GzqO" class=""><code><strong>Vector</strong></code></td><td id="AJn~" class="" style="width:409px">Pomalý, zamyká celou kolekci při každé operaci.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80c8-abec-f72dc9394ee9"><td id="GzqO" class=""><code><strong>Hashtable</strong></code></td><td id="AJn~" class="" style="width:409px">Pomalá, zamyká celou mapu, nepovoluje <code>null</code> klíče/hodnoty.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-803f-b81a-e23b09a37ed8"><td id="GzqO" class=""><code><strong>Stack</strong></code></td><td id="AJn~" class="" style="width:409px">Dědí z Vectoru (špatný návrh), pomalý.</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8082-80df-d275ca1060ee" class="">Wrappery</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-806d-8aaf-ec2f913d1e8f" class="bulleted-list"><li style="list-style-type:disc">obalí nesynchronní kolekci a udělají ji synchronní</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8053-af5a-cf213e80286b" class="bulleted-list"><li style="list-style-type:disc">volá se pak obal, ne kolekce</li></ul></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-80b8-979a-ed84c342e2a0" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-805e-8cf5-f1bf73f2bb2f"><th id=";ySJ" class="simple-table-header-color simple-table-header" style="width:283px"><strong>Metoda</strong></th><th id="y?Oy" class="simple-table-header-color simple-table-header" style="width:399px"><strong>Výsledek</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8020-a281-f9fc13b05c4c"><td id=";ySJ" class="" style="width:283px"><code>Collections.synchronizedList(list)</code></td><td id="y?Oy" class="" style="width:399px">Vrací <code>List</code>, který je bezpečný pro více vláken</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-804a-907d-db7d4aa24ad2"><td id=";ySJ" class="" style="width:283px"><code>Collections.synchronizedMap(map)</code></td><td id="y?Oy" class="" style="width:399px">Vrací <code>Map</code>, která je bezpečná pro více vláken.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8072-8f87-fddf98a3898c"><td id=";ySJ" class="" style="width:283px"><code>Collections.synchronizedSet(set)</code></td><td id="y?Oy" class="" style="width:399px">Vrací <code>Set</code>, který je bezpečný pro více vláken.</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8018-9e40-da89f3b1652c" class="">Moderní souběžné kolekce</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80b2-b172-c4a5ca9ef41a" class="bulleted-list"><li style="list-style-type:disc">nejefektivnější volba</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-804d-b1f8-e0056330b5e7" class="bulleted-list"><li style="list-style-type:disc">bez drastického zpomalení</li></ul></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-808a-a12b-ca2c9c24856f" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-801e-a3ad-d8c050b06030"><th id="@OCO" class="simple-table-header-color simple-table-header"><strong>Kolekce</strong></th><th id="J=F^" class="simple-table-header-color simple-table-header" style="width:416px"><strong>Vlastnost / Mechanismus</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80b2-b9ed-fc0e8e92b8df"><td id="@OCO" class=""><code><strong>ConcurrentHashMap</strong></code></td><td id="J=F^" class="" style="width:416px">Zamyká jen části (segmenty/buckety), ne celou mapu.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8092-8d1f-d53bd4d45575"><td id="@OCO" class=""><code><strong>CopyOnWriteArrayList</strong></code></td><td id="J=F^" class="" style="width:416px">Při zápisu vytvoří novou kopii celého pole. Čtení je bez zámků.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8091-b35f-ec37ce8dc195"><td id="@OCO" class=""><code><strong>BlockingQueue</strong></code> (např. <code>ArrayBlockingQueue</code>)</td><td id="J=F^" class="" style="width:416px">Uspí vlákno, když je fronta plná (při vkládání) nebo prázdná (při odběru).</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2e42a8a7-b204-8072-9eca-f3c8e5b275ab" class="">Stream API</h1></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80ad-b679-fd29916fcf00" class="bulleted-list"><li style="list-style-type:disc">usnadňuje práci s daty (filtrace, třídění..)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8024-962a-f66258a4fc6b" class="bulleted-list"><li style="list-style-type:disc">paměťově efektivnější</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8048-beeb-d52fdda24052" class="">Způsoby vytvoření Streamu</h3></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-8016-89dd-c4541363c639" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-808c-bfbe-d9df75a16a0e"><th id="_JYj" class="simple-table-header-color simple-table-header"><strong>Zdroj dat</strong></th><th id="J}e]" class="simple-table-header-color simple-table-header" style="width:422px"><strong>Příklad kódu</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-801b-bd62-c09c8198cfce"><td id="_JYj" class=""><strong>Kolekce</strong> (List, Set)</td><td id="J}e]" class="" style="width:422px"><code>Stream&lt;String&gt; s = list.stream();</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80c6-a040-def6a658604e"><td id="_JYj" class=""><strong>Pole</strong> (Array)</td><td id="J}e]" class="" style="width:422px"><code>Stream&lt;String&gt; s = Arrays.stream(pole);</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-804c-9db0-f480bf893ce1"><td id="_JYj" class=""><strong>Jednotlivé hodnoty</strong></td><td id="J}e]" class="" style="width:422px"><code>Stream&lt;String&gt; s = Stream.of(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;);</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8040-82fe-c6033176c5a1"><td id="_JYj" class=""><strong>Číselný rozsah</strong></td><td id="J}e]" class="" style="width:422px"><code>IntStream s = IntStream.range(1, 5);</code> <em>(obsahuje 1, 2, 3, 4)</em></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="2e42a8a7-b204-80a9-8d02-d31aaf570928" class="">Operace</h2></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8077-a9c5-e6095aa9be2c" class="">Mezilehlé operace</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8017-8e5e-cb4b12dc6100" class="bulleted-list"><li style="list-style-type:disc">vrací nový <code>Stream</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-808b-917d-e9e960d66152" class="bulleted-list"><li style="list-style-type:disc">líné vyhodnocování</li></ul></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-8044-b74e-d3723b73a818" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8097-af47-edd818a3fdfc"><th id="`g`a" class="simple-table-header-color simple-table-header" style="width:145.68333435058594px"><strong>Operace</strong></th><th id="=q\w" class="simple-table-header-color simple-table-header"><strong>Popis</strong></th><th id="Ejus" class="simple-table-header-color simple-table-header" style="width:297.5px"><strong>Příklad využití</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80d2-81b8-c4721d04e805"><td id="`g`a" class="" style="width:145.68333435058594px"><code>filter(Predicate)</code></td><td id="=q\w" class="">Filtruje prvky dle podmínky(<code>true</code>)</td><td id="Ejus" class="" style="width:297.5px"><code>filter(x -&gt; x &gt; 10)</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80c2-a837-dbab4314e6f7"><td id="`g`a" class="" style="width:145.68333435058594px"><code>map(Function)</code></td><td id="=q\w" class="">Transformuje každý prvek na něco jiného (1:1)</td><td id="Ejus" class="" style="width:297.5px"><code>map(s -&gt; s.toUpperCase())</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8053-be32-ccf50dc25432"><td id="`g`a" class="" style="width:145.68333435058594px"><code>flatMap(Function)</code></td><td id="=q\w" class="">&quot;Rozbalí&quot; prvky (např. seznamy v seznamu) do jednoho plochého streamu (1:N)</td><td id="Ejus" class="" style="width:297.5px"><code>flatMap(list -&gt; list.stream())</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8006-aa46-ecc5f6760430"><td id="`g`a" class="" style="width:145.68333435058594px"><code>sorted()</code></td><td id="=q\w" class="">Seřadí prvky (přirozeně nebo komparátorem)</td><td id="Ejus" class="" style="width:297.5px"><code>sorted()</code> nebo <code>sorted(Comparator.reverseOrder())</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80bd-86a2-ca49da394cbf"><td id="`g`a" class="" style="width:145.68333435058594px"><code>distinct()</code></td><td id="=q\w" class="">Odstraní duplicity (podle <code>equals</code>)</td><td id="Ejus" class="" style="width:297.5px"><code>distinct()</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80a0-9d90-fb2d3679825c"><td id="`g`a" class="" style="width:145.68333435058594px"><code>limit(n)</code></td><td id="=q\w" class="">Pustí dál jen prvních <code>n</code> prvků</td><td id="Ejus" class="" style="width:297.5px"><code>limit(5)</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8094-9c32-e034cd5011c6"><td id="`g`a" class="" style="width:145.68333435058594px"><code>skip(n)</code></td><td id="=q\w" class="">Zahodí prvních <code>n</code> prvků a zbytek pustí dál</td><td id="Ejus" class="" style="width:297.5px"><code>skip(2)</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8013-8c74-fa69a5ffb0a8" class="">Terminální operace</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8070-900f-d05a04480a2f" class="bulleted-list"><li style="list-style-type:disc">ukončí <code>Stream</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-8025-aa33-eef9da9f559a" class="bulleted-list"><li style="list-style-type:disc">vrací výsledek</li></ul></div><div style="display:contents" dir="ltr"><table id="2e42a8a7-b204-8022-9e42-cba3208f9f0e" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8007-b59c-dbf987c3168f"><th id="_]ik" class="simple-table-header-color simple-table-header"><strong>Operace</strong></th><th id="\Z`B" class="simple-table-header-color simple-table-header" style="width:285px"><strong>Popis</strong></th><th id="hBD:" class="simple-table-header-color simple-table-header" style="width:210.73333740234375px"><strong>Návratová hodnota</strong></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8064-a29a-f6a7ce566111"><td id="_]ik" class=""><code>collect(...)</code></td><td id="\Z`B" class="" style="width:285px">Převede výsledek do kolekce (List, Set, Map...)</td><td id="hBD:" class="" style="width:210.73333740234375px">Kolekce (např. <code>List&lt;T&gt;</code>)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-80bc-80c7-d4d691387e47"><td id="_]ik" class=""><code>forEach(Consumer)</code></td><td id="\Z`B" class="" style="width:285px">Vykoná akci pro každý prvek (např. výpis)</td><td id="hBD:" class="" style="width:210.73333740234375px"><code>void</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-802b-b57a-f3cf76bd03ac"><td id="_]ik" class=""><code>count()</code></td><td id="\Z`B" class="" style="width:285px">Spočítá počet prvků ve streamu</td><td id="hBD:" class="" style="width:210.73333740234375px"><code>long</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-809e-849e-ff34ff2a84f8"><td id="_]ik" class=""><code>reduce(BinaryOperator)</code></td><td id="\Z`B" class="" style="width:285px">Zredukuje stream na jednu hodnotu (např. součet čísel)</td><td id="hBD:" class="" style="width:210.73333740234375px"><code>Optional&lt;T&gt;</code> (nebo hodnota)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8032-9695-d6084ebca787"><td id="_]ik" class=""><code>min(...)</code> / <code>max(...)</code></td><td id="\Z`B" class="" style="width:285px">Najde nejmenší/největší prvek podle komparátoru</td><td id="hBD:" class="" style="width:210.73333740234375px"><code>Optional&lt;T&gt;</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8042-a84c-c16c2cc56db2"><td id="_]ik" class=""><code>allMatch(Predicate)</code></td><td id="\Z`B" class="" style="width:285px"><code>true</code>, pokud podmínku splňují <strong>všechny</strong> prvky</td><td id="hBD:" class="" style="width:210.73333740234375px"><code>boolean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8050-b378-df262f3de7e7"><td id="_]ik" class=""><code>anyMatch(Predicate)</code></td><td id="\Z`B" class="" style="width:285px"><code>true</code>, pokud podmínku splňuje <strong>alespoň jeden</strong> prvek</td><td id="hBD:" class="" style="width:210.73333740234375px"><code>boolean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e42a8a7-b204-8008-b474-f426f83b1992"><td id="_]ik" class=""><code>noneMatch(Predicate)</code></td><td id="\Z`B" class="" style="width:285px"><code>true</code>, pokud podmínku nesplňuje <strong>žádný</strong> prvek</td><td id="hBD:" class="" style="width:210.73333740234375px"><code>boolean</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e42a8a7-b204-8011-b256-cee0a78c6d1a" class="">Paralelní zpracování</h3></div><div style="display:contents" dir="auto"><ul id="2e42a8a7-b204-80f1-87a3-fb4570935cd0" class="bulleted-list"><li style="list-style-type:disc"><code>parallelStream()</code></li></ul></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,724 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>12. Soubory</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2732a8a7-b204-809c-9ddb-e398a8bf5fa8" class="page sans"><header><h1 class="page-title" dir="auto">12. Soubory</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="27f2a8a7-b204-8088-b8e8-f90a4e69455b" class="">Typy souborů</h1></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8068-989f-f8d006dd62ff" class="bulleted-list"><li style="list-style-type:disc">při práci je důležitý znát typ souboru</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8021-8df7-eb74dda3bd37" class="bulleted-list"><li style="list-style-type:disc">každý typ má jiný styl ukládání a čtení dat</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8064-b35b-ed5a23c5162a" class="bulleted-list"><li style="list-style-type:disc">po práci se souborem uzavřít stream (uvolnění prostředků)</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8090-9e90-ccf8b4e445a7" class="bulleted-list"><li style="list-style-type:disc">výjimky IOException, FileNotFoundException</li></ul></div><div style="display:contents" dir="auto"><h2 id="27f2a8a7-b204-8078-9735-fa3b72c5db63" class="">File</h2></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8022-9ba5-c11028c3e96f" class="bulleted-list"><li style="list-style-type:disc">používa se k:<div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80d8-bef8-e048e6158850" class="bulleted-list"><li style="list-style-type:circle">zkontrolování existence souboru</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80d7-8d93-dc0752b3c712" class="bulleted-list"><li style="list-style-type:circle">získání metadat (velikost, typ..)</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-802a-849e-fc472750581c" class="bulleted-list"><li style="list-style-type:circle">přejmenování souboru</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-800f-9f6a-c3dae1c9fc00" class="bulleted-list"><li style="list-style-type:circle">vytvoření souboru</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-809d-91cf-e32a3d62c146" class="bulleted-list"><li style="list-style-type:circle">smazání souboru</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="27f2a8a7-b204-8092-827f-d4c528bfc67c" class="">Textové soubory</h2></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80a9-83ee-c029b442c39d" class="bulleted-list"><li style="list-style-type:disc">data jsou uložena jako text ⇒ čitelné pro člověka</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8062-b1ee-c7104508af38" class="bulleted-list"><li style="list-style-type:disc">jsou kódována (nejčastější je UTF-8)</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80bf-ac3f-d7ae99ea76da" class="bulleted-list"><li style="list-style-type:disc">každý znak je sekvence bajtů</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80a0-acd8-f859341d9ed8" class="bulleted-list"><li style="list-style-type:disc">formáty .csv, .txt, .json</li></ul></div><div style="display:contents" dir="auto"><h3 id="27f2a8a7-b204-803c-a0c9-fe31005a7a8d" class="">BufferedReader</h3></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8084-a489-eedf59d487df" class="bulleted-list"><li style="list-style-type:disc">čte z textových souborů</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80a1-ae97-cd0ee96c878e" class="bulleted-list"><li style="list-style-type:disc">“lepší” FileReader, protože využívá cache</li></ul></div><div style="display:contents" dir="auto"><h3 id="27f2a8a7-b204-803d-924a-d0a505cb9d5d" class="">BufferedWriter</h3></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8092-b995-e6f49091f62f" class="bulleted-list"><li style="list-style-type:disc">zapisuje do textových souborů</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80bf-9b14-ecd673e9c35c" class="bulleted-list"><li style="list-style-type:disc">“lepší” FileWriter, protože využívá cache</li></ul></div><div style="display:contents" dir="auto"><h2 id="27f2a8a7-b204-80a7-84cf-ee3fd7ae89fc" class="">Binární (bytové) soubory</h2></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8062-9c5f-f6229f806256" class="bulleted-list"><li style="list-style-type:disc">data jsou uložena v nečíslované formě (série bajtů) ⇒ nejsou čitelné pro člověka</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8027-b9e8-db02696522bc" class="bulleted-list"><li style="list-style-type:disc">formáty .jpg, .mp3, .pdf</li></ul></div><div style="display:contents" dir="auto"><h3 id="27f2a8a7-b204-80ff-8898-e343684ecde9" class="">BufferedInputStream</h3></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8034-9c35-c823e0319e27" class="bulleted-list"><li style="list-style-type:disc">čte z binárních souborů</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8082-955a-f114bef76000" class="bulleted-list"><li style="list-style-type:disc">“lepší” FileInputStream, protože využívá cache</li></ul></div><div style="display:contents" dir="auto"><h3 id="27f2a8a7-b204-804a-882f-f8092ff5a327" class="">BufferedOutputStream</h3></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8097-a757-d47195150fbd" class="bulleted-list"><li style="list-style-type:disc">zapisuje do binárních souborů</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-801d-825d-d41a2f8d328f" class="bulleted-list"><li style="list-style-type:disc">“lepší” FileOutputStreamr, protože využívá cache</li></ul></div><div style="display:contents" dir="auto"><h2 id="27f2a8a7-b204-8004-8acd-f1942c0875e0" class="">Práce s prostředky</h2></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-804d-92fa-e852aafb2026" class="bulleted-list"><li style="list-style-type:disc">= try-with-resources (try s ())</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80c9-8ca7-cd6099a4230d" class="bulleted-list"><li style="list-style-type:disc">platí jen pro objekty, co implementují Closable nebo AutoClosable</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8086-9eeb-db85bdd0271c" class="bulleted-list"><li style="list-style-type:disc">všechno v () se automaticky uzavře po skončení try</li></ul></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27f2a8a7-b204-8022-b004-d6a2176d80c6" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">//automaticky se zavola close() na resource po dokonceni
+try(Resource resource = new ResourceType()){
+	//práce s prostředkem
+} catch (Exception e){
+	//zpracovani
+} </code></pre></div><div style="display:contents" dir="auto"><h1 id="27f2a8a7-b204-80d3-8e77-ed7c3b24ac08" class="">Test</h1></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Popiš postup práce s prostředkem. Jak je možné vlastní třídu označit za prostředek?</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-804c-9a2c-fc4d2b48e57c" class="bulleted-list"><li style="list-style-type:disc">vlastní třída se označení za prostředek implementací Closable nebo AutoClosable</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8021-a55f-fd0f9843b8e6" class="bulleted-list"><li style="list-style-type:disc">prostředek se hodí do () vedle try</li></ul></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27f2a8a7-b204-801d-a02b-c9a05833332b" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">//automaticky se zavola close() na resource po dokonceni
+try(Resource resource = new ResourceType()){
+	//práce s prostředkem
+} catch (Exception e){
+	//zpracovani
+} </code></pre></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Jaké druhy souborů můžeme číst/zapisovat? Které třídy se k tomu použijí?</summary><div class="indented"><div style="display:contents" dir="auto"><div id="27f2a8a7-b204-806a-9e41-d634f5610301" class="column-list"><div style="display:contents" dir="auto"><div id="27f2a8a7-b204-807f-9713-f6202b071a40" style="width:50%" class="column"><div style="display:contents" dir="auto"><h3 id="27f2a8a7-b204-80a7-b7f1-ca7969e01782" class="">Textové</h3></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80ad-8cff-e949eb2ec4ea" class="bulleted-list"><li style="list-style-type:disc">koncovka<div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8039-8d66-f0ea1fcc712b" class="bulleted-list"><li style="list-style-type:circle">.txt</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-805c-94d9-cddc290d3c81" class="bulleted-list"><li style="list-style-type:circle">.csv</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80b4-b3f4-d81087012cd9" class="bulleted-list"><li style="list-style-type:circle">.json</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8076-8079-d6acfe9fcda1" class="bulleted-list"><li style="list-style-type:disc">čtení:<div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8095-b07b-e08ebf726064" class="bulleted-list"><li style="list-style-type:circle">FileReader</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-807f-a60e-c28475490eae" class="bulleted-list"><li style="list-style-type:circle">BufferedReader</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-804f-ba9f-d80a82ed3b3d" class="bulleted-list"><li style="list-style-type:disc">zápis:<div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80ef-b3e8-effda6455ac5" class="bulleted-list"><li style="list-style-type:circle">FileWriter</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8078-a8b4-d0c16f53df77" class="bulleted-list"><li style="list-style-type:circle">BufferedWriter</li></ul></div></li></ul></div></div></div><div style="display:contents" dir="auto"><div id="27f2a8a7-b204-8092-9b73-cbc7d69cdf04" style="width:50%" class="column"><div style="display:contents" dir="auto"><h3 id="27f2a8a7-b204-80ec-9659-cf1d18f43da2" class="">Binární</h3></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8035-a264-edf8834883bd" class="bulleted-list"><li style="list-style-type:disc">koncovka<div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80b2-aedf-d037b9b1a68c" class="bulleted-list"><li style="list-style-type:circle">jpg</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8072-9847-dda85c13f093" class="bulleted-list"><li style="list-style-type:circle">mp3</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8080-8b45-e34f7b63b782" class="bulleted-list"><li style="list-style-type:circle">mp4</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-807f-a26e-ed4f1e7ee1ba" class="bulleted-list"><li style="list-style-type:disc">čtení:<div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80f1-a6b5-e0d157eb11fc" class="bulleted-list"><li style="list-style-type:circle">FileInputStream</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8076-ab10-e34387da1fa7" class="bulleted-list"><li style="list-style-type:circle">BufferedInputStream</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8010-bc31-d2ba24c2eda1" class="bulleted-list"><li style="list-style-type:disc">zápis:<div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-80d7-a61d-ca774d9b3694" class="bulleted-list"><li style="list-style-type:circle">FileOutputStream</li></ul></div><div style="display:contents" dir="auto"><ul id="27f2a8a7-b204-8053-9b53-d695efe048a8" class="bulleted-list"><li style="list-style-type:circle">BufferedOutputStream</li></ul></div></li></ul></div></div></div></div></div></div></details></div><div style="display:contents" dir="auto"><p id="27f2a8a7-b204-80cf-bbe4-ec61cac084bf" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
